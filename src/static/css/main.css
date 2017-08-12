@@ -1,0 +1,158 @@
+.page-sign-login .img-avatar {
+	margin: 0 auto;
+	width: 80px;
+	height: 80px;
+}
+.page-sign-login .avatar {
+	margin: 30px auto;
+	width: 80px;
+	height: 80px;
+	border: solid 1px #E6E6E6;
+	border-radius: 500px;
+}
+.page-sign-login .form-wxw {
+	margin-bottom: 25px;
+}
+.page-sign-login .btn-login {
+	background-color: #f8bd48;
+	border-color: #f8bd48;
+	border-radius: 500px;
+}
+.page-sign-login .btn-login[disabled]{
+	background-color: #ffeac1;
+	border-color: #ffeac1;
+	color: #FFF;
+}
+.page-sign-login .form-group-login {
+	margin-top: 30px;
+}
+.page-sign-login .line-sign {
+	padding: 0 20px;
+}
+.page-sign-login .link-sign {
+	padding: 2px 6px;
+	color: #646464;
+	background-color: #F0F0F0;
+	border-radius: 10px;
+	font-size: 12px;
+}
+.page-sign-login .link-sign+.link-sign {
+	margin-right: 25px;
+}
+.page-sign-login .line-third {
+	overflow: visible;
+	position: relative;
+	margin: 80px 40px 40px;
+	color: #C6C6C6;
+	border-bottom: dashed 1px;
+}
+.page-sign-login .text-third {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -55px;
+	margin-top: -10px;
+	width: 110px;
+	background-color: #FFF;
+}
+.page-sign-login .third-list {
+	display: block;
+	overflow: hidden;
+	margin: 0 auto;
+	width: 270px;
+}
+.page-sign-login .third-list .third {
+	display: block;
+	overflow: hidden;
+	position: relative;
+	float: left;
+	margin: 0 15px;
+	padding: 0;
+	width: 60px;
+}
+/*sign register*/
+.page-sign-register .form-register {
+	margin-top: 50px;
+}
+.page-sign-register .tag-cb {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 15px;
+	width: 20px;
+	height: 20px;
+	background: url('../images/icon-checkbox.png') no-repeat center;
+	background-size: 20px;
+}
+.page-sign-register .label-ua {
+	margin-bottom: 0;
+	font-weight: normal;
+	color: #646464;
+}
+.page-sign-register .link-ua {
+	text-decoration: underline;
+	color: #008DD7;
+}
+.page-sign-register .btn-captcha {
+	background-color: #F44845;
+	color: #FFF;
+	border-radius: 500px;
+}
+.page-sign-register .btn-captcha[disabled]{
+	background-color: #BBB;
+}
+.page-sign-register .btn-captcha.focus,
+.page-sign-register .btn-captcha:focus,
+.page-sign-register .btn-captcha:hover {
+	color: #FFF;
+}
+.page-sign-register .form-group-ua {
+	margin-top: 25px;
+}
+.page-sign-register .form-group-submit {
+	margin-top: 25px;
+	padding: 0 10px;
+}
+.page-sign-register .active .tag-cb {
+	background-image: url('../images/icon-checkbox-active.png');
+}
+.page-sign-register .btn-submit {
+	border-radius: 500px;
+	background-color: #f8bd48;
+	border-color: #f8bd48;
+}
+.page-sign-register .btn-submit[disabled]{
+	background-color: #E2E2E2;
+	border-color: #E2E2E2;
+	color: #BABABA;
+}
+/*sign recovery*/
+.page-sign-recovery .form-recovery {
+	margin-top: 50px;
+}
+.page-sign-recovery .btn-captcha {
+	background-color: #F44845;
+	color: #FFF;
+	border-radius: 500px;
+}
+.page-sign-recovery .btn-captcha[disabled]{
+	background-color: #BBB;
+}
+.page-sign-recovery .btn-captcha.focus,
+.page-sign-recovery .btn-captcha:focus,
+.page-sign-recovery .btn-captcha:hover {
+	color: #FFF;
+}
+.page-sign-recovery .form-group-submit {
+	margin-top: 75px;
+	padding: 0 10px;
+}
+.page-sign-recovery .btn-submit {
+	border-radius: 500px;
+	background-color: #f8bd48;
+	border-color: #f8bd48;
+}
+.page-sign-recovery .btn-submit[disabled]{
+	background-color: #E2E2E2;
+	border-color: #E2E2E2;
+	color: #BABABA;
+}

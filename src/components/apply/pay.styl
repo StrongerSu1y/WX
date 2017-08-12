@@ -1,0 +1,64 @@
+@import '../../common/stylus/mixin.styl'
+.pay
+	.amount
+		display: flex
+		line-height: 0.6rem
+		font-size: 0.28rem
+		padding: 0.2rem
+		background-color: rgb(255, 251, 207)
+		.desc
+			flex: 1
+			color: #3E4242
+			font-weight: bold
+			font-size: 0.28rem
+		.num
+			flex: 1
+			text-align: right
+			color: rgb(242, 48, 48)
+			font-size: 0.2rem
+			> .big
+				font-size: 0.28rem
+	.type-list
+		padding-left: 0.4rem
+		.item
+			padding: 0.4rem 0.4rem 0.4rem 0
+			line-height: 0.8rem
+			font-size: 0
+			> .img
+				display: inline-block
+				width: 0.8rem
+				height: 0.8rem
+				vertical-align: middle
+				background-size 100%
+				&.alipay
+					background url('alipay.png') no-repeat center
+				&.scene
+					background url('scene.png') no-repeat center
+				&.weixin
+					background url('weixin.png') no-repeat center
+			> .text
+				margin-left: 0.4rem
+				font-size: 0.32rem
+				color: rgb(149, 149, 149)
+				vertical-align: middle
+			> .checkbox
+				float: right
+				width: 0.4rem
+				height: 0.4rem
+				vertical-align: middle
+				background url('check.png') no-repeat center
+				background-size 100%
+				&.active
+					background url('check_active.png') no-repeat center
+		.underline
+			border-1px(#d6d6d6)
+	.footer
+		position: fixed
+		bottom: 0
+		left: 0
+		right: 0
+		font-size: 0.34rem
+		line-height: 1rem
+		background: rgb(248, 192, 79)
+		text-align: center
+		color: #fff

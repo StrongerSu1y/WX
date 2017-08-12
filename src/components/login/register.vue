@@ -1,0 +1,181 @@
+<template>
+  <div class="page-sign-register">
+    <form id="form-register" class="form-register form-wxw">
+      <div class="form-group">
+        <span class="tag-mobile tag-input"></span>
+        <input id="login-mobile" type="number" pattern="[0-9]*" ref="mobile" class="form-control" placeholder="请输入您的手机号码" v-model="mobile">
+        <div class="actions-group">
+          <div class="btn-clear btn-action" @click="clearInput('mobile')"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <span class="tag-pwd tag-input"></span>
+        <input id="login-pwd" type="password" class="form-control" placeholder="请输入您的登录密码" v-model="password" ref="passwordShow">
+        <div class="actions-group">
+          <div class="btn-clear btn-action" @click="clearInput('password')"></div>
+          <div class="btn-visible btn-action" :class="{active: passwordShow}" @click="togglePwdShow('passwordShow')"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <span class="tag-pwd tag-input"></span>
+        <input id="login-pwdrpt" type="password" class="form-control" placeholder="请再次输入您的登录密码" v-model="secondPwd" ref="secondPwdShow">
+        <div class="actions-group">
+          <div class="btn-clear btn-action" @click="clearInput('secondPwd')"></div>
+          <div class="btn-visible btn-action" :class="{active: secondPwdShow}" @click="togglePwdShow('secondPwdShow')"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <span class="tag-captcha tag-input"></span>
+        <input v-model="code" id="login-captcha" type="text" class="form-control" placeholder="请输入您的验证码">
+        <div class="actions-group">
+          <button class="btn-captcha btn" type="button" ref="btn" @click="getVerification()"><span v-if="canClick">{{ btnText }}</span><span v-if="!canClick">{{ seconds }}S后重新发送</span></button>
+        </div>
+      </div>
+      <div class="form-group form-group-ua">
+        <label class="label-ua" :class="{active: hasRead}" @click="toggleRead()">
+          <span class="tag-cb"></span> 我已阅读并同意《微校网用户协议》
+        </label>
+      </div>
+      <div class="form-group form-group-submit">
+        <button class="btn-submit btn btn-block btn-primary btn-lg" type="button" ref="submit" disabled="" @click="doSubmit()">
+          提交
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+// import config from 'config/config.js'
+export default {
+	name: 'register',
+	data () {
+		return {
+			mobile: '', // 手机
+			password: '', // 密码
+			secondPwd: '', // 再次输入
+			code: '', // 验证码
+			canClick: true, // 按钮可点击
+			btnText: '点击获取验证码', // 按钮内容
+			seconds: 60, // 计时
+			passwordShow: false, // 密码显示
+			secondPwdShow: false, // 再次输入显示
+			hasRead: true // 已读
+		}
+	},
+	computed: {
+	},
+	watch: {
+		code (curVal, oldVal) {
+			if (curVal.length < 3 || this.mobile.length < 11 || this.password.length < 6) {
+				this.$refs.submit.disabled = true
+				return
+			}
+			this.$refs.submit.disabled = false
+		}
+	},
+	methods: {
+		// 获取验证码
+		getVerification () {
+			if (!/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.mobile)) {
+				alert('请输入正确的手机号')
+				this.$refs.mobile.focus()
+				return
+			}
+			// 发送请求
+			this.$ajax({
+				method: 'post',
+				url: '/user/send_verify_code',
+				data: {
+					mobile: this.mobile
+				}
+			})
+			.then((res) => {
+				console.log(JSON.stringify(res))
+				alert(res.data.data.tip)
+			})
+			.catch((err) => {
+				console.log(err)
+			})
+			// 后续操作
+			this.$refs.btn.disabled = true
+			this.canClick = false
+			this.setSeconds()
+		},
+		// 倒计时
+		setSeconds () {
+			var that = this
+			if (this.seconds <= 0) {
+				this.resetBtn()
+				return
+			}
+			setTimeout(function () {
+				that.seconds -= 1
+				that.setSeconds()
+			}, 1000)
+		},
+		// 清空输入内容
+		clearInput (type) {
+			this['' + type + ''] = ''
+		},
+		// 切换密码显示
+		togglePwdShow (type) {
+			this['' + type + ''] = !this['' + type + '']
+			this.$refs['' + type + ''].type = this['' + type + ''] ? 'text' : 'password'
+		},
+		// 切换已读未读
+		toggleRead () {
+			this.hasRead = !this.hasRead
+		},
+		// 重置按钮属性
+		resetBtn () {
+			this.canClick = true
+			this.btnText = '点击再次获取'
+			this.$refs.btn.disabled = false
+			this.seconds = 60
+		},
+		// 提交
+		doSubmit () {
+			if (this.password !== this.secondPwd) {
+				alert('两次输入的密码不一致')
+				return
+			}
+			// 验证验证码
+			this.$ajax({
+				method: 'post',
+				url: '/user/validate_verify_code',
+				data: {
+					mobile: this.mobile,
+					code: this.code
+				}
+			})
+			.then((res) => {
+				this.$ajax({
+					method: 'post',
+					url: '/user/register',
+					data: {
+						mobile: this.mobile,
+						password: this.password
+					}
+				})
+				.then((res) => {
+					alert('注册成功')
+					this.$router.go(-1)
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+			})
+			.catch((err) => {
+				console.log(err)
+				alert(err.data.tip)
+			})
+		}
+	}
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="stylus" rel="stylesheet/stylus">
+	@import './login.styl'
+</style>
