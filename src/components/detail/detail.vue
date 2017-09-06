@@ -42,11 +42,11 @@
 
 <script>
 	import header from '../header/header'
-	import contents from '../content/content'
-	import recommond from '../recommond/recommond'
+	import contents from './content/content'
+	import recommond from '../common/recommond/recommond'
 	import shopcat from '../shopcat/shopcat'
-	import product from '../product/product'
-	import sales from '../sales/sales'
+	import product from './product/product'
+	import sales from './sales/sales'
 	let u = navigator.userAgent
 	let isMobile = !u.match(/AppleWebKit.*Mobile.*/)
 
@@ -67,6 +67,10 @@
 			tabView () {
 				return this.tabList[this.tabIndex]
 			}
+		},
+		mounted () {
+			// let getCookie = document.cookie.replace(/[ ]/g, '')
+			console.log(document.cookie)
 		},
 		components: {
 			'v-header': header,

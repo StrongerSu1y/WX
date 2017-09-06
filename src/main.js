@@ -3,8 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import axios from 'axios'
-import qs from 'qs'
+// import axios from 'axios'
+// import qs from 'qs'
+import Vuex from 'vuex'
+import store from './vuex/store'
+
+Vue.use(Vuex)
 // import {getQueryString} from './common/js/date'
 
 // let instance = axios.create()
@@ -13,19 +17,25 @@ import qs from 'qs'
 // instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 配置请求头
 // axios.defaults.baseURL = 'http://192.168.0.231:8080/app-api/api'
-let proURL = location.protocol + '//app.51weixiao.com/app-api/api'
+Vue.prototype.Toast = new window.AuiToast()
+Vue.prototype.Dialog = new window.AuiDialog()
 
-Vue.prototype.$ajax = axios.create({
-	baseURL: proURL,
-	timeout: 3000,
-	headers: {
-		'Content-Type': 'application/x-www-form-urlencoded'
-	},
-	transformRequest: [function (data) {
-		data = qs.stringify(data)
-		return data
-	}]
-})
+// let proURL = location.protocol + '//app.51weixiao.com/app-api/api'
+// Vue.prototype.$ajax = axios.create({
+// 	baseURL: proURL,
+// 	timeout: 3000,
+// 	headers: {
+// 		'Content-Type': 'application/x-www-form-urlencoded'
+// 	},
+// 	transformRequest: [function (data) {
+// 		data = qs.stringify(data)
+// 		return data
+// 	}]
+// })
+
+import api from './api/api.js'
+
+Vue.prototype.$ajax = api
 
 Vue.config.productionTip = false
 
@@ -33,7 +43,11 @@ Vue.config.productionTip = false
 new Vue({
 	el: '#app',
 	router,
+	store,
 	template: '<App/>',
+	data: {
+		Bus: new Vue()
+	},
 	components: { App }
 })
 

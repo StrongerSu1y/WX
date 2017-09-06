@@ -1,0 +1,32 @@
+<template>
+	<keep-alive>
+		<router-view></router-view>
+	</keep-alive>
+</template>
+
+<script>
+	import { getQueryString } from '../../common/js/date.js'
+	export default {
+		name: 'apply',
+		data () {
+			return {}
+		},
+		mounted () {
+			// 判断浏览器
+			let ua = navigator.userAgent.toLowerCase()
+			if (ua.match(/MicroMessenger/i)) {
+				// 判断微信登陆返回 status
+				if (getQueryString('status')) {
+					if (parseInt(getQueryString('status')) === 0) {
+						localStorage.setItem('userId', getQueryString('uid'))
+						localStorage.setItem('wxOpenId', getQueryString('openid'))
+					} else {
+						window.reload()
+					}
+				}
+			}
+		}
+	}
+</script>
+
+<style></style>

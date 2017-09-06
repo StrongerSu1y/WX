@@ -2,27 +2,27 @@
 .header
 	display: flex
 	padding: 0 0.2rem
-	position: fixed
+	position: fixed !important
 	top: 0
 	right: 0
 	left: 0
 	z-index: 999
 	background: #fff
-	border-bottom: 1px solid #d6d6d6
+	&.underline
+		border-1px(#d6d6d6)
 	.apply
 		color: #262323
 		font-size: 0.34rem
 	.left-part
 		width: 1.8rem
+		line-height 0.8rem
 		.back-icon
-			width:0.4rem
-			height:0.4rem
-			border: 2px solid #dddddd
-			border-top: none
-			border-right: none
-			transform: rotate(45deg)
-			margin-top: 0.2rem
-			margin-left: 0.1rem
+			display inline-block
+			width: 0.52rem
+			height: 0.52rem
+			background url('back_icon.png') no-repeat center
+			background-size 100% 100%
+			vertical-align middle
 		.home-icon
 			width: 0.6rem
 			height: 0.6rem
@@ -31,6 +31,8 @@
 			margin-top: 0.1rem
 	.right-part
 		width: 1.8rem
+		text-align center
+		vertical-align middle
 		> div
 			width: 0.4rem
 			height: 0.4rem
@@ -76,8 +78,11 @@
 				text-align: center
 	p
 		flex: 1
-		font-size: 0.3rem
+		font-size: 0.34rem
+		font-family 'PingFang-SC-Medium'
+		font-weight 500
 		height: 0.8rem
 		line-height: 0.8rem
-		color:#323232
+		// color: #323232
+		color: #523f1a
 		text-align: center

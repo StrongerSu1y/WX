@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="periodical">
 		<v-header></v-header>
 		<v-content :title="title">
 			<div slot="desc" class="desc-perio">
@@ -28,10 +28,10 @@
 
 <script>
 	import header from '../header/header'
-	import content from '../content/content'
-	import product from '../product/product'
-	import comment from '../comment/comment'
-	import split from '../split/split'
+	import content from '../detail/content/content'
+	import product from '../detail/product/product'
+	import comment from '../detail/comment/comment'
+	import split from '../common/split/split'
 	import shopcat from '../shopcat/shopcat'
 	export default {
 		name: 'periodical',
@@ -53,14 +53,15 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
 	@import '../../common/stylus/mixin.styl'
-	.product-title
-		padding: 0 0.2rem
-		width: 100%
-		height: 0.6rem
-		line-height: 0.6rem
-		font-size: 0.28rem
-		border-1px(#f0f0f0)
-	.comment-area
-		padding-bottom: 1.6rem
-		background: #f0f0f0
+	.periodical
+		.product-title
+			padding: 0 0.2rem
+			width: 100%
+			height: 0.6rem
+			line-height: 0.6rem
+			font-size: 0.28rem
+			border-1px(#f0f0f0)
+		.comment-area
+			padding-bottom: 1.6rem
+			background: #f0f0f0
 </style>

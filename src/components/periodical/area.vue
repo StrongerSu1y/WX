@@ -26,7 +26,7 @@
 </template>
 
 <script>
-	import split from '../split/split'
+	import split from '../common/split/split'
 	let provinceData = [{
 		text: '浙江省',
 		value: '1'

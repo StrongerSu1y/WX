@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- 图书 -->
-		<div v-if="book" class="header">
+		<div v-if="book" class="header underline">
 			<div class="left-part">
 				<div class="back-icon" @click="goBack()"></div>
 			</div>
@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<!-- 刊物 -->
-		<div v-if="period" class="header">
+		<div v-if="period" class="header underline">
 			<div class="left-part">
 				<div class="home-icon" @click="goHome()"></div>
 			</div>
@@ -26,13 +26,14 @@
 			</div>
 		</div>
 		<!-- 活动 -->
-		<div v-if="activity" class="header">
+		<div v-if="activity" class="header underline">
 			<div class="left-part">
 				<div class="home-icon" @click="goHome()"></div>
 			</div>
-			<p>活动详情</p>
-			<div class="right-part">
-				<div class="share right-icon-1"></div>
+			<slot name="title"></slot>
+			<div @click="doLoginOut()" class="right-part">
+				<!-- 退出登录 -->
+				<div v-show="shareShow" class="share right-icon-1"></div>
 				<div class="collect right-icon-2" @click="toggleCollect()">
 					<div class="icon" :class="{ active: isCollected}"></div>
 					<!-- <img ref="collect" src="./collect_active.png"> -->
@@ -40,11 +41,30 @@
 			</div>
 		</div>
 		<!-- 报名 -->
-		<div v-if="entrance === 'apply'" class="header">
+		<div v-if="entrance === 'apply'" class="header underline">
 			<div class="left-part">
 				<div class="back-icon" @click="goBack()"></div>
 			</div>
 			<p class="apply">{{ title }}</p>
+			<div @click="doLoginOut()" class="right-part">
+				<!-- 退出登录 -->
+			</div>
+		</div>
+		<!-- 活动图片 -->
+		<div v-if="entrance === 'images'" class="header underline">
+			<div class="left-part">
+				<div class="back-icon" @click="goBack()"></div>
+			</div>
+			<p class="apply">{{ title }}</p>
+			<div class="right-part">
+			</div>
+		</div>
+		<!-- 默认 -->
+		<div v-if="entrance === 'login'" class="header">
+			<div class="left-part">
+				<div class="back-icon" @click="goBack()"></div>
+			</div>
+			<p v-if="title">{{ title }}</p>
 			<div class="right-part">
 			</div>
 		</div>
@@ -58,7 +78,9 @@
 		name: 'header',
 		props: ['book', 'period', 'isCollected', 'activity', 'entrance', 'title'],
 		data () {
-			return {}
+			return {
+				shareShow: false
+			}
 		},
 		methods: {
 			// 返回上一页
@@ -68,11 +90,15 @@
 			},
 			// 返回首页
 			goHome () {
-				router.push('/')
+				window.location.reload()
 			},
 			// 切换收藏
 			toggleCollect () {
 				this.isCollected = !this.isCollected
+			},
+			// 退出登录
+			doLoginOut () {
+				localStorage.removeItem('userId')
 			}
 		}
 	}

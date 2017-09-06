@@ -19,3 +19,13 @@ npm run build --report
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+# build at root
+docker build -t h5 .
+
+#docker run
+docker run -d -p 8080:8080 --name h5 h5
+
+# clear 
+docker rmi $(docker images -f "dangling=true" -q)

@@ -3,14 +3,14 @@
 		<div class="shopcat">
 			<div class="item buttons">
 				<div class="collect button">
-					<img :src="collectSrc" @click="toggleCollect()">
+					<div class="img" :class="{ active: collectOn }" @click="toggleCollect()"></div>
 					<div class="text">{{ collectText }}</div>
 				</div>
 				<div class="shop button">
 					<div class="dot">
 						3
 					</div>
-					<img :src="shopcatSrc">
+					<img src="./shopcat.png">
 					<div class="text">购物车</div>
 				</div>
 			</div>
@@ -44,7 +44,6 @@
 				collect: `collect.png`,
 				collectActive: `collect_active.png`,
 				collectOn: false,
-				shopcatSrc: `shopcat.png`,
 				// 报名图标
 				applyIconSrc: `apply.png`
 			}

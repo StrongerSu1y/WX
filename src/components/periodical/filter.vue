@@ -20,7 +20,7 @@
 
 <script>
 	import header from '../header/header'
-	import split from '../split/split'
+	import split from '../common/split/split'
 	import area from './area'
 	import screen from './screen'
 	export default {
