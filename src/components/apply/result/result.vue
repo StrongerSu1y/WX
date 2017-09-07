@@ -17,7 +17,7 @@
 			<div @click="downloadApp()" class="download-app"></div>
 		</div>
 		<div v-else>
-			<div class="pay-again" onclick="payAgain()"></div>
+			<div class="pay-again" @click="payAgain()"></div>
 		</div>
 		<div class="bottom">
 			<div class="logo"></div>
@@ -80,6 +80,13 @@
 		methods: {
 			// 回到初始页面
 			backToRoot () {
+				clearInterval(this.interval)
+				// this.$root.Bus.$emit('backToRoot', '')
+				let historyBack = -parseInt(localStorage.getItem('historyLength'))
+				if (historyBack < 0) {
+					this.$router.go(historyBack)
+					return
+				}
 				window.location.href = this.$route.query.href
 			},
 			// 画图
@@ -108,7 +115,10 @@
 			},
 			// 重新支付
 			payAgain () {
+				clearInterval(this.interval)
+				localStorage.setItem('historyLength', localStorage.getItem('historyLength') - 1)
 				this.$router.go(-1)
+				// this.$root.Bus.$emit('setHistoryBack', '')
 			},
 			// 下载 APP
 			downloadApp () {

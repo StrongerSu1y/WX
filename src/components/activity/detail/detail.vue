@@ -53,7 +53,7 @@
 				id: getQueryString('id'),
 				cls: getQueryString('cls') || 14,
 				linkShow: true,
-				author: this.$store.state.author,
+				history: this.$store.state.history,
 				wxLogin: false,
 				type: '活动',
 				info: {}
@@ -80,6 +80,8 @@
 		methods: {
 			// 获取数据
 			getData () {
+				// 重置历史
+				this.resetHistory()
 				this.Toast.loading({
 					title: '加载中...'
 				})
@@ -106,6 +108,8 @@
 			},
 			// 立即报名
 			goApply () {
+				// 设置 history
+				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 				if (!this.configLogin()) {
 					return false
 				}
@@ -160,7 +164,14 @@
 				let redirectUrl = encodeURIComponent(`${apiUrl}?finalUrl=${_href}`)
 				let appId = 'wx701b0e6e6faac47c'
 				var _url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=` + redirectUrl + `&response_type=code&scope=snsapi_base&state=1#wechat_redirect`
+				// 设置 history
+				localStorage.setItem('historyLength', localStorage.getItem('historyLength') + 1)
+				// this.$store.commit('setHistory', this.$store.state.history + 1)
 				window.location.href = _url
+			},
+			// 重置历史记录
+			resetHistory () {
+				localStorage.setItem('historyLength', 0)
 			}
 		},
 		components: {

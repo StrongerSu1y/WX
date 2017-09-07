@@ -142,6 +142,10 @@
 					})
 					return
 				}
+				// alert(localStorage.getItem('historyLength'))
+				// 设置 history
+				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
+				// this.$store.commit('setHistory', this.$store.state.history + 1)
 				this.$router.push({
 					path: '/apply/contracts',
 					query: {

@@ -123,7 +123,10 @@
 						title: '登录成功！'
 					})
 					setTimeout(() => {
-						window.location.href = this.$route.query.href
+						// window.location.href = this.$route.query.href
+						// 设置 history
+						this.$store.commit('setHistory', this.$store.state.history - 1)
+						this.$router.go(-1)
 					}, 500)
 				}, err => {
 					console.log(err)
@@ -141,15 +144,6 @@
 			// QQ登录后的操作
 			afterQQLogin () {
 				this.getQQInfo()
-				// 判断登陆
-				// if (window.QC.Login.check()) {
-				// 	this.getQQInfo()
-				// } else {
-				// 	window.QC.Login.showPopup({
-				// 		appId: '101339901',
-				// 		redirectURI: location.href + '/test?redirectUrl=' + escape(this.baseUrl + '/login') + '&isLogin=1'
-				// 	})
-				// }
 			},
 			// 返回
 			callbackFun (res) {
@@ -186,7 +180,8 @@
 										title: '登录成功'
 									})
 									localStorage.setItem('userId', res.data.data.id)
-									window.location.href = _vm.$route.query.href
+									// window.history.replaceState(null, '', _vm.$route.query.redirectUrl)
+									window.location.href = _vm.$route.query.redirectUrl
 								} else {
 									this.Toast.fail({
 										title: data.tip
@@ -202,7 +197,7 @@
 			loginQq () {
 				window.QC.Login.showPopup({
 					appId: '101339901',
-					redirectURI: this.baseUrl + '/login?redirectUrl=' + escape(location.href)
+					redirectURI: this.baseUrl + '/login?redirectUrl=' + encodeURIComponent(this.$route.query.href)
 				})
 				// 判断登陆
 				// if (window.QC.Login.check()) {

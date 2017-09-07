@@ -19,9 +19,16 @@
 			}
 		},
 		created () {
+			// 监听回到首页
+			this.$root.Bus.$on('backToRoot', (val) => {
+				let historyBack = -parseInt(localStorage.getItem('historyLength'))
+				this.$router.go(historyBack)
+			})
 			this.$root.Bus.$on('showToast', (val) => {
 				this.showToast(val)
 			})
+		},
+		mounted () {
 		},
 		methods: {
 			showToast (text) {

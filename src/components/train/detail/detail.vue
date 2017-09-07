@@ -72,6 +72,8 @@
 				return this.type + '日期'
 			}
 		},
+		created () {
+		},
 		mounted () {
 			document.title = this.title
 			// 获取数据
@@ -80,6 +82,8 @@
 		methods: {
 			// 获取数据
 			getData () {
+				// 重置历史
+				this.resetHistory()
 				this.Toast.loading({
 					title: '加载中...'
 				})
@@ -111,7 +115,9 @@
 			},
 			// 立即报名
 			goApply () {
-				// window.location.href = 'http://www.baidu.com'
+				// 设置 history
+				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
+				// this.$store.commit('setHistory', this.$store.state.history + 1)
 				if (!this.configLogin()) {
 					return false
 				}
@@ -127,20 +133,17 @@
 			},
 			// 判断登录
 			configLogin () {
-				// 判断浏览器
-				let ua = navigator.userAgent.toLowerCase()
-				if (ua.match(/MicroMessenger/i)) {
-					// if (!localStorage.getItem('wxOpenId')) {
-					// 	this.weixinLogin()
-					// 	return
-					// }
-					this.weixinLogin()
-					return
-				}
 				// 测试登录
 				// localStorage.setItem('userId', '')
+				// this.weixinLogin()
 				// 判断是否登录
 				if (!localStorage.getItem('userId')) {
+					// 判断浏览器
+					let ua = navigator.userAgent.toLowerCase()
+					if (ua.match(/MicroMessenger/i)) {
+						this.weixinLogin()
+						return false
+					}
 					// 提示
 					this.Toast.warning({
 						title: '请先登录！'
@@ -171,6 +174,10 @@
 				let appId = 'wx701b0e6e6faac47c'
 				var _url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=` + redirectUrl + `&response_type=code&scope=snsapi_base&state=1#wechat_redirect`
 				window.location.href = _url
+			},
+			// 重置历史记录
+			resetHistory () {
+				localStorage.setItem('historyLength', 0)
 			}
 		},
 		components: {

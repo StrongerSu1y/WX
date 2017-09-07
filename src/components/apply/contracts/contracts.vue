@@ -82,7 +82,10 @@
 											this.Dialog.alert({
 												title: '报名成功！'
 											}, (ret) => {
-												window.location.href = this.$route.query.href
+												// this.$root.Bus.$emit('backToRoot', '')
+												let historyBack = -parseInt(localStorage.getItem('historyLength'))
+												this.$router.go(historyBack)
+												// window.location.href = this.$route.query.href
 											})
 										}, err => {
 											console.log(err)
@@ -96,19 +99,15 @@
 								let href = this.$route.query.href
 								let protocol = window.location.protocol
 								let host = window.location.host
+								// 设置 history
+								// alert('contract click: ' + localStorage.getItem('historyLength'))
+								localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 								window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&id=${id}&outtradeno=${outtradeno}&href=${href}`
-								// this.$router.push({
-								// 	path: '/pay',
-								// 	query: {
-								// 		fee: fee,
-								// 		id: id,
-								// 		outtradeno: outtradeno,
-								// 		cls: cls,
-								// 		href: href
-								// 	}
-								// })
 								return
 							}
+							// 设置 history
+							// alert('contract click: ' + localStorage.getItem('historyLength'))
+							localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 							this.$router.push({
 								path: '/apply/realname',
 								query: {

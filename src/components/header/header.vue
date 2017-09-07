@@ -72,7 +72,7 @@
 </template>
 
 <script>
-	import router from '../../router'
+	// import router from '../../router'
 
 	export default {
 		name: 'header',
@@ -82,11 +82,15 @@
 				shareShow: false
 			}
 		},
+		created () {
+		},
 		methods: {
 			// 返回上一页
 			goBack () {
+				// 设置 history
+				localStorage.setItem('historyLength', localStorage.getItem('historyLength') - 1)
 				this.$emit('goBack')
-				router.go(-1)
+				this.$router.go(-1)
 			},
 			// 返回首页
 			goHome () {

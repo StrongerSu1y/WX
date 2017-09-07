@@ -115,18 +115,6 @@
 		},
 		computed: {
 		},
-		// beforeRouteEnter (to, from, next) {
-		// 	next(vm => {
-		// 		vm.list = JSON.parse(vm.$route.query.overList).filter((item) => {
-		// 			item.kid_name = ''
-		// 			item.kid_sex = 0
-		// 			item.name = ''
-		// 			item.tel = ''
-		// 			item.relation = '爸爸'
-		// 			return item
-		// 		})
-		// 	})
-		// },
 		mounted () {
 			document.title = this.title
 			let _that = this
@@ -215,6 +203,9 @@
 							let isRealname = true
 							let protocol = window.location.protocol
 							let host = window.location.host
+							// 设置 history
+							// alert(localStorage.getItem('historyLength'))
+							localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 							window.location.href = `${protocol}//${host}/pay?isRealname=${isRealname}&cls=${cls}&fee=${fee}&id=${id}&outtradeno=${outtradeno}&href=${href}`
 							// this.$router.push({
 							// 	path: '/pay',
