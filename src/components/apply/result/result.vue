@@ -75,18 +75,25 @@
 			}
 		},
 		mouted () {
+			// 如果成功，history + 1
+			if (this.success) {
+				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
+				if (this.isIosQQ || this.isAndroidQQ) {
+					localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 2)
+				}
+			}
 			this.fee = this.$route.query.total_amount || 0
 		},
 		methods: {
 			// 回到初始页面
 			backToRoot () {
 				clearInterval(this.interval)
-				// this.$root.Bus.$emit('backToRoot', '')
 				let historyBack = -parseInt(localStorage.getItem('historyLength'))
 				if (historyBack < 0) {
+					localStorage.setItem('historyLength', 0)
 					this.$router.go(historyBack)
-					return
 				}
+				localStorage.setItem('historyLength', 0)
 				window.location.href = this.$route.query.href
 			},
 			// 画图
@@ -122,6 +129,12 @@
 			},
 			// 下载 APP
 			downloadApp () {
+				if (this.isWeibo) {
+					this.Dialog.alert({
+						title: '请通过浏览器查看APP'
+					}, res => {})
+					return
+				}
 				window.location.href = this.isIos ? this.iosDownload : this.androidDownload
 			}
 		}

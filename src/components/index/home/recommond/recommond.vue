@@ -1,12 +1,11 @@
 <template>
-	<div class="index-shopcat">
-		shopcat
-	</div>
+	<section class="menu">
+	</section>
 </template>
 
 <script>
 	export default {
-		name: 'shopcat',
+		name: 'home-recommond',
 		data () {
 			return {}
 		}
@@ -14,5 +13,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-	@import './shopcat.styl'
+	@import './recommond.styl'
 </style>

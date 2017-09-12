@@ -115,8 +115,6 @@
 			},
 			// 立即报名
 			goApply () {
-				// 设置 history
-				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 				// this.$store.commit('setHistory', this.$store.state.history + 1)
 				if (!this.configLogin()) {
 					return false
@@ -168,7 +166,7 @@
 				let protocol = location.protocol
 				let host = location.host
 				let href = location.href
-				let _href = encodeURIComponent(`${protocol}//${host}/apply?id=${id}&cls=${cls}&is_realname=${isRealname}&href=${href}`)
+				let _href = encodeURIComponent(`${protocol}//${host}/apply:${this.id}?id=${id}&cls=${cls}&is_realname=${isRealname}&href=${href}`)
 				let apiUrl = 'https://www.51weixiao.com/app-api/api/user/wxLogin'
 				let redirectUrl = encodeURIComponent(`${apiUrl}?finalUrl=${_href}`)
 				let appId = 'wx701b0e6e6faac47c'

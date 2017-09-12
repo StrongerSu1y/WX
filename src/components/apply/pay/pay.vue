@@ -56,12 +56,6 @@
 					payList.splice(0, 1, weixin)
 				}
 				return payList
-			},
-			isIosQQ () {
-				return this.isIos && /QQ/.test(u)
-			},
-			isAndroidQQ () {
-				return this.isAndroid && /QQ/.test(u)
 			}
 		},
 		created () {
@@ -71,6 +65,8 @@
 		},
 		mounted () {
 			document.title = this.title
+			// 设置 history
+			localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 			this.fee = this.$route.query.fee
 			let ua = navigator.userAgent.toLowerCase()
 			if (ua.match(/MicroMessenger/i)) {
@@ -109,6 +105,7 @@
 									// 回到首页
 									// this.$root.Bus.$emit('backToRoot', '')
 									let historyBack = -parseInt(localStorage.getItem('historyLength'))
+									localStorage.setItem('historyLength', 0)
 									this.$router.go(historyBack)
 								}, 300)
 							})
@@ -135,10 +132,6 @@
 					.then((res) => {
 						this.$refs.form.innerHTML = res.data
 						if (document.forms && document.forms.length) {
-							localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
-							if (this.isIosQQ || this.isAndroidQQ) {
-								localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 2)
-							}
 							document.forms[0].submit()
 						}
 					}, err => {
@@ -200,7 +193,6 @@
 							success = true
 							// 设置 history
 							// alert(localStorage.getItem('historyLength'))
-							localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 							vm.$router.push({
 								path: '/result',
 								query: {
@@ -248,7 +240,6 @@
 					(res) => {
 						if (res.err_msg === 'get_brand_wcpay_request:ok') {
 							// 设置 history
-							localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 							// this.$store.commit('setHistory', this.$store.state.history + 1)
 							this.$router.push({
 								path: '/result',
@@ -260,7 +251,6 @@
 							})
 						} else {
 							// 设置 history
-							localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 							this.$router.push({
 								path: '/result',
 								query: {

@@ -7,6 +7,15 @@ import router from './router'
 // import qs from 'qs'
 import Vuex from 'vuex'
 import store from './vuex/store'
+import VueLazyload from 'vue-lazyload'
+
+require('animate.css/animate.min.css')
+
+Vue.use(VueLazyload, {
+	preload: 1.3,
+	loading: require('../static/imgs/loading.png'),
+	listenEvents: ['scroll', 'resize', 'wheel', 'mousewheel', 'touchmove']
+})
 
 Vue.use(Vuex)
 // import {getQueryString} from './common/js/date'
@@ -23,6 +32,7 @@ let u = navigator.userAgent
 Vue.prototype.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 Vue.prototype.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
 Vue.prototype.isIosQQ = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) && /QQ/.test(u)
+Vue.prototype.isWeibo = !!u.match(/weibo/)
 Vue.prototype.isAndroidQQ = (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) && /QQ/.test(u)
 // let proURL = location.protocol + '//app.51weixiao.com/app-api/api'
 // Vue.prototype.$ajax = axios.create({
@@ -54,4 +64,3 @@ new Vue({
 	},
 	components: { App }
 })
-

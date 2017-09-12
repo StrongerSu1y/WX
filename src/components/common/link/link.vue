@@ -44,6 +44,12 @@
 			},
 			// 打开 App
 			openApp () {
+				if (this.isWeibo) {
+					this.Dialog.alert({
+						title: '请通过浏览器查看APP'
+					}, res => {})
+					return
+				}
 				this.iframeOpen()
 			},
 			// 利用 iframe 打开客户端

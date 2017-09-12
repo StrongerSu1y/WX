@@ -93,6 +93,8 @@
 		},
 		mounted () {
 			document.title = this.title
+			// 设置 history
+			localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 			this.Toast.loading({
 				title: '加载中...'
 			})
@@ -143,11 +145,8 @@
 					return
 				}
 				// alert(localStorage.getItem('historyLength'))
-				// 设置 history
-				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
-				// this.$store.commit('setHistory', this.$store.state.history + 1)
 				this.$router.push({
-					path: '/apply/contracts',
+					path: `/apply/contracts`,
 					query: {
 						amount: this.sum,
 						id: this.$route.query.id,

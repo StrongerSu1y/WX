@@ -19,6 +19,8 @@ import loginHome from '@/components/login/home'
 import apply from '@/components/apply/apply'
 import view from '@/components/common/view/view'
 import index from '@/components/index/index'
+// 刊物征订
+import peridoicalOrding from '@/components/periodical-ording/index'
 
 Vue.use(Router)
 
@@ -52,7 +54,10 @@ export default new Router({
 			}
 		}, { // 联系人
 			path: 'contracts',
-			component: contracts
+			component: contracts,
+			meta: {
+				keepAlive: true // 需要缓存
+			}
 		}, { // 实名
 			path: 'realname',
 			component: realname
@@ -92,5 +97,8 @@ export default new Router({
 	}, {
 		path: '/index',
 		component: index
+	}, { // 刊物征订
+		path: '/peridoical/ording',
+		component: peridoicalOrding
 	}]
 })

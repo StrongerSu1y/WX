@@ -104,14 +104,15 @@
 				// 发送请求
 				this.$ajax.sendVerifyCode(_data)
 					.then((res) => {
-						this.$root.Bus.$emit('showToast', res.data.data.tip)
+						this.Toast.success({
+							title: res.data.data.tip
+						})
+						this.$refs.btn.disabled = true
+						this.canClick = false
+						this.setSeconds()
 					}, err => {
 						console.log(err)
 					})
-				// 后续操作
-				this.$refs.btn.disabled = true
-				this.canClick = false
-				this.setSeconds()
 			},
 			// 倒计时
 			setSeconds () {
@@ -158,39 +159,27 @@
 					title: '正在验证...'
 				})
 				// 验证验证码
-				this.$ajax({
-					method: 'post',
-					url: '/user/validate_verify_code',
-					data: {
-						mobile: this.mobile,
-						code: this.code
-					}
+				this.$ajax.validateVerifyCode({
+					mobile: this.mobile,
+					code: this.code
 				})
-				.then((res) => {
-					this.$ajax({
-						method: 'post',
-						url: '/user/register',
-						data: {
+					.then((res) => {
+						this.$ajax.register({
 							mobile: this.mobile,
 							password: this.password
-						}
-					})
-					.then((res) => {
-						this.Toast.success({
-							title: '注册成功！'
 						})
-						this.$router.go(-1)
-					})
-					.catch((err) => {
+							.then((res) => {
+								this.Toast.success({
+									title: '注册成功！'
+								})
+								localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
+								this.$router.go(-1)
+							}, err => {
+								console.log(err)
+							})
+					}, err => {
 						console.log(err)
 					})
-				})
-				.catch((err) => {
-					console.log(err)
-					this.Toast.fail({
-						title: err.data.tip
-					})
-				})
 			}
 		},
 		components: {

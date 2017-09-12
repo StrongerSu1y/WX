@@ -39,11 +39,11 @@
 					<img src="./third-wx.png" class="img-responsive img-third">
 					<a @click.prevent="loginWeixin()" href="#" class="link-obj"></a>
 				</li>
-				<li v-if="!isWeixin" class="third">
+				<li v-if="canQQLogin" class="third">
 					<img @click.prevent="loginQq()" src="./third-qq.png" class="img-responsive img-third">
 				</li>
 				<!-- <li v-if="weiboCan" class="third">
-					<img src="./third-weibo.png" class="img-responsive img-third">
+					<img @click.prevent="loginWeibo()" src="./third-weibo.png" class="img-responsive img-third">
 				</li> -->
 			</ul>
 		</div>
@@ -74,21 +74,87 @@
 				host: 'https://app.51weixiao.com',
 				baseUrl: 'http://m.51weixiao.com',
 				isWeixin: isWeixin(),
-				weiboCan: false
+				weiboCan: true,
+				weiboAppKey: '2355073945',
+				weiboAppSecret: '3d05ace068fed3679dc140d8ec10b166'
 			}
 		},
 		computed: {
+			// 手机号验证通过
 			mobileTrue () {
 				return /^1[3|4|5|7|8][0-9]\d{8}$/.test(this.mobile)
+			},
+			// 可用 QQ 登陆
+			canQQLogin () {
+				return !this.isWeixin && !(this.isWeibo && this.isIos)
 			}
 		},
 		mounted () {
+			// 设置 history
+			localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 			// 判断qq是否登录
-			if (!getQueryString('redirectUrl')) {
-				return
-			}
-			if (window.QC.Login.check()) {
+			if (getQueryString('redirectUrl') && window.QC.Login.check()) {
 				this.afterQQLogin()
+			}
+			// 判断微博登陆
+			if (getQueryString('code')) {
+				let href = window.location.href
+				let clientId = this.weiboAppKey
+				let clientSecret = this.weiboAppSecret
+				let grantType = 'authorization_code'
+				let code = getQueryString('code')
+				let _url = `http://api.weibo.com/oauth2/access_token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=${grantType}&code=${code}&redirect_uri=${href}`
+				this.$ajax.postAjax(_url)
+				.then((res) => {
+					let accessToken = res.data.access_token
+					// let expires_in = res.data.expires_in
+					// let remind_in = res.data.remind_in
+					let uid = res.data.uid
+					let _url = `http://api.weibo.com/2/users/show.json?access_token=${accessToken}&uid=${uid}`
+					this.$ajax.getAjax(_url)
+						.then(res => {
+							let nickname = res.data.screen_name
+							let avatar = res.data.profile_image_url
+							let account = res.data.id
+							let _url = `/user/login?account=${account}&nickname=${nickname}&avatar=${avatar}`
+							this.$ajax.postAjax(_url)
+								.then((res) => {
+									let data = res.data.data
+									if (res.data.status === '0') {
+										this.Toast.success({
+											title: '登录成功'
+										})
+										localStorage.setItem('userId', res.data.data.id)
+										window.location.href = this.$route.query.redirectUrl
+									} else {
+										this.Toast.fail({
+											title: data.tip
+										})
+									}
+								}, err => {
+									console.log(err)
+								})
+						}, err => {
+							console.error(err)
+						})
+					// this.$ajax.postAjax('https://api.weibo.com/oauth2/get_token_info', {
+					// 	access_token: access_token
+					// })
+					// .then(res => {
+					// 	let uid = res.data.uid
+					// 	let _url = `https://api.weibo.com/2/users/show.json?access_token=${access_token}&uid=${uid}`
+					// 	this.$ajax.getAjax(_url)
+					// 		.then(res=> {
+					// 			alert('weibo userinfo: ' + JSON.stringify(res))
+					// 		}, err => {
+					// 			console.error(err)
+					// 		})
+					// }, err => {
+					// 	console.log(err)
+					// })
+				}, err => {
+					console.log(err)
+				})
 			}
 		},
 		watch: {
@@ -193,23 +259,18 @@
 					})
 				})
 			},
-			// qq登陆
+			// qq登录
 			loginQq () {
 				window.QC.Login.showPopup({
 					appId: '101339901',
 					redirectURI: this.baseUrl + '/login?redirectUrl=' + encodeURIComponent(this.$route.query.href)
 				})
-				// 判断登陆
-				// if (window.QC.Login.check()) {
-				// 	// alert('登陆成功')
-				// 	this.getQQInfo()
-				// } else {
-				// 	// alert(location.href)
-				// 	window.QC.Login.showPopup({
-				// 		appId: '101339901',
-				// 		redirectURI: this.baseUrl + '/login?redirectUrl=' + escape(location.href)
-				// 	})
-				// }
+			},
+			// 微博登录
+			loginWeibo () {
+				let appkey = this.weiboAppKey
+				let href = window.location.href
+				window.location.href = `https://open.weibo.cn/oauth2/authorize?display=mobile&client_id=${appkey}&redirect_uri=${href}`
 			}
 		},
 		components: {

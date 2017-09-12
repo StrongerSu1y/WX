@@ -164,5 +164,11 @@ export default {
 	*/
 	trainDetail (params) {
 		return fetch('/train/trainDetail', params)
+	},
+	/*
+		注册
+	*/
+	register (params) {
+		return fetch('/user/register', params)
 	}
 }
