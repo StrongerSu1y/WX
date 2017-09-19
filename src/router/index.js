@@ -3,11 +3,12 @@ import Router from 'vue-router'
 import login from '@/components/login/login'
 import recovery from '@/components/login/recovery'
 import register from '@/components/login/register'
+import reset from '@/components/login/reset'
+import loginHome from '@/components/login/home'
 import detail from '@/components/detail/detail'
 import info from '@/components/detail/info/info'
 import address from '@/components/detail/address/address'
 import periodicalDetail from '@/components/periodical/periodical_detail'
-import filter from '@/components/periodical/filter'
 import activityDetail from '@/components/activity/detail/detail'
 import trainDetail from '@/components/train/detail/detail'
 import choose from '@/components/apply/choose/choose'
@@ -15,12 +16,17 @@ import contracts from '@/components/apply/contracts/contracts'
 import pay from '@/components/apply/pay/pay'
 import result from '@/components/apply/result/result'
 import realname from '@/components/apply/contracts/realname'
-import loginHome from '@/components/login/home'
 import apply from '@/components/apply/apply'
 import view from '@/components/common/view/view'
 import index from '@/components/index/index'
 // 刊物征订
 import peridoicalOrding from '@/components/periodical-ording/index'
+import peridoicalOrdingHome from '@/components/periodical-ording/home/home'
+import peridoicalOrdingOrder from '@/components/periodical-ording/order/order'
+import peridoicalOrdingMain from '@/components/periodical-ording/order/main'
+import peridoicalOrdingLeave from '@/components/periodical-ording/leave/leave'
+import peridoicalOrdingAddress from '@/components/periodical-ording/address/address'
+import peridoicalOrdingDetail from '@/components/periodical-ording/detail/detail'
 
 Vue.use(Router)
 
@@ -41,6 +47,10 @@ export default new Router({
 			path: 'register',
 			name: 'register',
 			component: register
+		}, { // 新密码
+			path: 'reset',
+			name: 'reset',
+			component: reset
 		}]
 	}, {
 		path: '/apply',
@@ -82,9 +92,6 @@ export default new Router({
 	}, { // 地址
 		path: '/address',
 		component: address
-	}, { // 筛选
-		path: '/filter',
-		component: filter
 	}, { // 活动详情
 		path: '/activity/detail',
 		component: activityDetail
@@ -99,6 +106,41 @@ export default new Router({
 		component: index
 	}, { // 刊物征订
 		path: '/peridoical/ording',
-		component: peridoicalOrding
+		component: peridoicalOrding,
+		children: [{
+			path: '/',
+			component: peridoicalOrdingHome,
+			meta: {
+				keepAlive: true // 需要缓存
+			}
+		}, {
+			path: 'detail',
+			component: peridoicalOrdingDetail,
+			meta: {
+				keepAlive: false // 需要缓存
+			}
+		}]
+	}, { // 刊物下单
+		path: '/peridoical/order',
+		component: peridoicalOrdingOrder,
+		children: [{
+			path: '/',
+			component: peridoicalOrdingMain,
+			meta: {
+				keepAlive: true
+			}
+		}, {
+			path: 'leave',
+			component: peridoicalOrdingLeave,
+			meta: {
+				keepAlive: true
+			}
+		}, {
+			path: 'address',
+			component: peridoicalOrdingAddress,
+			meta: {
+				keepAlive: true
+			}
+		}]
 	}]
 })

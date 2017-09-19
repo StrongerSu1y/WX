@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- 图书 -->
-		<div v-if="book" class="header underline">
+		<div v-if="book" class="top-header underline">
 			<div class="left-part">
 				<div class="back-icon" @click="goBack()"></div>
 			</div>
@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<!-- 刊物 -->
-		<div v-if="period" class="header underline">
+		<div v-if="period" class="top-header underline">
 			<div class="left-part">
 				<div class="home-icon" @click="goHome()"></div>
 			</div>
@@ -26,7 +26,7 @@
 			</div>
 		</div>
 		<!-- 活动 -->
-		<div v-if="activity" class="header underline">
+		<div v-if="activity" class="top-header underline">
 			<div class="left-part">
 				<div class="home-icon" @click="goHome()"></div>
 			</div>
@@ -41,7 +41,7 @@
 			</div>
 		</div>
 		<!-- 报名 -->
-		<div v-if="entrance === 'apply'" class="header underline">
+		<div v-if="entrance === 'apply'" class="top-header underline">
 			<div class="left-part">
 				<div class="back-icon" @click="goBack()"></div>
 			</div>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<!-- 活动图片 -->
-		<div v-if="entrance === 'images'" class="header underline">
+		<div v-if="entrance === 'images'" class="top-header underline">
 			<div class="left-part">
 				<div class="back-icon" @click="goBack()"></div>
 			</div>
@@ -60,7 +60,7 @@
 			</div>
 		</div>
 		<!-- 默认 -->
-		<div v-if="entrance === 'login'" class="header">
+		<div v-if="entrance === 'login'" class="top-header">
 			<div class="left-part">
 				<div class="back-icon" @click="goBack()"></div>
 			</div>

@@ -1,0 +1,240 @@
+<template>
+	<div class="periodical-order">
+		<split></split>
+		<section class="header">
+			<div class="top-border border-bg"></div>
+			<div class="main">
+				<div class="left-part" v-if="hasDefaultAddress">
+					<div class="contract">
+						<span class="name">{{ address.name }}</span>
+						<span class="mobile">{{ address.mobile }}</span>
+					</div>
+					<div class="address" :style="{ bottom: addressBottom }">{{ address | getFullAddress }}</div>
+				</div>
+				<div class="left-part" v-if="!hasDefaultAddress">
+					<div class="no-address">
+						请前往设置您的收货地址
+					</div>
+				</div>
+				<div class="right-arrow" @click="modifyAddress('order/address')">
+					<img src="./arrow_right.png">
+				</div>
+			</div>
+			<div class="bottom-border border-bg"></div>
+		</section>
+		<split></split>
+		<section class="product">
+			<p class="title">商品</p>
+			<ul class="list">
+				<li v-for="(item, index) in listData" class="list-item" :class="{ underline: true }">
+					<div class="left-media">
+						<img v-lazy="item.logo">
+					</div>
+					<div class="right-desc">
+						<div class="box">
+							<p class="name">{{ item.name }}</p>
+							<p class="price">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getDecimal }}</p>
+							<span class="dot">{{ item.number }}</span>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</section>
+		<split></split>
+		<section class="message">
+			<p class="title">订单留言</p>
+			<p class="placeholder" @click="modifyAddress('order/leave')">{{ leaveText || '请点击输入留言内容'}}</p>
+			<div class="right-arrow"  @click="modifyAddress('order/leave')">
+				<img src="./arrow_right.png">
+			</div>
+		</section>
+		<split></split>
+		<section class="amount">
+			<p class="price">
+				<span class="title">商品金额</span>
+				<span class="num">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getDecimal }}</span>
+			</p>
+			<p class="price">
+				<span class="title">运费</span>
+				<span class="num">+<span class="big">{{ carriage | getInteger }}</span>{{ carriage | getDecimal }}</span>
+			</p>
+		</section>
+		<footer class="bottom">
+			<div class="left-part">
+				<p>
+					<span class="title">实付款 </span>
+					<span class="price">￥<span class="big">{{ totalSum | getInteger }}</span>{{ totalSum | getDecimal }}</span>
+				</p>
+			</div>
+			<div class="right-button" @click="doSubmit()">提交订单</div>
+		</footer>
+	</div>
+</template>
+
+<script>
+	import split from '../../common/split/split'
+	import { getArraySet, getWithCommaString } from '../../../common/js/common.js'
+	export default {
+		name: 'order',
+		data () {
+			return {
+				hasDefaultAddress: false,
+				listData: [],
+				nowSum: 0,
+				leaveText: '',
+				defaultAddressChange: false
+			}
+		},
+		computed: {
+			// 动态设置地址栏的 bottom
+			addressBottom () {
+				return this.address.address.length > 23 ? '15px' : '25px'
+			},
+			// 运费
+			carriage () {
+				return parseFloat(this.nowSum) >= 99 ? 0 : 0.01
+			},
+			totalSum () {
+				return (parseFloat(this.nowSum) + parseFloat(this.carriage)).toFixed(2)
+			},
+			address () {
+				let obj = {}
+				if (!this.hasDefaultAddress) {
+					return {
+						cityArea: '',
+						name: '',
+						mobile: '',
+						address: ''
+					}
+				}
+				if (!this.defaultAddressChange) {
+					obj = JSON.parse(localStorage.getItem('addressList'))[0]
+				}
+				// 监听过一次后重置
+				this.defaultAddressChange = false
+				obj = JSON.parse(localStorage.getItem('addressList'))[0]
+				return obj
+			}
+		},
+		created () {
+			document.title = '订单结算'
+			this.hasDefaultAddress = (localStorage.getItem('addressList') && JSON.parse(localStorage.getItem('addressList')).length)
+			// 获取数据
+			this.listData = JSON.parse(this.$route.query.selectedData) || []
+			// 首先清空购物车
+			// this.listData.forEach(item => {
+			// 	this.$ajax.shopcatDel(item.sid)
+			// })
+			console.log(this.listData)
+			this.nowSum = this.$route.query.nowSum || 0
+		},
+		mounted () {
+			// 首先清空购物车
+			this.$ajax.shopcatList().then(res => {
+				console.log(res.data.data.item_list)
+				if (res.data.data.item_list && res.data.data.item_list.length) {
+					console.log(getWithCommaString(res.data.data.item_list, 'id'))
+					this.$ajax.shopcatDel(getWithCommaString(res.data.data.item_list, 'id'))
+				}
+			}, err => {
+				console.log(err)
+			})
+			// 监听更新
+			this.$root.Bus.$on('updateAddress', obj => {
+				this.defaultAddressChange = true
+				this.hasDefaultAddress = (localStorage.getItem('addressList') && JSON.parse(localStorage.getItem('addressList')).length)
+			})
+			this.$root.Bus.$on('leaveTextChange', val => {
+				this.leaveTextChange(val)
+			})
+		},
+		methods: {
+			modifyAddress (path) {
+				this.$router.push({
+					path: path
+				})
+			},
+			// 修改留言内容
+			leaveTextChange (val) {
+				this.leaveText = val
+			},
+			// 提交订单
+			doSubmit () {
+				if (!this.hasDefaultAddress) {
+					this.Toast.warning({
+						title: '请先设置收货地址'
+					})
+					return
+				}
+				let promiseArr = []
+				this.listData.forEach((item, index) => {
+					let _uid = localStorage.getItem('userId')
+					let host = this.Host
+					let _url = `${host}/api/shop_cart/save?_uid=${_uid}&id=${item.id}&cls=2`
+					promiseArr.push(this.$ajax.getAjax(_url))
+				})
+				let _itemIds = ''
+				let _addressId = this.address.id
+				let _quantity = 0
+				Promise.all(promiseArr).then(values => {
+					let arr = []
+					values.forEach((item, index) => {
+						item.data.data.item_list.forEach(item => {
+							arr.push(item)
+						})
+					})
+					_quantity = getArraySet(arr, 'sid').length
+					_itemIds = getWithCommaString(getArraySet(arr, 'sid'))
+					// 获取地址列表
+					// this.$ajax.addressList({
+					// 	_uid: localStorage.getItem('userId')
+					// }).then(res => {
+					// 	console.log(res)
+					// }, err => {
+					// 	console.log(err)
+					// })
+					let params = {}
+					params._uid = localStorage.getItem('userId')
+					params.quantity = _quantity
+					if (this.listData.length > 1) {
+						params.item_ids = _itemIds
+					} else {
+						params.item_id = _itemIds
+					}
+					params.cls = '2'
+					params.address_id = _addressId
+					params.child_id = ''
+					params.is_use_quantity = ''
+					params.remark = this.leaveText
+					// 调用提交订单接口
+					this.$ajax.tradeConfirm(params).then(res => {
+						let data = res.data
+						// 下一个页面需要的数据
+						let fee = (parseFloat(res.data.data.item_total_fee) + parseFloat(res.data.data.delivery_fee)).toFixed(2)
+						let outtradeno = data.data.no
+						let cls = '2'
+						let protocol = window.location.protocol
+						let host = window.location.host
+						let href = `${protocol}//${host}/peridoical/ording`
+						window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+						// this.$router.push({
+						// 	path: '/pay',
+						// 	query: {
+						// 		fee: fee
+						// 	}
+						// })
+					}, err => {
+						console.log(err)
+					})
+				})
+			}
+		},
+		components: {
+			split
+		}
+	}
+</script>
+
+<style lang="stylus" res="stylesheet/stylus">
+	@import './order.styl'
+</style>

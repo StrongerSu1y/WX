@@ -5,16 +5,6 @@
 			<section v-show="fold" @click="changeListShow()" class="mask">
 			</section>
 		</transition>
-		<!-- 购物球 -->
-		<div class="ball-container">
-      <div v-for="ball in balls">
-        <transition name="drop" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-          <div v-show="ball.show" class="ball">
-            <div class="inner inner-hook"></div>
-          </div>
-        </transition>
-      </div>
-    </div>
     <!-- 底部购物车 -->
 		<transition enter-active-class="animated slideInUp" leave-active-class="animated slideOutDown">
 			<div v-show="fold" class="list-box">
@@ -114,10 +104,7 @@
 				// 报名图标
 				applyIconSrc: `apply.png`,
 				// 展开购物车
-				fold: false,
-				// 加入购物车动画的球
-				balls: [{ show: false }, { show: false }, { show: false }, { show: false }, { show: false }],
-				dropBalls: []
+				fold: false
 			}
 		},
 		computed: {
@@ -148,62 +135,15 @@
 				}
 				this.changeListShow()
 			},
-			// 下降
-			drop (el) {
-				for (let i = 0; i < this.balls.length; i++) {
-					let ball = this.balls[i]
-					if (!ball.show) {
-						ball.show = true
-						ball.el = el
-						this.dropBalls.push(ball)
-						return
-					}
-				}
-			},
-			// 加入购物车动画之前
-			beforeEnter (el) {
-				let count = this.balls.length
-				while (count--) {
-					let ball = this.balls[count]
-					if (ball.show) {
-						let rect = ball.el.getBoundingClientRect()
-						let x = rect.left - 32
-						let y = -(window.innerHeight - rect.top - 22)
-						el.style.display = ''
-						el.style.transform = `translate3d(0,${y}px,0)`
-						el.style.webkitTransform = `translate3d(0,${y}px,0)`
-						let inner = el.getElementsByClassName('inner-hook')[0]
-						inner.style.transform = `translate3d(${x}px,0,0)`
-						inner.style.webkitTransform = `translate3d(${x}px,0,0)`
-					}
-				}
-			},
-			enter (el) {
-				this.$nextTick(() => {
-					// alert(1)
-					setTimeout(() => {
-						el.style.transform = 'translate3d(0,0,0)'
-						el.style.webkitTransform = 'translate3d(0,0,0)'
-						let inner = el.getElementsByClassName('inner-hook')[0]
-						inner.style.transform = `translate3d(0,0,0)`
-						inner.style.webkitTransform = `translate3d(0,0,0)`
-					}, 5)
-				})
-			},
-			afterEnter (el) {
-				let ball = this.dropBalls.shift()
-				if (ball) {
-					ball.show = false
-					el.style.display = 'none'
-				}
-			},
 			// 添加
 			addNum (index) {
-				// alert(1)
 				this.$emit('addNum', index)
 			},
 			// 减少
 			reduceNum (index) {
+				if (this.total <= 1) {
+					this.changeListShow()
+				}
 				this.$emit('reduceNum', index)
 			},
 			// 清空购物车
@@ -213,9 +153,7 @@
 			},
 			// 去结算
 			orderPay () {
-				if (!this.total) {
-					return
-				}
+				this.$emit('orderPay')
 			}
 		}
 	}

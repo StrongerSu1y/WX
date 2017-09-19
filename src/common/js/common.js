@@ -54,3 +54,59 @@ export function getStrLength (str) {
 	return len
 }
 
+export function getPrice (str) {
+	return parseFloat(str).toFixed(2)
+}
+
+export function extendObj (target, source) {
+	for (var obj in source) {
+		target[obj] = source[obj]
+	}
+	return target
+}
+
+// 获取需要的字段
+export function getNeedData (obj, arr) {
+	let returnObj = {}
+	arr.forEach(item => {
+		returnObj[item] = obj[item]
+	})
+	return returnObj
+}
+
+// 获取整个数组需要的字段
+export function getNeedDataList (arr, args) {
+	let needArr = []
+	arr.forEach(item => {
+		let needObj = getNeedData(item, args)
+		needArr.push(needObj)
+	})
+	return needArr
+}
+
+// 获取所有不重复的 Set
+export function getArraySet (arr, type) {
+	let s = new Set()
+	let backArr = []
+	arr.forEach(item => {
+		s.add(item[type])
+	})
+	for (var i of s) {
+		backArr.push(i)
+	}
+	return backArr
+}
+
+// 获取带逗号的 string
+export function getWithCommaString (arr, type) {
+	let str = ''
+	console.log(str)
+	arr.forEach(item => {
+		if (type) {
+			str += item[type] + ','
+		} else {
+			str += item + ','
+		}
+	})
+	return str.substr(0, str.length - 1)
+}

@@ -16,8 +16,7 @@
 		},
 		mounted () {
 			// 判断浏览器
-			let ua = navigator.userAgent.toLowerCase()
-			if (ua.match(/MicroMessenger/i)) {
+			if (this.isWeixin) {
 				// 判断微信登陆返回 status
 				if (getQueryString('status')) {
 					if (parseInt(getQueryString('status')) === 0) {

@@ -11,6 +11,11 @@ import VueLazyload from 'vue-lazyload'
 
 require('animate.css/animate.min.css')
 
+import * as custom from './common/js/filter.js'
+Object.keys(custom).forEach(key => {
+	Vue.filter(key, custom[key])
+})
+
 Vue.use(VueLazyload, {
 	preload: 1.3,
 	loading: require('../static/imgs/loading.png'),
@@ -28,10 +33,13 @@ Vue.use(Vuex)
 // axios.defaults.baseURL = 'http://192.168.0.231:8080/app-api/api'
 Vue.prototype.Toast = new window.AuiToast()
 Vue.prototype.Dialog = new window.AuiDialog()
+Vue.prototype.Host = location.protocol + '//192.168.0.231:8080'
+// Vue.prototype.Host = location.protocol + '//app.51weixiao.com'
 let u = navigator.userAgent
 Vue.prototype.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 Vue.prototype.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
 Vue.prototype.isIosQQ = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) && /QQ/.test(u)
+Vue.prototype.isWeixin = !!u.match(/MicroMessenger/i)
 Vue.prototype.isWeibo = !!u.match(/weibo/)
 Vue.prototype.isAndroidQQ = (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) && /QQ/.test(u)
 // let proURL = location.protocol + '//app.51weixiao.com/app-api/api'

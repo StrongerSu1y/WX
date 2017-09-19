@@ -108,7 +108,7 @@
 				relationList: data1,
 				picker: new Picker({
 					data: [data1],
-					selectedIndex: [0, 1, 2],
+					selectedIndex: [0, 0, 0],
 					title: '角色'
 				})
 			}

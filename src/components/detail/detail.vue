@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="detail">
 		<v-header :book="true" v-if="!isMobile"></v-header>
 		<v-content :sales="sales" :title="title">
 			<div slot="desc" class="desc">
@@ -88,17 +88,19 @@
 	}
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-	.tab
-		display: flex
-		width: 100%
-		text-align: center
-		> div
-			flex: 1
-			line-height: 0.8rem
-			font-size: 0.28rem
-			color: #323232
-			border-bottom: 1px solid #d6d6d6
-		.active
-			border-bottom: 1px solid #eb6900	
-			color: #eb6900 		
+	.detail
+		width 100%
+		.tab
+			display: flex
+			width: 100%
+			text-align: center
+			> div
+				flex: 1
+				line-height: 0.8rem
+				font-size: 0.28rem
+				color: #323232
+				border-bottom: 1px solid #d6d6d6
+			.active
+				border-bottom: 1px solid #eb6900	
+				color: #eb6900	
 </style>

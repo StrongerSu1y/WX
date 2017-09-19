@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="detail-info">
 		<v-header></v-header>
 		<div class="tab">
 			<div class="" :class="{ active: tabIndex === 0 }" @click="changeTabIndex(0)">

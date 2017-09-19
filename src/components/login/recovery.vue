@@ -37,7 +37,8 @@
 				canClick: true,
 				seconds: 60,
 				code: '',
-				codeCanInput: false
+				codeCanInput: false,
+				uid: ''
 			}
 		},
 		computed: {
@@ -59,6 +60,8 @@
 				this.$refs.code.readonly = !newVal
 			}
 		},
+		mounted () {
+		},
 		methods: {
 			// 清除输入
 			clearInput () {
@@ -79,6 +82,7 @@
 				this.$ajax.userGetPass(_data)
 					.then((res) => {
 						this.codeCanInput = true
+						this.uid = res.data.data.id
 					}, err => {
 						console.log(err)
 					})
@@ -114,11 +118,20 @@
 				// 验证验证码
 				this.$ajax.validateVerifyCode(_data)
 					.then((res) => {
-						this.Dialog.alert({
-							title: '提交成功！',
-							msg: '凭短信密码登录'
-						}, (ret) => {
-							this.$router.go(-1)
+						// this.Dialog.alert({
+						// 	title: '提交成功！',
+						// 	msg: '凭短信密码登录'
+						// }, (ret) => {
+						// 	this.$router.go(-1)
+						// })
+						this.Toast.success({
+							title: '提交成功！请设置新密码'
+						})
+						this.$router.push({
+							path: 'reset',
+							query: {
+								uid: this.uid
+							}
 						})
 					}, err => {
 						console.log(err)

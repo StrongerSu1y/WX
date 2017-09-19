@@ -1,9 +1,9 @@
 <template>
 	<div class="pay">
-		<v-header :entrance="'apply'" :title="title"></v-header>
+		<v-header v-if="showHeader" :entrance="'apply'" :title="title"></v-header>
 		<div class="amount">
 			<div class="desc">付款金额</div>
-			<div class="num">￥<span class="big">{{ fee }}</span></div>
+			<div class="num">￥<span class="big">{{ fee | getInteger }}</span>{{ fee | getDecimal }}</div>
 		</div>
 		<ul class="type-list">
 			<li v-for="(item, index) in payList" class="item alipay" :class="{ underline: (index < payList.length - 1) }">
@@ -15,25 +15,24 @@
 		<div ref="form" v-html="formHtml"></div>
 		<!-- 底部提交按钮 -->
 		<footer class="footer" @click="doPay()">
-			确认支付
+			{{ buttonText }}
 		</footer>
 	</div>
 </template>
 
 <script>
-	let u = navigator.userAgent
 	import header from '../../header/header'
 	import { addScript } from '../../../common/js/common'
 	const payList = [{
 		cls: 'alipay',
-		text: '支付宝付款'
+		text: '支付宝支付'
 	}, {
 		cls: 'scene',
 		text: '现场支付'
 	}]
 	const weixin = {
 		cls: 'weixin',
-		text: '微信付款'
+		text: '微信支付'
 	}
 	export default {
 		name: 'pay',
@@ -44,18 +43,27 @@
 				checkIndex: 0,
 				title: '请选择支付方式',
 				fee: 0,
-				isWeixin: false,
-				isIos: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
-				isAndroid: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1,
-				formHtml: ''
+				formHtml: '',
+				// 是否显示header
+				showHeader: false,
+				// 订单类型
+				cls: this.$route.query.cls
 			}
 		},
 		computed: {
+			// 支付方式列表
 			payList () {
 				if (this.isWeixin) {
 					payList.splice(0, 1, weixin)
 				}
-				return payList
+				if (this.cls === '2') {
+					return payList.splice(0, 1)
+				}
+				return payList.splice(0, 2)
+			},
+			// 底部按钮文字
+			buttonText () {
+				return this.payList[this.checkIndex].text + this.fee + '元'
 			}
 		},
 		created () {
@@ -68,11 +76,6 @@
 			// 设置 history
 			localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 			this.fee = this.$route.query.fee
-			let ua = navigator.userAgent.toLowerCase()
-			if (ua.match(/MicroMessenger/i)) {
-				// 在微信中打开
-				this.isWeixin = true
-			}
 		},
 		methods: {
 			changeCheckIndex (index) {

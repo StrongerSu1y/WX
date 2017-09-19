@@ -4,10 +4,14 @@ import Vue from 'vue'
 
 let Obj = new Vue()
 
+// let productHost = location.protocol + '//app.51weixiao.com'
+let productHost = location.protocol + '//192.168.0.231:8080'
+
 // axios 配置
 axios.defaults.timeout = 5000
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-axios.defaults.baseURL = location.protocol + '//app.51weixiao.com/app-api/api'
+// axios.defaults.baseURL = location.protocol + '//app.51weixiao.com/app-api/api'
+axios.defaults.baseURL = location.protocol + '//192.168.0.231:8080/app-api/api'
 
 // POST 传参序列化
 axios.interceptors.request.use((config) => {
@@ -28,6 +32,12 @@ axios.interceptors.response.use((res) => {
 	Obj.Toast.hide()
 	if (!res.data.status) {
 		return res
+	}
+	if (res.data.status === '-1') {
+		Obj.Toast.fail({
+			title: res.data.msg
+		})
+		return Promise.reject(res)
 	}
 	if (res.data.status !== '0') {
 		Obj.Toast.fail({
@@ -142,7 +152,7 @@ export default {
 		return fetch('/activecomment/del', params)
 	},
 	/*
-		获取验证码
+		找回密码时获取验证码
 	*/
 	userGetPass (params) {
 		return fetch('/user/get_pass', params)
@@ -160,6 +170,12 @@ export default {
 		return fetch('/user/send_verify_code', params)
 	},
 	/*
+		重新设置密码
+	*/
+	userUpdatePass (params) {
+		return fetch('/user/update_pass', params)
+	},
+	/*
 		培训详情
 	*/
 	trainDetail (params) {
@@ -170,5 +186,51 @@ export default {
 	*/
 	register (params) {
 		return fetch('/user/register', params)
+	},
+	/*
+		添加购物车
+	*/
+	shopcatSave (params) {
+		return fetch('/shop_cart/save', params)
+	},
+	/*
+		清空购物车
+	*/
+	shopcatDel (id) {
+		// let ids = ''
+		// arr.forEach(item => {
+		// 	ids += item.id + ','
+		// })
+		// ids = ids.substr(0, ids.length - 1)
+		return fetch(`${productHost}/api/shop_cart/del`, {
+			_uid: localStorage.getItem('userId'),
+			id: id
+		})
+	},
+	/*
+		购物车列表
+	*/
+	shopcatList () {
+		return fetch(`${productHost}/api/shop_cart/list`, {
+			_uid: localStorage.getItem('userId')
+		})
+	},
+	/*
+		设置收货地址
+	*/
+	addressUpdate (params) {
+		return fetch(`${productHost}/api/address/update`, params)
+	},
+	/*
+		地址列表
+	*/
+	addressList (params) {
+		return fetch(`${productHost}/api/address/list`, params)
+	},
+	/*
+		订单提交
+	*/
+	tradeConfirm (params) {
+		return fetch(`${productHost}/api/trade/confirm`, params)
 	}
 }

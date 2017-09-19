@@ -89,8 +89,9 @@
 			backToRoot () {
 				clearInterval(this.interval)
 				let historyBack = -parseInt(localStorage.getItem('historyLength'))
-				if (historyBack < 0) {
+				if (historyBack !== 0) {
 					localStorage.setItem('historyLength', 0)
+					alert(this.$router.go(historyBack) + ', ' + historyBack)
 					this.$router.go(historyBack)
 				}
 				localStorage.setItem('historyLength', 0)
