@@ -33,8 +33,8 @@ Vue.use(Vuex)
 // axios.defaults.baseURL = 'http://192.168.0.231:8080/app-api/api'
 Vue.prototype.Toast = new window.AuiToast()
 Vue.prototype.Dialog = new window.AuiDialog()
-Vue.prototype.Host = location.protocol + '//192.168.0.231:8080'
-// Vue.prototype.Host = location.protocol + '//app.51weixiao.com'
+// Vue.prototype.Host = location.protocol + '//192.168.0.231:8080'
+Vue.prototype.Host = location.protocol + '//app.51weixiao.com'
 let u = navigator.userAgent
 Vue.prototype.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 Vue.prototype.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1

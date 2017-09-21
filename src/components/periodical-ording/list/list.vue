@@ -1,10 +1,10 @@
 <template>
 	<div class="ording-list">
 		<ul class="list">
-			<scroller class="scroller" :on-refresh="refresh" :on-infinite="loadMore" ref="myscroller">
+			<scroller class="scroller" :on-refresh="refresh" :on-infinite="infinite" ref="myscroller">
 				<li v-for="(item, index) in listData" class="list-item underline" @click="showDetail(index)">
 					<div class="left-media">
-						<img v-lazy="item.logo">
+						<img v-lazy="item.logo" :style="getObject()">
 					</div>
 					<div class="right-part">
 						<div class="box">
@@ -37,7 +37,9 @@
 		name: 'publish',
 		props: ['listData'],
 		data () {
-			return {}
+			return {
+				noData: ''
+			}
 		},
 		created () {
 		},
@@ -57,18 +59,42 @@
 				this.$root.Bus.$emit('refresh')
 			},
 			// 加载更多
-			loadMore () {
-				this.$emit('loadMore')
-				setTimeout(() => {
-					console.log(this.$refs.myscroller)
-					this.$refs.myscroller.finishPullToRefresh()
-				}, 3000)
+			infinite (done) {
+				// this.$root.Bus.$emit('infinite')
+				this.$refs.myscroller.finishInfinite(2)
+				// if (this.noData) {
+				// 	setTimeout(() => {
+				// 		this.$refs.myscroller.finishInfinite(2)
+				// 	})
+				// 	return
+				// }
 			},
 			// 结束刷新
 			finishPullToRefresh () {
 				setTimeout(() => {
+					// this.noData = ''
+					// this.$refs.myscroller.resize()
 					this.$refs.myscroller.finishPullToRefresh()
 				}, 300)
+			},
+			// 结束下拉加载
+			finishInfinite (done) {
+				setTimeout(() => {
+					// this.$refs.myscroller.resize()
+					this.$refs.myscroller.finishInfinite(2)
+					return
+					// done()
+				}, 300)
+			},
+			// 没有数据
+			hasNoData () {
+				// this.noData = '没有更多数据了'
+			},
+			// 获取 style 对象
+			getObject (url) {
+				return {
+					backgroundImage: `bg-image(${url})`
+				}
 			}
 		},
 		components: {

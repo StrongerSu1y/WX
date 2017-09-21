@@ -59,6 +59,11 @@
 				<span class="num">+<span class="big">{{ carriage | getInteger }}</span>{{ carriage | getDecimal }}</span>
 			</p>
 		</section>
+		<split></split>
+		<split></split>
+		<split></split>
+		<split></split>
+		<split></split>
 		<footer class="bottom">
 			<div class="left-part">
 				<p>
@@ -73,7 +78,8 @@
 
 <script>
 	import split from '../../common/split/split'
-	import { getArraySet, getWithCommaString } from '../../../common/js/common.js'
+	// import { getArraySet, getWithCommaString } from '../../../common/js/common.js'
+	import { getWithCommaString } from '../../../common/js/common.js'
 	export default {
 		name: 'order',
 		data () {
@@ -92,7 +98,7 @@
 			},
 			// 运费
 			carriage () {
-				return parseFloat(this.nowSum) >= 99 ? 0 : 0.01
+				return parseFloat(this.nowSum) >= 99 ? 0 : 10
 			},
 			totalSum () {
 				return (parseFloat(this.nowSum) + parseFloat(this.carriage)).toFixed(2)
@@ -125,20 +131,11 @@
 			// this.listData.forEach(item => {
 			// 	this.$ajax.shopcatDel(item.sid)
 			// })
-			console.log(this.listData)
 			this.nowSum = this.$route.query.nowSum || 0
 		},
 		mounted () {
 			// 首先清空购物车
-			this.$ajax.shopcatList().then(res => {
-				console.log(res.data.data.item_list)
-				if (res.data.data.item_list && res.data.data.item_list.length) {
-					console.log(getWithCommaString(res.data.data.item_list, 'id'))
-					this.$ajax.shopcatDel(getWithCommaString(res.data.data.item_list, 'id'))
-				}
-			}, err => {
-				console.log(err)
-			})
+			this.clearShopcat()
 			// 监听更新
 			this.$root.Bus.$on('updateAddress', obj => {
 				this.defaultAddressChange = true
@@ -171,61 +168,78 @@
 					let _uid = localStorage.getItem('userId')
 					let host = this.Host
 					let _url = `${host}/api/shop_cart/save?_uid=${_uid}&id=${item.id}&cls=2`
-					promiseArr.push(this.$ajax.getAjax(_url))
+					promiseArr = promiseArr.concat(this.addItemsToShopcat(item.number, _url))
 				})
 				let _itemIds = ''
 				let _addressId = this.address.id
 				let _quantity = 0
 				Promise.all(promiseArr).then(values => {
-					let arr = []
-					values.forEach((item, index) => {
-						item.data.data.item_list.forEach(item => {
-							arr.push(item)
+					console.log(values)
+					// 获取购物车列表
+					this.$ajax.shopcatList().then(res => {
+						console.log(res.data.data.item_list.length)
+						// 计算总数
+						res.data.data.item_list.forEach(item => {
+							console.log('quantity: ' + parseInt(item.quantity))
+							_quantity += parseInt(item.quantity)
 						})
-					})
-					_quantity = getArraySet(arr, 'sid').length
-					_itemIds = getWithCommaString(getArraySet(arr, 'sid'))
-					// 获取地址列表
-					// this.$ajax.addressList({
-					// 	_uid: localStorage.getItem('userId')
-					// }).then(res => {
-					// 	console.log(res)
-					// }, err => {
-					// 	console.log(err)
-					// })
-					let params = {}
-					params._uid = localStorage.getItem('userId')
-					params.quantity = _quantity
-					if (this.listData.length > 1) {
+						_itemIds = getWithCommaString(res.data.data.item_list, 'id')
+						let params = {}
+						params._uid = localStorage.getItem('userId')
+						params.quantity = _quantity
+						// if (this.listData.length > 1) {
+						// 	params.item_ids = _itemIds
+						// } else {
+						// 	params.item_id = _itemIds
+						// }
 						params.item_ids = _itemIds
-					} else {
-						params.item_id = _itemIds
-					}
-					params.cls = '2'
-					params.address_id = _addressId
-					params.child_id = ''
-					params.is_use_quantity = ''
-					params.remark = this.leaveText
-					// 调用提交订单接口
-					this.$ajax.tradeConfirm(params).then(res => {
-						let data = res.data
-						// 下一个页面需要的数据
-						let fee = (parseFloat(res.data.data.item_total_fee) + parseFloat(res.data.data.delivery_fee)).toFixed(2)
-						let outtradeno = data.data.no
-						let cls = '2'
-						let protocol = window.location.protocol
-						let host = window.location.host
-						let href = `${protocol}//${host}/peridoical/ording`
-						window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
-						// this.$router.push({
-						// 	path: '/pay',
-						// 	query: {
-						// 		fee: fee
-						// 	}
-						// })
+						params.cls = '2'
+						params.address_id = _addressId
+						params.child_id = ''
+						params.is_use_quantity = ''
+						params.remark = this.leaveText
+						// 调用提交订单接口
+						this.$ajax.tradeConfirm(params).then(res => {
+							let data = res.data
+							// 下一个页面需要的数据
+							let fee = (parseFloat(res.data.data.item_total_fee) + parseFloat(res.data.data.delivery_fee)).toFixed(2)
+							let outtradeno = data.data.no
+							let cls = '2'
+							let protocol = window.location.protocol
+							let host = window.location.host
+							let href = `${protocol}//${host}/peridoical/ording`
+							window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+							// this.$router.push({
+							// 	path: '/pay',
+							// 	query: {
+							// 		fee: fee,
+							// 		cls: '2'
+							// 	}
+							// })
+						}, err => {
+							console.log(err)
+						})
 					}, err => {
 						console.log(err)
 					})
+				})
+			},
+			// 根据数量添加进购物车
+			addItemsToShopcat (num, url) {
+				let arr = []
+				for (var i = 0; i < num; i++) {
+					arr.push(this.$ajax.getAjax(`${url}&code=${i}&status=${i}`))
+				}
+				return arr
+			},
+			// 清空购物车
+			clearShopcat () {
+				this.$ajax.shopcatList().then(res => {
+					if (res.data.data.item_list && res.data.data.item_list.length) {
+						this.$ajax.shopcatDel(getWithCommaString(res.data.data.item_list, 'id'))
+					}
+				}, err => {
+					console.log(err)
 				})
 			}
 		},

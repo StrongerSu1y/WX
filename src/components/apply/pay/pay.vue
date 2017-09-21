@@ -23,13 +23,13 @@
 <script>
 	import header from '../../header/header'
 	import { addScript } from '../../../common/js/common'
-	const payList = [{
-		cls: 'alipay',
-		text: '支付宝支付'
-	}, {
-		cls: 'scene',
-		text: '现场支付'
-	}]
+	// const payList = [{
+	// 	cls: 'alipay',
+	// 	text: '支付宝支付'
+	// }, {
+	// 	cls: 'scene',
+	// 	text: '现场支付'
+	// }]
 	const weixin = {
 		cls: 'weixin',
 		text: '微信支付'
@@ -47,19 +47,26 @@
 				// 是否显示header
 				showHeader: false,
 				// 订单类型
-				cls: this.$route.query.cls
+				cls: this.$route.query.cls,
+				payInit: [{
+					cls: 'alipay',
+					text: '支付宝支付'
+				}, {
+					cls: 'scene',
+					text: '现场支付'
+				}]
 			}
 		},
 		computed: {
 			// 支付方式列表
 			payList () {
 				if (this.isWeixin) {
-					payList.splice(0, 1, weixin)
+					this.payInit.splice(0, 1, weixin)
 				}
 				if (this.cls === '2') {
-					return payList.splice(0, 1)
+					return this.payInit.splice(0, 1)
 				}
-				return payList.splice(0, 2)
+				return this.payInit
 			},
 			// 底部按钮文字
 			buttonText () {

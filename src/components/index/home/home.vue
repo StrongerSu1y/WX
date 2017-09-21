@@ -7,6 +7,7 @@
 		<v-menu class="menu-list"></v-menu>
 		<!-- 推荐 -->
 		<v-recommond></v-recommond>
+		<split></split>
 	</div>
 </template>
 
@@ -14,6 +15,7 @@
 	import banner from '../../common/banner/banner'
 	import menu from './menu/menu'
 	import recommond from './recommond/recommond'
+	import split from '../../common/split/split'
 	export default {
 		name: 'home',
 		data () {
@@ -26,7 +28,8 @@
 		components: {
 			'v-banner': banner,
 			'v-menu': menu,
-			'v-recommond': recommond
+			'v-recommond': recommond,
+			split
 		}
 	}
 </script>

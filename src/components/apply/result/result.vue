@@ -28,17 +28,12 @@
 
 <script>
 	// import {getQueryString} from '../../../common/js/date'
-	let u = navigator.userAgent
 	export default {
 		name: 'result',
 		data () {
 			return {
-				// 支付成功
+				// 支付成功与否
 				success: this.$route.query.success,
-				isIos: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
-				isAndroid: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1,
-				// 倒计时时间
-				// count: 60,
 				fee: 0,
 				step: 1,
 				startAngle: 0,
@@ -50,6 +45,7 @@
 			}
 		},
 		computed: {
+			// 倒计时时间
 			count () {
 				return this.success ? 60 : 150
 			},
@@ -91,8 +87,8 @@
 				let historyBack = -parseInt(localStorage.getItem('historyLength'))
 				if (historyBack !== 0) {
 					localStorage.setItem('historyLength', 0)
-					alert(this.$router.go(historyBack) + ', ' + historyBack)
-					this.$router.go(historyBack)
+					// alert(window.history.go(historyBack) + ', ' + historyBack)
+					window.history.go(historyBack)
 				}
 				localStorage.setItem('historyLength', 0)
 				window.location.href = this.$route.query.href

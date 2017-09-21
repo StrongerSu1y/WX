@@ -40,7 +40,9 @@
 				background-size: cover
 				width: 100%
 				height: 100%
-				background-size 100% 100%
+				background-size contain
+				// background-attachment: fixed
+				background-repeat no-repeat
 				img 
 					width: 100%
 					height: 100%

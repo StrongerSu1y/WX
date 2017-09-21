@@ -28,8 +28,6 @@
 
 <script>
 	import Picker from 'better-picker'
-  // import CityPicker from '../city-picker/city-picker.vue'
-	// import { provinceList, cityList, areaList } from '../../../../static/data/areaData.js'
 	import area from '../../../../static/data/area.json'
 	import { checkInput, checkMobile } from '../../../common/js/common.js'
 	export default {
@@ -37,7 +35,6 @@
 		data () {
 			return {
 				picker: '',
-				// data: [provinceList, cityList, areaList],
 				data: area.result,
 				tempIndex: [0, 0, 0],
 				address: {}
@@ -45,11 +42,6 @@
 		},
 		computed: {
 			linkageData () {
-				// let [provinceList, cityList, areaList] = this.data
-				// let provinces = provinceList
-				// let cities = cityList[provinces[this.tempIndex[0]].value]
-				// let areas = areaList[cities[this.tempIndex[1]].value]
-				// return [provinces, cities, areas]
 				let provinces = []
 				let cities = []
 				let areas = []

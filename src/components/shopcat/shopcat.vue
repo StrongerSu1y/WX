@@ -37,7 +37,7 @@
 				<div class="shopcat-icon" @click="showShopcatList()">
 					<span v-if="total" class="dot">{{ total }}</span>
 				</div>
-				<span class="now-sum">￥<span class="big">{{ nowSum }}</span></span>
+				<span @click="clearStorage()" class="now-sum">￥<span class="big">{{ nowSum }}</span></span>
 				<!-- <span class="old-sum">￥{{ oldSum }}</span> -->
 			</div>
 			<div class="right-button" @click="orderPay()">
@@ -154,6 +154,10 @@
 			// 去结算
 			orderPay () {
 				this.$emit('orderPay')
+			},
+			// 清空缓存
+			clearStorage () {
+				localStorage.clear()
 			}
 		}
 	}

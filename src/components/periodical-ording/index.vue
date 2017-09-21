@@ -19,7 +19,7 @@
 </template>
 
 <script>
-	import { getPrice, getNeedDataList } from '../../common/js/common.js'
+	import { getPrice, getNeedDataList, getDistinctArray } from '../../common/js/common.js'
 	// let listData = [{
 	// 	src: require('./list/gift_icon.png'),
 	// 	title: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称',
@@ -43,7 +43,10 @@
 			return {
 				tabIndex: 0,
 				listData: [],
+				// 第几页
 				pageNum: 1,
+				// 总页数
+				pages: 1,
 				// 加入购物车动画的球
 				balls: [{ show: false }, { show: false }, { show: false }, { show: false }, { show: false }],
 				dropBalls: []
@@ -94,8 +97,21 @@
 				this.$root.Bus.$on('decrement', (index) => {
 					this.reduceNum(index)
 				})
+				// 下拉刷新
 				this.$root.Bus.$on('refresh', () => {
-					this.getData()
+					this.pageNum = 1
+					// this.listData = []
+					this.getData('refresh')
+				})
+				// 上拉加载
+				this.$root.Bus.$on('infinite', () => {
+					if (this.pageNum >= this.pages) {
+						this.$refs.home.finishInfinite()
+						this.$refs.home.hasNoData()
+						return
+					}
+					this.pageNum += 1
+					this.getData('infinite')
 				})
 			}
 		},
@@ -112,22 +128,27 @@
 		},
 		methods: {
 			// 获取数据
-			getData () {
+			getData (type) {
 				// let pageNum = this.pageNum
 				this.Toast.loading({
 					title: '加载中...'
 				})
-				this.$ajax.getAjax('/book?itemIds=151&itemIds=308&itemIds=309&itemIds=310')
-				// this.$ajax.getAjax('/book?itemIds=3100&itemIds=3101&itemIds=3102&itemIds=3103')
+				// this.$ajax.getAjax(`/book?itemIds=151,308,309,310&pageNum=${pageNum}&pageSize=5`)
+				this.$ajax.getAjax('/book/open?itemIds=3100,3101,3102,3103')
 					.then(res => {
 						// console.log(res)
 						let list = res.data.pageInfo.list
+						// 总页数
+						this.pages = res.data.pageInfo.pages
 						list.forEach((item, index) => {
 							item.number = 0
 							item.detail_img = []
 						})
-						this.listData = list
-						this.$refs.home.finishPullToRefresh()
+						this.listData = getDistinctArray(list, this.listData, 'id')
+						// 如果存在类型
+						if (type) {
+							type === 'refresh' ? this.$refs.home.finishPullToRefresh() : this.$refs.home.finishInfinite()
+						}
 					}, err => {
 						console.log(err)
 					})

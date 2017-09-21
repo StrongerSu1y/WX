@@ -110,3 +110,29 @@ export function getWithCommaString (arr, type) {
 	})
 	return str.substr(0, str.length - 1)
 }
+
+// 获取去重过的数组
+export function getDistinctArray (arr1, arr2, type) {
+	if (!arr1.length) {
+		return arr2
+	}
+	if (!arr2.length) {
+		return arr1
+	}
+	// console.log(arr2.length)
+	arr1.forEach(item1 => {
+		if (configObjInArr(arr2, item1, type)) {
+			arr2.push(item1)
+		}
+	})
+	return arr2
+}
+
+function configObjInArr (arr, obj, type) {
+	for (let i = 0; i < arr.length; i++) {
+		if (obj[type] === arr[i][type]) {
+			return false
+		}
+	}
+	return true
+}

@@ -4,14 +4,14 @@ import Vue from 'vue'
 
 let Obj = new Vue()
 
-// let productHost = location.protocol + '//app.51weixiao.com'
-let productHost = location.protocol + '//192.168.0.231:8080'
+let productHost = location.protocol + '//app.51weixiao.com'
+// let productHost = location.protocol + '//192.168.0.231:8080'
 
 // axios 配置
 axios.defaults.timeout = 5000
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-// axios.defaults.baseURL = location.protocol + '//app.51weixiao.com/app-api/api'
-axios.defaults.baseURL = location.protocol + '//192.168.0.231:8080/app-api/api'
+axios.defaults.baseURL = location.protocol + '//app.51weixiao.com/app-api/api'
+// axios.defaults.baseURL = location.protocol + '//192.168.0.231:8080/app-api/api'
 
 // POST 传参序列化
 axios.interceptors.request.use((config) => {
@@ -33,7 +33,7 @@ axios.interceptors.response.use((res) => {
 	if (!res.data.status) {
 		return res
 	}
-	if (res.data.status === '-1') {
+	if (res.data.status === '-1' && res.data.msg) {
 		Obj.Toast.fail({
 			title: res.data.msg
 		})

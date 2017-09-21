@@ -45,7 +45,7 @@
 		},
 		watch: {
 			password (curVal, oldVal) {
-				this.$refs.btn.disabled = !this.password
+				this.$refs.btn.disabled = !this.password || this.password.length < 6
 			}
 		},
 		methods: {

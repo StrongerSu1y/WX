@@ -65,6 +65,14 @@
 			// 停止刷新
 			finishPullToRefresh () {
 				this.$refs.list.finishPullToRefresh()
+			},
+			// 停止加载
+			finishInfinite () {
+				this.$refs.list.finishInfinite()
+			},
+			// 没有数据
+			hasNoData () {
+				this.$refs.list.hasNoData()
 			}
 		}
 	}
