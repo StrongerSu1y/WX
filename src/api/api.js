@@ -18,6 +18,7 @@ axios.interceptors.request.use((config) => {
 	if (config.method === 'post') {
 		config.data = qs.stringify(config.data)
 	}
+	// console.log(config)
 	return config
 }, (error) => {
 	Obj.Toast.hide()
@@ -94,8 +95,8 @@ export default {
 	/*
 		post 方法
 	*/
-	postAjax (url) {
-		return fetch(url, {})
+	postAjax (url, params) {
+		return fetch(url, params)
 	},
 	/*
 		用户登录
