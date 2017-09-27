@@ -17,7 +17,7 @@
 				</p>
 				<p class="price">
 					<span class="new">￥<span class="big">{{ info.last_fee | getInteger }}</span>{{ info.last_fee | getDecimal }}</span>
-					<span class="old">￥{{ info.original_fee | getInteger }}</span>
+					<!-- <span class="old">￥{{ info.original_fee | getInteger }}</span> -->
 				</p>
 				<v-cartControl ref="cartcontrol" :index="index" :num="localNumber" class="cart"></v-cartControl>
 			</div>
@@ -48,7 +48,7 @@
 		props: ['listData'],
 		data () {
 			return {
-				bannerHeight: window.innerWidth + 'px',
+				bannerHeight: window.innerWidth * 0.6 + 'px',
 				info: JSON.parse(this.$route.query.info),
 				index: parseInt(this.$route.query.index)
 			}
@@ -63,13 +63,25 @@
 			listImg () {
 				if (!this.info.detail_img.length) {
 					return [{
-						url: 'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
+						url: '//www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
 					}]
 				}
 				let list = []
 				this.info.detail_img.forEach(item => {
+					// let image = new Image()
+					// image.src = item
+					// image.display = 'none'
+					// let width = image.width
+					// let height = image.height
+					// let winWidth = window.innerWidth
+					// if (width > winWidth || height > winWidth) {
+					// 	let resize = width > height ? width / winWidth : height / winWidth
+					// 	width = width / resize
+					// 	height = height / resize
+					// }
 					list.push({
 						url: item
+						// backgroundSize: `${width}px ${height}px`
 					})
 				})
 				console.log(list)

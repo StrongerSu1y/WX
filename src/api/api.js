@@ -233,5 +233,17 @@ export default {
 	*/
 	tradeConfirm (params) {
 		return fetch(`${productHost}/api/trade/confirm`, params)
+	},
+	/*
+		获取首页数据
+	*/
+	getHomePage () {
+		return fetch('/homepage/open', {}, 'get')
+	},
+	/*
+		圈子列表
+	*/
+	getCircleList (params) {
+		return fetch('/circle/circleList', params)
 	}
 }

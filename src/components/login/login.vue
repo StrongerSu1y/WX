@@ -71,8 +71,7 @@
 				loginDisabled: true, // 可登陆
 				nickname: '',
 				avatar: '',
-				host: 'https://app.51weixiao.com',
-				baseUrl: 'http://m.51weixiao.com',
+				baseUrl: 'https://m.51weixiao.com',
 				isWeixin: isWeixin(),
 				weiboCan: true,
 				weiboAppKey: '2355073945',
@@ -88,6 +87,21 @@
 			canQQLogin () {
 				return !this.isWeixin && !(this.isWeibo && this.isIos)
 			}
+		},
+		created () {
+			// let script1 = document.createElement('script')
+			// let script2 = document.createElement('script')
+			// let head = document.getElementsByTagName('head')[0]
+			// script1.src = '//qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js'
+			// script1.setAttribute('data-appid', '101339901')
+			// script1.setAttribute('charset', 'utf-8')
+			// script1.setAttribute('data-redirecturi', 'https://app.51weixiao.com/m/index.html')
+			// script2.src = '//qzonestyle.gtimg.cn/qzone/openapi/qc-1.0.1.js'
+			// script2.setAttribute('data-appid', '101339901')
+			// script2.setAttribute('charset', 'utf-8')
+			// script2.setAttribute('data-redirecturi', 'https://app.51weixiao.com/m/index.html')
+			// head.appendChild(script1)
+			// head.appendChild(script2)
 		},
 		mounted () {
 			// 设置 history

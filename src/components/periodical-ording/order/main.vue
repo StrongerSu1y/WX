@@ -127,10 +127,6 @@
 			this.hasDefaultAddress = (localStorage.getItem('addressList') && JSON.parse(localStorage.getItem('addressList')).length)
 			// 获取数据
 			this.listData = JSON.parse(this.$route.query.selectedData) || []
-			// 首先清空购物车
-			// this.listData.forEach(item => {
-			// 	this.$ajax.shopcatDel(item.sid)
-			// })
 			this.nowSum = this.$route.query.nowSum || 0
 		},
 		mounted () {
@@ -163,20 +159,39 @@
 					})
 					return
 				}
-				let promiseArr = []
+				let firstPromiseArr = []
+				let quantityParamsArr = []
 				this.listData.forEach((item, index) => {
-					// let _uid = localStorage.getItem('userId')
-					let host = this.Host
+					let _uid = localStorage.getItem('userId') // 用户 id
+					let host = this.Host // 接口地址
+					// let _url = `${host}/api/shop_cart/save_all`
+					let _urlSave = `${host}/api/shop_cart/save`
+					firstPromiseArr.push(this.$ajax.postAjax(`${_urlSave}`, {
+						_uid: _uid,
+						id: item.id,
+						cls: '2'
+					}))
+					if (item.number > 1) {
+						quantityParamsArr.push({
+							_uid: _uid,
+							id: item.id,
+							cls: '2',
+							quantity: item.number
+						})
+					}
 					// let _url = `${host}/api/shop_cart/save?_uid=${_uid}&id=${item.id}&cls=2`
-					let _url = `${host}/api/shop_cart/save_all`
-					promiseArr = promiseArr.concat(this.addItemsToShopcat(item, _url))
+					// promiseArr = promiseArr.concat(this.addItemsToShopcat(item, _url))
 				})
 				let _itemIds = ''
 				let _addressId = this.address.id
 				let _quantity = 0
-				Promise.all(promiseArr).then(values => {
+				Promise.all(firstPromiseArr).then(values => {
 					console.log(values)
-					setTimeout(() => {
+					// 取出最后完全返回数据
+					let _result = this.getListResult(values)
+					let quantityPromiseArr = this.getQuantityPromiseArr(_result, quantityParamsArr)
+					Promise.all(quantityPromiseArr).then(res => {
+						console.log(res)
 						// 获取购物车列表
 						this.$ajax.shopcatList().then(res => {
 							console.log(res.data.data.item_list.length)
@@ -201,16 +216,16 @@
 							params.is_use_quantity = ''
 							params.remark = this.leaveText
 							// 调用提交订单接口
-							// this.$ajax.tradeConfirm(params).then(res => {
-								// let data = res.data
-								// // 下一个页面需要的数据
-								// let fee = (parseFloat(res.data.data.item_total_fee) + parseFloat(res.data.data.delivery_fee)).toFixed(2)
-								// let outtradeno = data.data.no
-								// let cls = '2'
-								// let protocol = window.location.protocol
-								// let host = window.location.host
-								// let href = `${protocol}//${host}/peridoical/ording`
-								// window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+							this.$ajax.tradeConfirm(params).then(res => {
+								let data = res.data
+								// 下一个页面需要的数据
+								let fee = (parseFloat(res.data.data.item_total_fee) + parseFloat(res.data.data.delivery_fee)).toFixed(2)
+								let outtradeno = data.data.no
+								let cls = '2'
+								let protocol = window.location.protocol
+								let host = window.location.host
+								let href = `${protocol}//${host}/peridoical/ording`
+								window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
 								// this.$router.push({
 								// 	path: '/pay',
 								// 	query: {
@@ -218,13 +233,13 @@
 								// 		cls: '2'
 								// 	}
 								// })
-							// }, err => {
-							// 	console.log(err)
-							// })
+							}, err => {
+								console.log(err)
+							})
 						}, err => {
 							console.log(err)
 						})
-					}, 500)
+					})
 				})
 			},
 			// 根据数量添加进购物车
@@ -244,11 +259,40 @@
 			clearShopcat () {
 				this.$ajax.shopcatList().then(res => {
 					if (res.data.data.item_list && res.data.data.item_list.length) {
+						// 设置 history
+						localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) - 1)
 						this.$ajax.shopcatDel(getWithCommaString(res.data.data.item_list, 'id'))
 					}
 				}, err => {
 					console.log(err)
 				})
+			},
+			// 获取返回数据
+			getListResult (arr) {
+				let result = arr[arr.length - 1].data.data.item_list
+				for (let i = arr.length - 1; i >= 0; i--) {
+					if (arr[i].data.data.item_list.length > result.length) {
+						result = arr[i].data.data.item_list
+					}
+				}
+				return result
+			},
+			// 获取数量 promise 数组
+			getQuantityPromiseArr (result, arr) {
+				let promiseArr = []
+				let host = this.Host
+				let _urlUpdate = `${host}/api/shop_cart/update`
+				let that = this
+				for (let i = 0; i < arr.length; i++) {
+					for (let j = 0; j < result.length; j++) {
+						if (arr[i].id === result[j].sid) {
+							arr[i].item_ids = result[j].id
+							promiseArr.push(that.$ajax.postAjax(`${_urlUpdate}`, arr[i]))
+						}
+					}
+				}
+				console.log(promiseArr)
+				return promiseArr
 			}
 		},
 		components: {

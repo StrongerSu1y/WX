@@ -46,6 +46,10 @@ export function getPastTimeText (time) {
 		return ''
 	}
 	time = time.replace(/-/g, '/')
+	// 如果有小数点，则去掉
+	if (time.indexOf('.') > -1) {
+		time = time.split('.')[0]
+	}
 	let nowTime = new Date().getTime()
 	let createTime = new Date(time).getTime()
 	let pastTime = nowTime - createTime

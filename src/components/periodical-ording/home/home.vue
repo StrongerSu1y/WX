@@ -1,5 +1,5 @@
 <template>
-	<section class="home">
+	<section class="peridocial-ording-home">
 		<div class="tab">
 			<div class="" :class="{ active: tabIndex === 0 }" @click="changeTabIndex(0)">
 				刊物

@@ -10,8 +10,8 @@
 					<img src="./download_button.png" @click="downloadApp()">
 				</div>
 				<div class="center"></div>
-				<div class="service">
-					<a href="tel:4008470068"></a>
+				<div class="service" @click="getTel()">
+					<a href="tel:4008470068" ref="tel"></a>
 				</div>
 				<!-- <img class="service" src="./service_button.png"> -->
 			</div>
@@ -36,6 +36,10 @@
 		methods: {
 			downloadApp () {
 				window.location.href = this.isIos ? this.iosDownload : this.androidDownload
+			},
+			// 调用通话
+			getTel () {
+				this.$refs.tel.click()
 			}
 		}
 	}

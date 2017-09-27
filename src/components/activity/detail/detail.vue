@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="activity-detail">
 		<v-header :activity="true" :isCollected="false">
 			<p slot="title">{{ title }}</p>
 		</v-header>

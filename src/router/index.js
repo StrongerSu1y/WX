@@ -27,6 +27,9 @@ import peridoicalOrdingMain from '@/components/periodical-ording/order/main'
 import peridoicalOrdingLeave from '@/components/periodical-ording/leave/leave'
 import peridoicalOrdingAddress from '@/components/periodical-ording/address/address'
 import peridoicalOrdingDetail from '@/components/periodical-ording/detail/detail'
+// 搜索
+import search from '@/pages/search/search'
+import searchIndex from '@/pages/search/index'
 
 Vue.use(Router)
 
@@ -141,6 +144,13 @@ export default new Router({
 			meta: {
 				keepAlive: true
 			}
+		}]
+	}, { // 搜索
+		path: '/search',
+		component: search,
+		children: [{
+			path: '/',
+			component: searchIndex
 		}]
 	}]
 })

@@ -11,6 +11,7 @@
 				<span class="text">{{ item.text }}</span>
 				<div class="checkbox"  :class="{ active: index === checkIndex }" @click="changeCheckIndex(index)"></div>
 			</li>
+			<p v-if="isWeixin" class="desc-text">欲使用支付宝支付请在手机浏览器打开</p>
 		</ul>
 		<div ref="form" v-html="formHtml"></div>
 		<!-- 底部提交按钮 -->
@@ -75,7 +76,7 @@
 		},
 		created () {
 			// 动态引入需要的 script 标签
-			addScript('http://pv.sohu.com/cityjson?ie=utf-8')
+			addScript(location.protocol + '//pv.sohu.com/cityjson?ie=utf-8')
 			addScript('//res.wx.qq.com/open/js/jweixin-1.0.0.js')
 		},
 		mounted () {
@@ -184,12 +185,6 @@
 					]
 				})
 				window.wx.ready(() => {
-					// window.wx.checkJsApi({
-					// 	jsApiList: ['chooseWXPay'],
-					// 	success: function (response) {
-					// 		alert('判断: ' + JSON.stringify(response))
-					// 	}
-					// })
 					let success = false
 					let vm = this
 					window.wx.chooseWXPay({

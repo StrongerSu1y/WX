@@ -1,6 +1,6 @@
 <template>
 	<div class="result">
-		<header class="result-header" :class="{ success: success, fail: !success }">
+		<header :style="{ height: headerHeight }" class="result-header" :class="{ success: success, fail: !success }">
 			<div class="close-text" @click="backToRoot()">
 				<canvas ref="mycanvas" id="mycanvas" width="50" height="50" class="canvas"></canvas>
 				关闭 {{ timeLast }}s
@@ -12,17 +12,23 @@
 				{{ resultText }}
 			</div>
 		</header>
-		<div v-if="success">
-			<div class="download-text"></div>
-			<div @click="downloadApp()" class="download-app"></div>
-		</div>
-		<div v-else>
-			<div class="pay-again" @click="payAgain()"></div>
-		</div>
-		<div class="bottom">
-			<div class="logo"></div>
-			<div class="desc-text"></div>
-		</div>
+		<section class="center-buttons" :style="{ height: otherHeight }">
+			<div v-if="success">
+				<div class="download-text"></div>
+				<div @click="downloadApp()" class="download-app"></div>
+				<div class="bottom">
+					<div class="logo"></div>
+					<div class="desc-text"></div>
+				</div>
+			</div>
+			<div v-else>
+				<div class="pay-again" @click="payAgain()"></div>
+				<div class="bottom">
+					<div class="logo"></div>
+					<div class="desc-text"></div>
+				</div>
+			</div>
+		</section>
 	</div>
 </template>
 
@@ -41,13 +47,19 @@
 				animation_interval: 100,
 				iosDownload: 'https://itunes.apple.com/us/app/wei-xiao-wang/id885798822?l=zh&ls=1&mt=8',
 				androidDownload: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.hzxuanma.wwwdr',
-				interval: null
+				interval: null,
+				// 顶部高度
+				headerHeight: window.innerWidth / 75 * 52 + 'px'
 			}
 		},
 		computed: {
 			// 倒计时时间
 			count () {
 				return this.success ? 60 : 150
+			},
+			// 剩余高度
+			otherHeight () {
+				return window.innerHeight - parseFloat(this.headerHeight) - 20 + 'px'
 			},
 			resultText () {
 				this.fee = this.$route.query.total_amount || 0
@@ -74,8 +86,12 @@
 			// 如果成功，history + 1
 			if (this.success) {
 				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
-				if (this.isIosQQ || this.isAndroidQQ) {
+				// 如果是 qq 需要多退2步
+				if (this.isIosQQ) {
 					localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 2)
+				}
+				if (this.isAndroidQQ) {
+					localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 3)
 				}
 			}
 			this.fee = this.$route.query.total_amount || 0
@@ -85,10 +101,14 @@
 			backToRoot () {
 				clearInterval(this.interval)
 				let historyBack = -parseInt(localStorage.getItem('historyLength'))
+				if (this.isIosQQ || this.isAndroidQQ && this.$route.query.href) {
+					window.location.href = this.$route.query.href
+					return
+				}
 				if (historyBack !== 0) {
 					localStorage.setItem('historyLength', 0)
-					// alert(window.history.go(historyBack) + ', ' + historyBack)
 					window.history.go(historyBack)
+					return
 				}
 				localStorage.setItem('historyLength', 0)
 				window.location.href = this.$route.query.href

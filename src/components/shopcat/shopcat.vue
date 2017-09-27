@@ -1,5 +1,5 @@
 <template>
-	<div class="shopcat">
+	<div class="v-shopcat">
 		<!-- 遮罩 -->
 		<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 			<section v-show="fold" @click="changeListShow()" class="mask">
@@ -18,10 +18,10 @@
 				<ul class="list-body" @click.prevent.stop="">
 					<li v-for="(item, index) in listData" v-if="item.number > 0" class="list-item underline">
 						<div class="left-part">
-							<img src="./clear_button.png">
-							<span class="title">杂志名称杂志名称杂志名称</span>
+							<img v-lazy="item.logo">
+							<span class="title">{{ item.name }}</span>
 						</div>
-						<p class="price">￥<span class="big">{{ item.price }}</span>元</p>
+						<p class="price">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getDecimal }}元</p>
 						<div class="list-buttons">
 							<img @click="reduceNum(index)" src="./reduce_icon.png">
 							<span>{{ item.number }}</span>
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<!-- 其他 -->
-		<div v-else class="shopcat">
+		<div v-else class="v-shopcat">
 			<div class="item buttons">
 				<div class="collect button">
 					<div class="img" :class="{ active: collectOn }" @click="toggleCollect()"></div>
@@ -67,13 +67,13 @@
 			</div>
 		</div>
 		<!-- 立即购买 -->
-		<div v-if="onlyBuy" class="shopcat">
+		<div v-if="onlyBuy" class="v-shopcat">
 			<div class="item buy">
 				立即购买
 			</div>
 		</div>
 		<!-- 活动培训详情 -->
-		<div v-if="activity" class="shopcat" @click="goApply()">
+		<div v-if="activity" class="v-shopcat" @click="goApply()">
 			<div class="item buy activity">
 				<img src="./apply.png">
 				<span>我要报名</span>

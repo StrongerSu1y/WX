@@ -225,7 +225,9 @@
 					})
 					this.$router.push({
 						path: '/login',
-						query: {}
+						query: {
+							href: location.href
+						}
 					})
 					return false
 				}
