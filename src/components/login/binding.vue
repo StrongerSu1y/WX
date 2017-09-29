@@ -78,7 +78,6 @@
 					}
 				})
 				.then((res) => {
-					console.log(JSON.stringify(res))
 					this.codeCanInput = true
 					this.$emit('showToast', res.data.data.tip)
 				})
@@ -120,7 +119,6 @@
 					}
 				})
 				.then((res) => {
-					console.log(res)
 				})
 				.catch((err) => {
 					console.log(err)

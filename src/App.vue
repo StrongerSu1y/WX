@@ -1,20 +1,14 @@
 <template>
   <div id="app">
-    <router-view @showToast="showToast"></router-view>
-    <v-toast v-show="toastShow" :toast="toast"></v-toast>
+		<router-view></router-view>
   </div>
 </template>
 
 <script>
-	import toast from './components/common/toast/toast.vue'
 	export default {
 		name: 'app',
 		data () {
 			return {
-				toast: {
-					title: '请输入正确的信息',
-					wxLogin: false
-				},
 				toastShow: false
 			}
 		},
@@ -38,9 +32,6 @@
 					this.toastShow = false
 				}, 2000)
 			}
-		},
-		components: {
-			'v-toast': toast
 		}
 	}
 </script>

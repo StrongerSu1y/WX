@@ -30,7 +30,31 @@
 		},
 		data () {
 			return {
-				swiper: ''
+				recommondSwiper: ''
+			}
+		},
+		watch: {
+			recommends (newVal, oldVal) {
+				this.$nextTick(() => {
+					if (!this.recommondSwiper) {
+						this.recommondSwiper = new Swiper('.recommond-swiper-container', {
+							direction: 'vertical',
+							paginationClickable: false,
+							loop: true,
+							speed: 600,
+							autoplay: 2000,
+							autoplayDisableOnInteraction: false,
+							onInit: function (swiper) {
+								swiper.startAutoplay()
+							},
+							onTouchEnd: function (swiper) {
+								swiper.startAutoplay()
+							}
+						})
+					} else {
+						this.recommondSwiper.update()
+					}
+				})
 			}
 		},
 		computed: {
@@ -47,24 +71,11 @@
 					}
 					arr.push(single)
 				}
+				console.log(arr)
 				return arr
 			}
 		},
 		mounted () {
-			this.$nextTick(() => {
-				this.swiper = new Swiper('.recommond-swiper-container', {
-					direction: 'vertical',
-					loop: true,
-					speed: 1000,
-					autoplay: 2000,
-					onInit: function (swiper) {
-						swiper.startAutoplay()
-					},
-					onTouchEnd: function (swiper) {
-						swiper.startAutoplay()
-					}
-				})
-			})
 		},
 		methods: {
 			openLink (link) {

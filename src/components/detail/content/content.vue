@@ -144,7 +144,6 @@
 			},
 			// 查看图片
 			viewPictures () {
-				console.log(this.info.imgs)
 				this.$router.push({
 					path: '/view',
 					query: {

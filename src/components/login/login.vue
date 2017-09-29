@@ -197,7 +197,6 @@
 					password: this.password
 				})
 				.then(res => {
-					console.log(res)
 					localStorage.setItem('userId', res.data.data.id)
 					this.Toast.success({
 						title: '登录成功！'
@@ -206,7 +205,7 @@
 						// window.location.href = this.$route.query.href
 						// 设置 history
 						this.$store.commit('setHistory', this.$store.state.history - 1)
-						this.$router.go(-1)
+						this.$router.goBack()
 					}, 500)
 				}, err => {
 					console.log(err)

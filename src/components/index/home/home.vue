@@ -1,23 +1,25 @@
 <template>
-	<div class="home-page">
-		<v-top :scrollTop="scrollTop"></v-top>
-		<div ref="wrapper" class="wrapper" :style="{ height: winHeight }">
-			<section ref="content" class="content">
-				<div class="home">
-					<v-banner :style="{ height: bannerHeight }" :listImg="listImg" class="banner"></v-banner>
-				</div>
-				<!-- 菜单 -->
-				<v-menu class="menu-list"></v-menu>
-				<!-- 推荐 -->
-				<v-recommond :recommends="data.recommends"></v-recommond>
-				<split></split>
-				<v-popularize :themes="data.themes"></v-popularize>
-				<split></split>
-				<v-choiceness ref="circle" @scrollRefresh="scrollRefresh" @canLoadMore="canLoadMore"></v-choiceness>
-			</section>
-			<img v-show="showToTopBtn" @click="scrollToTop()" class="to-top-icon" src="./to_top_icon.png">
+	<!-- <transition leave-active-class="animated rotateOut"> -->
+		<div class="home-page">
+			<v-top :scrollTop="scrollTop"></v-top>
+			<div ref="wrapper" class="wrapper" :style="{ height: winHeight }">
+				<section ref="content" class="content">
+					<div class="home">
+						<v-banner :style="{ height: bannerHeight }" :listImg="listImg" class="banner"></v-banner>
+					</div>
+					<!-- 菜单 -->
+					<v-menu class="menu-list"></v-menu>
+					<!-- 推荐 -->
+					<v-recommond :recommends="data.recommends"></v-recommond>
+					<split></split>
+					<v-popularize :themes="data.themes"></v-popularize>
+					<split></split>
+					<v-choiceness ref="circle" @scrollRefresh="scrollRefresh" @canLoadMore="canLoadMore"></v-choiceness>
+				</section>
+				<img v-show="showToTopBtn" @click="scrollToTop()" class="to-top-icon" src="./to_top_icon.png">
+			</div>
 		</div>
-	</div>
+	<!-- </transition> -->
 </template>
 
 <script>
@@ -49,17 +51,14 @@
 			},
 			// 图片数组
 			listImg () {
-				if (!this.data.hasOwnProperty('adverts') || !this.data.adverts.length) {
-					return [{
-						url: 'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
-					}]
-				}
 				let list = []
-				this.data.adverts.forEach(item => {
-					list.push({
-						url: item.logo
+				if (this.data.hasOwnProperty('adverts') && this.data.adverts.length) {
+					this.data.adverts.forEach(item => {
+						list.push({
+							url: item.logo
+						})
 					})
-				})
+				}
 				return list
 			}
 		},
@@ -79,7 +78,6 @@
 		methods: {
 			loadData () {
 				this.$ajax.getHomePage().then(res => {
-					console.log(res)
 					// 获取圈子数据
 					this.$refs.circle.getData()
 					this.data = res.data

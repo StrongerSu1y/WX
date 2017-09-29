@@ -129,7 +129,6 @@
 			animation () {
 				if (this.step <= this.count) {
 					this.endAngle = (this.step / this.count) * 2 * Math.PI
-					console.log(this.step / this.count)
 					// this.drawArc(this.startAngle, this.endAngle)
 					this.step += 1
 				} else {
@@ -141,7 +140,7 @@
 			payAgain () {
 				clearInterval(this.interval)
 				localStorage.setItem('historyLength', localStorage.getItem('historyLength') - 1)
-				this.$router.go(-1)
+				this.$router.goBack()
 				// this.$root.Bus.$emit('setHistoryBack', '')
 			},
 			// 下载 APP

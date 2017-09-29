@@ -84,7 +84,6 @@
 						// backgroundSize: `${width}px ${height}px`
 					})
 				})
-				console.log(list)
 				return list
 			}
 		},

@@ -155,7 +155,6 @@
 			},
 			// 刷新
 			refresh () {
-				console.log('refresh')
 				this.pageNo = 0
 				this.getData()
 			},

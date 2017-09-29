@@ -100,7 +100,6 @@ export function getArraySet (arr, type) {
 // 获取带逗号的 string
 export function getWithCommaString (arr, type) {
 	let str = ''
-	console.log(str)
 	arr.forEach(item => {
 		if (type) {
 			str += item[type] + ','
@@ -119,7 +118,6 @@ export function getDistinctArray (arr1, arr2, type) {
 	if (!arr2.length) {
 		return arr1
 	}
-	// console.log(arr2.length)
 	arr1.forEach(item1 => {
 		if (configObjInArr(arr2, item1, type)) {
 			arr2.push(item1)
@@ -135,4 +133,17 @@ function configObjInArr (arr, obj, type) {
 		}
 	}
 	return true
+}
+
+// 数组去重
+export function uniqueArr (arr) {
+	let res = []
+	let json = {}
+	arr.forEach(item => {
+		if (!json[item.name]) {
+			res.push(item)
+			json[item.name] = 1
+		}
+	})
+	return res
 }

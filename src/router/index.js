@@ -30,127 +30,153 @@ import peridoicalOrdingDetail from '@/components/periodical-ording/detail/detail
 // 搜索
 import search from '@/pages/search/search'
 import searchIndex from '@/pages/search/index'
+import searchResult from '@/pages/search/result/result'
+
+// 页面间切换动画
+import pageTransition from '@/pages/pageTransition'
+
+Router.prototype.goBack = function () {
+	this.isBack = true
+	// window.history.go(-1)
+	this.go(-1)
+}
 
 Vue.use(Router)
 
 export default new Router({
 	mode: 'history',
-	routes: [{ // 登陆
-		path: '/login',
-		component: loginHome,
+	routes: [{
+		path: '/',
+		component: pageTransition,
 		children: [{ // 登陆
-			path: '/',
-			name: 'login',
-			component: login
-		}, { // 重设密码
-			path: 'recovery',
-			name: 'recovery',
-			component: recovery
-		}, { // 注册
-			path: 'register',
-			name: 'register',
-			component: register
-		}, { // 新密码
-			path: 'reset',
-			name: 'reset',
-			component: reset
-		}]
-	}, {
-		path: '/apply',
-		component: apply,
-		children: [{ // 选择套餐
-			path: '/',
-			name: 'apply',
-			component: choose,
-			meta: {
-				keepAlive: true // 需要缓存
-			}
-		}, { // 联系人
-			path: 'contracts',
-			component: contracts,
-			meta: {
-				keepAlive: true // 需要缓存
-			}
-		}, { // 实名
-			path: 'realname',
-			component: realname
-		}]
-	}, { // 支付
-		path: '/pay',
-		component: pay
-	}, { // 支付结果
-		path: '/result',
-		component: result
-	}, { // 图书信息
-		path: '/info',
-		name: 'info',
-		component: info
-	}, { // 详情
-		path: '/detail',
-		name: 'detail',
-		component: detail
-	}, { // 书刊详情
-		path: '/periodical',
-		component: periodicalDetail
-	}, { // 地址
-		path: '/address',
-		component: address
-	}, { // 活动详情
-		path: '/activity/detail',
-		component: activityDetail
-	}, { // 培训详情
-		path: '/train/detail',
-		component: trainDetail
-	}, {
-		path: '/view',
-		component: view
-	}, {
-		path: '/index',
-		component: index
-	}, { // 刊物征订
-		path: '/peridoical/ording',
-		component: peridoicalOrding,
-		children: [{
-			path: '/',
-			component: peridoicalOrdingHome,
-			meta: {
-				keepAlive: true // 需要缓存
-			}
+			path: '/login',
+			component: loginHome,
+			children: [{ // 登陆
+				path: '/',
+				name: 'login',
+				component: login
+			}, { // 重设密码
+				path: 'recovery',
+				name: 'recovery',
+				component: recovery
+			}, { // 注册
+				path: 'register',
+				name: 'register',
+				component: register
+			}, { // 新密码
+				path: 'reset',
+				name: 'reset',
+				component: reset
+			}]
 		}, {
-			path: 'detail',
-			component: peridoicalOrdingDetail,
-			meta: {
-				keepAlive: false // 需要缓存
-			}
-		}]
-	}, { // 刊物下单
-		path: '/peridoical/order',
-		component: peridoicalOrdingOrder,
-		children: [{
-			path: '/',
-			component: peridoicalOrdingMain,
-			meta: {
-				keepAlive: true
-			}
+			path: '/apply',
+			component: apply,
+			children: [{ // 选择套餐
+				path: '/',
+				name: 'apply',
+				component: choose,
+				meta: {
+					keepAlive: true // 需要缓存
+				}
+			}, { // 联系人
+				path: 'contracts',
+				component: contracts,
+				meta: {
+					keepAlive: true // 需要缓存
+				}
+			}, { // 实名
+				path: 'realname',
+				component: realname
+			}]
+		}, { // 支付
+			path: '/pay',
+			component: pay
+		}, { // 支付结果
+			path: '/result',
+			component: result
+		}, { // 图书信息
+			path: '/info',
+			name: 'info',
+			component: info
+		}, { // 详情
+			path: '/detail',
+			name: 'detail',
+			component: detail
+		}, { // 书刊详情
+			path: '/periodical',
+			component: periodicalDetail
+		}, { // 地址
+			path: '/address',
+			component: address
+		}, { // 活动详情
+			path: '/activity/detail',
+			component: activityDetail
+		}, { // 培训详情
+			path: '/train/detail',
+			component: trainDetail
 		}, {
-			path: 'leave',
-			component: peridoicalOrdingLeave,
-			meta: {
-				keepAlive: true
-			}
+			path: '/view',
+			component: view
 		}, {
-			path: 'address',
-			component: peridoicalOrdingAddress,
+			path: '/index',
+			component: index,
 			meta: {
-				keepAlive: true
+				before: true
 			}
-		}]
-	}, { // 搜索
-		path: '/search',
-		component: search,
-		children: [{
-			path: '/',
-			component: searchIndex
+		}, { // 刊物征订
+			path: '/peridoical/ording',
+			component: peridoicalOrding,
+			children: [{
+				path: '/',
+				component: peridoicalOrdingHome,
+				meta: {
+					keepAlive: true // 需要缓存
+				}
+			}, {
+				path: 'detail',
+				component: peridoicalOrdingDetail,
+				meta: {
+					keepAlive: false // 需要缓存
+				}
+			}]
+		}, { // 刊物下单
+			path: '/peridoical/order',
+			component: peridoicalOrdingOrder,
+			children: [{
+				path: '/',
+				component: peridoicalOrdingMain,
+				meta: {
+					keepAlive: true
+				}
+			}, {
+				path: 'leave',
+				component: peridoicalOrdingLeave,
+				meta: {
+					keepAlive: true
+				}
+			}, {
+				path: 'address',
+				component: peridoicalOrdingAddress,
+				meta: {
+					keepAlive: true
+				}
+			}]
+		}, { // 搜索
+			path: '/search',
+			component: search,
+			children: [{
+				path: '/',
+				component: searchIndex,
+				meta: {
+					keepAlive: true
+				}
+			}, {
+				path: 'result:data',
+				component: searchResult,
+				meta: {
+					keepAlive: false
+				}
+			}]
 		}]
 	}]
 })

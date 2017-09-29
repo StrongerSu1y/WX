@@ -20,7 +20,7 @@ time, mark, audio, video, input {
   border: 0;
   /*font-size: 100%;*/
   font-weight: normal;
-  vertical-align: baseline;
+  vertical-align: middle;
 }
 
 html {
@@ -148,7 +148,7 @@ input {
   border-radius: 0.2rem;
   color: #ffffff;
   position: fixed;
-  z-index: 3;
+  z-index: 30;
   top: 45%;
   left: 50%;
   /*width: 40%;*/
@@ -238,7 +238,7 @@ input {
     right: auto;
     bottom: auto;
     left: 0;
-    z-index: 2;
+    z-index: 20;
     -webkit-transform-origin: 50% 100%;
             transform-origin: 50% 100%;
 }

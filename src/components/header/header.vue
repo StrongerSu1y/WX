@@ -90,11 +90,12 @@
 				// 设置 history
 				localStorage.setItem('historyLength', localStorage.getItem('historyLength') - 1)
 				this.$emit('goBack')
-				this.$router.go(-1)
+				this.$router.goBack()
 			},
 			// 返回首页
 			goHome () {
-				window.location.reload()
+				// window.location.reload()
+				this.$router.goBack()
 			},
 			// 切换收藏
 			toggleCollect () {

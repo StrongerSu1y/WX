@@ -1,9 +1,12 @@
 <template>
 	<div class="search-reminder">
 		<section class="bar">
-			<div class="select">
-				<span class="text">图书</span>
-				<span class="bottom-arrow"></span>
+			<div class="top" style="background: none">
+				<div class="select-box">
+					<span class="text">图书</span>
+					<span class="bottom-arrow"></span>
+				</div>
+				<v-selector v-show="selectorShow" :typeList="typeList" @changeTypeIndex="changeTypeIndex"></v-selector>
 			</div>
 		</section>
 		<section class="reminder-body">
@@ -14,7 +17,7 @@
 			</p>
 		</section>
 		<section class="buttons">
-			<div @click="hideReminder()" class="left-button button">
+			<div @click="noReminder()" class="left-button button">
 				不再提示
 			</div>
 			<div @click="hideReminder()" class="right-button button">
@@ -32,6 +35,11 @@
 		},
 		methods: {
 			hideReminder () {
+				this.$emit('hideReminder')
+			},
+			// 不再提醒
+			noReminder () {
+				localStorage.setItem('noReminder', true)
 				this.$emit('hideReminder')
 			}
 		}

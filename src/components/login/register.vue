@@ -78,7 +78,6 @@
 			password (newVal, oldVal) {
 				let patten = new RegExp('[`~!#$^&*()=:;,[\\].<>/?~！#￥……&*（）——|{}【】‘；：”“。，、？‘]')
 				let lastText = newVal.substr(-1, 1)
-				console.log(lastText + '   ' + patten.test(lastText))
 				if (patten.test(lastText)) {
 					this.Toats.warning({
 						title: '请勿输入特殊字符'
@@ -173,7 +172,7 @@
 									title: '注册成功！'
 								})
 								localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
-								this.$router.go(-1)
+								this.$router.goBack()
 							}, err => {
 								console.log(err)
 							})

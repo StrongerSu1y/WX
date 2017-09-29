@@ -122,7 +122,7 @@
 						// 	title: '提交成功！',
 						// 	msg: '凭短信密码登录'
 						// }, (ret) => {
-						// 	this.$router.go(-1)
+						// 	this.$router.goBack()
 						// })
 						this.Toast.success({
 							title: '提交成功！请设置新密码'

@@ -116,5 +116,4 @@ export function delCookie (name) {
 }
 
 export function callbackFun (res) {
-	console.log(res)
 }

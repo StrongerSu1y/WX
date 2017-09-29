@@ -4,7 +4,7 @@
 			<scroller class="scroller" :on-refresh="refresh" :on-infinite="infinite" ref="myscroller">
 				<li v-for="(item, index) in listData" class="list-item underline" @click="showDetail(index)">
 					<div class="left-media">
-						<img v-lazy="item.logo" :style="getObject()">
+						<img v-lazy="item.logo">
 					</div>
 					<div class="right-part">
 						<div class="box">

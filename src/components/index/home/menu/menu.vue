@@ -1,7 +1,7 @@
 <template>
 	<section class="menu">
 		<ul class="menu-list">
-			<li v-for="(item, index) in menuList" class="list-item" @click="openUrl()">
+			<li @click.prevent.stop="showToast()" v-for="(item, index) in menuList" class="list-item" @click="openUrl()">
 				<img v-lazy="item.src">
 				<p>{{ item.title }}</p>
 			</li>
@@ -31,6 +31,13 @@
 		data () {
 			return {
 				menuList: menuList
+			}
+		},
+		methods: {
+			showToast () {
+				this.Toast.warning({
+					title: '<p>该功能正在开发中</p><p>敬请期待...</p>'
+				})
 			}
 		}
 	}

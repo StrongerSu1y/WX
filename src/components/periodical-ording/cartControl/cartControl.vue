@@ -29,7 +29,6 @@
 				this.$root.Bus.$emit('decrement', index)
 			},
 			increaseCart (index, event) {
-				console.log(index)
 				this.$root.Bus.$emit('increment', index, event)
 			}
 		}

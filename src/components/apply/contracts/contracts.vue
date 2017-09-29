@@ -33,7 +33,6 @@
 		},
 		beforeRouteEnter (to, from, next) {
 			next(vm => {
-				console.log(JSON.parse(vm.$route.query.comboList))
 			})
 		},
 		mounted () {

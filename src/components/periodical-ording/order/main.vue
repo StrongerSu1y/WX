@@ -186,12 +186,10 @@
 				let _addressId = this.address.id
 				let _quantity = 0
 				Promise.all(firstPromiseArr).then(values => {
-					console.log(values)
 					// 取出最后完全返回数据
 					let _result = this.getListResult(values)
 					let quantityPromiseArr = this.getQuantityPromiseArr(_result, quantityParamsArr)
 					Promise.all(quantityPromiseArr).then(res => {
-						console.log(res)
 						// 获取购物车列表
 						this.$ajax.shopcatList().then(res => {
 							console.log(res.data.data.item_list.length)
@@ -291,7 +289,6 @@
 						}
 					}
 				}
-				console.log(promiseArr)
 				return promiseArr
 			}
 		},

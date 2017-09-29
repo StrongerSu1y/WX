@@ -131,7 +131,6 @@
 						this.$ajax.addressList({
 							_uid: localStorage.getItem('userId')
 						}).then(res => {
-							console.log(res)
 							this.address.id = res.data.data.filter(item => {
 								return item.address === this.address.address
 							})[0].id
@@ -140,7 +139,7 @@
 							addressList.push(this.address)
 							localStorage.setItem('addressList', JSON.stringify(addressList))
 							this.$root.Bus.$emit('updateAddress', JSON.stringify(this.address))
-							this.$router.go(-1)
+							this.$router.goBack()
 						}, err => {
 							console.log(err)
 						})

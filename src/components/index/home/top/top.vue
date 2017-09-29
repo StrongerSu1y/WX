@@ -4,7 +4,7 @@
 			<span ref="cityText" class="text">杭州</span>
 			<img ref="cityIcon" src="./down_arrow.png">
 		</div>
-		<div ref="searchArea" class="search-area" :style="searchStyle">
+		<div ref="searchArea" class="search-area" :style="searchStyle" @click="openSearch()">
 			<div class="left-part">
 				<img ref="searchIcon" src="./search_icon.png">
 			</div>
@@ -92,8 +92,11 @@
 		created () {
 		},
 		methods: {
-			scrollToTop () {
-				this.scroller.scrollTo(0, 0, 500)
+			// 打开搜索页
+			openSearch () {
+				this.$router.push({
+					path: '/search'
+				})
 			}
 		}
 	}

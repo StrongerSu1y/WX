@@ -28,7 +28,7 @@
 					return
 				}
 				this.$root.Bus.$emit('leaveTextChange', this.leaveText)
-				this.$router.go(-1)
+				this.$router.goBack()
 			}
 		}
 	}

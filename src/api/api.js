@@ -198,11 +198,6 @@ export default {
 		清空购物车
 	*/
 	shopcatDel (id) {
-		// let ids = ''
-		// arr.forEach(item => {
-		// 	ids += item.id + ','
-		// })
-		// ids = ids.substr(0, ids.length - 1)
 		return fetch(`${productHost}/api/shop_cart/del`, {
 			_uid: localStorage.getItem('userId'),
 			id: id
@@ -245,5 +240,23 @@ export default {
 	*/
 	getCircleList (params) {
 		return fetch('/circle/circleList', params)
+	},
+	/*
+		首页热门搜索
+	*/
+	hotSearch () {
+		return fetch('/homepage/hotSearch/open', {}, 'get')
+	},
+	/*
+		首页搜索字典表类型
+	*/
+	searchType () {
+		return fetch('/homepage/searchtype/open', {}, 'get')
+	},
+	/*
+		模糊搜索
+	*/
+	doSearch (params) {
+		return fetch('/homepage/search/open', params)
 	}
 }

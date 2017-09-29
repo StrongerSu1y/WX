@@ -115,7 +115,6 @@
 		},
 		methods: {
 			toggleCheckFlag () {
-				console.dir(this.$refs.addButton[0])
 				this.checkFlag = !this.checkFlag
 			},
 			addOne (index) {

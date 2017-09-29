@@ -128,7 +128,6 @@
 			// 更换性别
 			changeGenderIndex (itemIndex, index) {
 				this.list[itemIndex].kid_sex = index
-				console.log(this.list)
 			},
 			// 提交
 			doSubmit () {

@@ -1,5 +1,5 @@
 <template>
-	<section class="home-popularize">
+	<section class="home-popularize" @click="showToast()">
 		<ul class="list">
 			<li v-if="themes && themes.hasOwnProperty('book')" class="list-item">
 				<p class="title">{{ themes.book.title }}</p>
@@ -139,6 +139,13 @@
 					return false
 				}
 				return this.themes.activities.slice(1)
+			}
+		},
+		methods: {
+			showToast () {
+				this.Toast.warning({
+					title: '<p>该功能正在开发中</p><p>敬请期待...</p>'
+				})
 			}
 		},
 		components: {

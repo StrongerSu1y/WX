@@ -37,7 +37,7 @@
             toastHtml = '<div class="aui-toast">'+iconHtml+titleHtml+'</div>';
             if(document.querySelector(".aui-toast"))return;
             document.body.insertAdjacentHTML('beforeend', toastHtml);
-            var duration = params.duration ? params.duration : "2000";
+            var duration = params.duration ? params.duration : "1000";
             self.show();
             if(params.type == 'loading'){
                 if(callback){
