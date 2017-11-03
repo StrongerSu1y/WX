@@ -1,0 +1,143 @@
+<template>
+	<ul ref="list" class="mine-order-detail-list">
+		<!-- 图书 -->
+		<li v-if="cls !== '13' || !cls" ref="listItem" v-for="(item, index) in compListData" class="list-item">
+			<!-- 左侧图片 -->
+			<div class="left-media">
+				<img v-lazy="item.logo">
+			</div>
+			<!-- 右侧文字 -->
+			<div class="right-part">
+				<p class="name">{{ item.name }}</p>
+				<p class="numbers">
+					<span class="label-name">数量:</span>
+					<span class="value">X{{ item.count }}</span>
+				</p>
+				<div class="numbers price">
+					<span class="label-name">单价:</span>
+					<span class="value">¥{{ item.price }}</span>
+					<!-- 如果是评价列表页 -->
+					<div v-if="entrance === 'evaluate'" class="btn-box" @click.prevent.stop="goEvaluate()">
+						<span>去评价</span>
+					</div>
+					<!-- 入口是退款页 -->
+					<div v-if="entrance === 'refund'" class="btn-box" @click.prevent.stop="goRefund()">
+						<span>申请退款</span>
+					</div>
+				</div>
+				<!-- 退款 -->
+				<p v-if="item.reason" class="numbers">
+					<span class="label-name">退款原因:</span>
+					<span class="value">{{ item.reason }}</span>
+				</p>
+				<p v-if="item.explain" class="numbers">
+					<span class="label-name">退款说明:</span>
+					<span v-show="item.showAll" class="value two-line">{{ item.explain }}</span>
+					<span v-show="!item.showAll" class="value two-line">{{ item.slicedExplain }}</span>
+					<span v-show="item.slicedExplain" class="show-all" @click.prevent.stop="showItemAll(index)">查看全部<span class="arrow-bottom" :class="{ up: item.showAll }"></span></span>
+				</p>
+			</div>
+		</li>
+		<!-- 活动 -->
+		<li v-if="cls === '13'" v-for="(item, index) in compListData" class="activity-item">
+			<div class="left-text">
+				<p class="name">{{ item.name }}</p>
+				<p class="code">
+					<span class="label-name">验证码:</span>
+					<span class="text">2017085678988568</span>
+				</p>
+				<div class="bottom-btn" @click="applyRefund(item)">
+					<span class="refund-btn">申请退款</span>
+				</div>
+			</div>
+			<div class="right-media" @click="showActivityView(index)">
+				<img v-lazy="item.logo">
+			</div>
+		</li>
+	</ul>
+</template>
+
+<script>
+	export default {
+		name: 'mine-order-detail-list',
+		props: {
+			listData: {
+				type: Array
+			},
+			entrance: {
+				type: String
+			},
+			cls: {
+				type: String
+			}
+		},
+		data () {
+			return {
+				compListData: []
+			}
+		},
+		watch: {
+			listData (newVal, oldVal) {
+				if (!newVal.length) {
+					return
+				}
+				this.getCompData()
+			}
+		},
+		mounted () {
+			this.getCompData()
+		},
+		methods: {
+			// 计算过的数据
+			getCompData () {
+				this.compListData = this.listData.map(item => {
+					if (item.explain && item.explain.length > 24) {
+						item.showAll = false
+						item.slicedExplain = item.explain.substr(0, 24) + '...'
+					} else {
+						item.showAll = true
+					}
+					return item
+				})
+			},
+			// 去评价
+			goEvaluate () {
+				this.$router.push({
+					path: 'evaluate/single'
+				})
+			},
+			// 申请退款
+			goRefund () {
+				this.$router.push({
+					path: 'refund/single'
+				})
+			},
+			// 查看全部
+			showItemAll (index) {
+				this.compListData = this.compListData.map((item, index2) => {
+					if (index === index2) {
+						item.showAll = !item.showAll
+					}
+					return item
+				})
+			},
+			// 展示活动二维码
+			showActivityView (index) {
+				this.$emit('showActivityView', index)
+			},
+			// 申请活动退款
+			applyRefund (item) {
+				this.$router.push({
+					path: '/mine/order/refund/activity',
+					query: {
+						item: JSON.stringify(item)
+					}
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="stylus" rel="stylesheet/stylus">
+	@import './list.styl'
+</style>

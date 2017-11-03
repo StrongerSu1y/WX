@@ -2637,7 +2637,7 @@
         },
         {
           "cityid": "2109",
-          "cityname": "延边州",
+          "cityname": "延吉市",
           "regionlist": [
             {
               "regionid": "210901",
@@ -7821,11 +7821,11 @@
             },
             {
               "regionid": "600110",
-              "regionname": "万盛区"
+              "regionname": "高新区"
             },
             {
               "regionid": "600111",
-              "regionname": "双桥区"
+              "regionname": "两江新区"
             },
             {
               "regionid": "600112",
@@ -7861,23 +7861,23 @@
             },
             {
               "regionid": "600120",
-              "regionname": "綦江县"
+              "regionname": "綦江区"
             },
             {
               "regionid": "600121",
-              "regionname": "潼南县"
+              "regionname": "潼南区"
             },
             {
               "regionid": "600122",
-              "regionname": "铜梁县"
+              "regionname": "铜梁区"
             },
             {
               "regionid": "600123",
-              "regionname": "大足县"
+              "regionname": "大足区"
             },
             {
               "regionid": "600124",
-              "regionname": "荣昌县"
+              "regionname": "荣昌区"
             },
             {
               "regionid": "600125",
@@ -7885,7 +7885,7 @@
             },
             {
               "regionid": "600126",
-              "regionname": "梁平县"
+              "regionname": "梁平区"
             },
             {
               "regionid": "600127",
@@ -7901,7 +7901,7 @@
             },
             {
               "regionid": "600130",
-              "regionname": "武隆县"
+              "regionname": "武隆区"
             },
             {
               "regionid": "600131",
@@ -7909,7 +7909,7 @@
             },
             {
               "regionid": "600132",
-              "regionname": "开县"
+              "regionname": "开州区"
             },
             {
               "regionid": "600133",

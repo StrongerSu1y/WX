@@ -7,7 +7,8 @@ const store = new Vuex.Store({
 	// 定义状态
 	state: {
 		author: 'zqczx00',
-		history: 0
+		history: 0,
+		homePageTabIndex: 0
 	},
 	// 设置方法
 	mutations: {
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
 		},
 		setHistory (state, num) {
 			state.history = num
+		},
+		setHomePageIndex (state, num) {
+			state.homePageTabIndex = num
 		}
 	}
 })

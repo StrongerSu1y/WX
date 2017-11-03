@@ -12,6 +12,12 @@ export function checkInput () {
 			inputItems[i].focus()
 			return false
 		}
+		if (isEmojiCharacter(inputItems[i].value)) {
+			Obj.Toast.warning({
+				title: '请勿输入空格、表情或者特殊字符'
+			})
+			return false
+		}
 	}
 	return true
 }
@@ -146,4 +152,58 @@ export function uniqueArr (arr) {
 		}
 	})
 	return res
+}
+
+// 判断是否有 class
+export function hasClass (element, name) {
+	return element.className.match(RegExp('(\\s|^)' + name + '(\\s|$)'))
+}
+
+// 添加 class
+export function addClass (element, name) {
+	element.className += ' ' + name
+}
+
+// 删除 class
+export function deleteClass (element, name) {
+	if (hasClass(element, name)) {
+		element.className.replace(RegExp('(\\s|^)' + name + '(\\s|$)'), ' ')
+	}
+}
+
+// 是否输入为 emoji 表情
+export function isEmojiCharacter (substring) {
+	let reg = /[~#^$@%&!?%*\s+]/gi
+	if (reg.test(substring)) {
+		return true
+	}
+	for (let i = 0; i < substring.length; i++) {
+		let hs = substring.charCodeAt(i)
+		if (hs >= 0xd800 && hs <= 0xdbff) {
+			if (substring.length > 1) {
+				let ls = substring.charCodeAt(i + 1)
+				let uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000
+				if (uc >= 0x1d000 && uc <= 0x1f77f) {
+					return true
+				}
+			}
+		} else if (substring.length > 1) {
+			let ls = substring.charCodeAt(i + 1)
+			if (ls === 0x20e3) {
+				return true
+			}
+		} else {
+			if (hs >= 0x2100 && hs <= 0x27ff) {
+				return true
+			} else if (hs >= 0x2b05 && hs <= 0x2b07) {
+				return true
+			} else if (hs >= 0x2934 && hs <= 0x2935) {
+				return true
+			} else if (hs >= 0x3297 && hs <= 0x3299) {
+				return true
+			} else if (hs === 0xa9 || hs === 0xae || hs === 0x303d || hs === 0x3030 || hs === 0x2b50 || hs === 0x2b1c || hs === 0x2b1b || hs === 0x2b50) {
+				return true
+			}
+		}
+	}
 }

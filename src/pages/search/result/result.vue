@@ -12,15 +12,17 @@
 			</section>
 			<!-- {{ $route.params | json }} -->
 			<v-listView :listData="listData" :cls="params.cls"></v-listView>
-			<section class="no-data-box" v-if="!listData || !listData.length">
+			<!-- <section class="no-data-box" v-if="!listData || !listData.length">
 				<img src="../no_data_pic.png">
-			</section>
+			</section> -->
+			<empty v-if="!listData || !listData.length"></empty>
 		</div>
 	</transition>
 </template>
 
 <script>
 	import listView from './list/list'
+	import empty from '@/components/common/empty/empty'
 	export default {
 		name: 'search-result',
 		data () {
@@ -62,7 +64,8 @@
 			}
 		},
 		components: {
-			'v-listView': listView
+			'v-listView': listView,
+			empty
 		}
 	}
 </script>

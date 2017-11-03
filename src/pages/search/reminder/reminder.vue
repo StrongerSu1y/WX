@@ -6,7 +6,6 @@
 					<span class="text">图书</span>
 					<span class="bottom-arrow"></span>
 				</div>
-				<v-selector v-show="selectorShow" :typeList="typeList" @changeTypeIndex="changeTypeIndex"></v-selector>
 			</div>
 		</section>
 		<section class="reminder-body">
@@ -18,10 +17,10 @@
 		</section>
 		<section class="buttons">
 			<div @click="noReminder()" class="left-button button">
-				不再提示
+				<span>不再提示</span>
 			</div>
 			<div @click="hideReminder()" class="right-button button">
-				我知道了
+				<span>我知道了</span>
 			</div>
 		</section>
 	</div>

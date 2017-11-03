@@ -31,20 +31,25 @@
 			color #f5b039
 	> .buttons
 		margin 0 auto
-		padding 0
+		padding 0 0.2rem
 		font-size 0
-		width 4.08rem
+		display flex
+		// width 4.5rem
 		.button
-			display inline-block
-			font-size 0.3rem
-			line-height 0.8rem
-			padding 0 0.32rem
-			width 1.84rem
-			border-radius 0.4rem
+			flex 1
+			font-size 0
+			> span
+				display inline-block
+				font-size 0.3rem
+				line-height 0.8rem
+				padding 0 0.32rem
+				border-radius 0.4rem
+				color #ffffff
+				background #f8bd48
 		.left-button
-			color #ffffff
-			background #f8bd48
+			text-align right
 		.right-button
 			margin-left 0.4rem
-			color #f8bd48
-			background #ffffff
+			> span
+				color #f8bd48
+				background #ffffff

@@ -1,6 +1,6 @@
 <template>
 	<ul class="book-list">
-		<li v-for="(item, index) in listData" class="list-item underline dis-flex" @click="showDetail(index)">
+		<li v-for="(item, index) in listData" class="list-item underline dis-flex" @click="openDetail(item.id)">
 			<div class="left-media">
 				<img v-lazy="item.logo">
 			</div>
@@ -34,6 +34,20 @@
 		},
 		data () {
 			return {}
+		},
+		mounted () {
+			// alert(JSON.stringify(this.listData))
+		},
+		methods: {
+			// 打开详情
+			openDetail (id) {
+				this.$router.push({
+					path: '/book/detail',
+					query: {
+						id: id
+					}
+				})
+			}
 		}
 	}
 </script>

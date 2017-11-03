@@ -10,15 +10,21 @@ let productHost = location.protocol + '//app.51weixiao.com'
 // axios 配置
 axios.defaults.timeout = 5000
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+// axios.defaults.headers['Content-Type'] = 'application/json'
 axios.defaults.baseURL = location.protocol + '//app.51weixiao.com/app-api/api'
 // axios.defaults.baseURL = location.protocol + '//192.168.0.231:8080/app-api/api'
 
 // POST 传参序列化
 axios.interceptors.request.use((config) => {
-	if (config.method === 'post') {
+	console.log(config)
+	// 光 post
+	// if (config.method === 'post' && config.headers['Content-Type'] !== 'application/json') {
+	// 	config.data = qs.stringify(config.data)
+	// }
+	if (config.headers['Content-Type'] !== 'application/json') {
 		config.data = qs.stringify(config.data)
 	}
-	// console.log(config)
+	// config.data = qs.stringify(config.data)
 	return config
 }, (error) => {
 	Obj.Toast.hide()
@@ -35,15 +41,15 @@ axios.interceptors.response.use((res) => {
 		return res
 	}
 	if (res.data.status === '-1' && res.data.msg) {
-		Obj.Toast.fail({
-			title: res.data.msg
-		})
+		// Obj.Toast.fail({
+		// 	title: res.data.msg
+		// })
 		return Promise.reject(res)
 	}
 	if (res.data.status !== '0') {
-		Obj.Toast.fail({
-			title: res.data.data.tip
-		})
+		// Obj.Toast.fail({
+		// 	title: res.data.data.tip
+		// })
 		return Promise.reject(res)
 	}
 	return res
@@ -57,8 +63,25 @@ axios.interceptors.response.use((res) => {
 
 export function fetch (url, params, type) {
 	return new Promise((resolve, reject) => {
-		if (type && type === 'get') {
-			axios.get(url)
+		if (type) {
+			if (type === 'get') {
+				axios.get(url).then(response => {
+					resolve(response)
+				}, err => {
+					reject(err)
+				})
+				.catch((error) => {
+					reject(error)
+				})
+			} else if (type === 'json') {
+				axios({
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					method: 'post',
+					data: params,
+					url: url
+				})
 				.then(response => {
 					resolve(response)
 				}, err => {
@@ -67,6 +90,7 @@ export function fetch (url, params, type) {
 				.catch((error) => {
 					reject(error)
 				})
+			}
 		} else {
 			axios({
 				method: 'post',
@@ -258,5 +282,63 @@ export default {
 	*/
 	doSearch (params) {
 		return fetch('/homepage/search/open', params)
+	},
+	/*
+		微书城首页
+	*/
+	bookHomepage () {
+		return fetch('/book/homepage/open', {}, 'get')
+	},
+	/*
+		图书种类列表
+	*/
+	bookConstant () {
+		return fetch('/book/constant/open', {}, 'get')
+	},
+	/*
+		图书列表
+	*/
+	bookList (params) {
+		let query = qs.stringify(params)
+		return fetch(`/book/open?${query}`, {}, 'get')
+	},
+	/*
+		今日优惠、新品上市列表
+	*/
+	bookFixedColumn (type) {
+		return fetch(`/book/fixedColumn/${type}/open`, {}, 'get')
+	},
+	/*
+		图书详情
+	*/
+	bookDetail (id) {
+		return fetch(`/book/${id}/open`, {}, 'get')
+	},
+	/*
+		图片评论列表
+	*/
+	bookComment (id, level) {
+		return level ? fetch(`/book/${id}/comment/open?level=${level}`, {}, 'get') : fetch(`/book/${id}/comment/open`, {}, 'get')
+	},
+	/*
+		圈子 - 0: 社区, 1: 频道
+	*/
+	circleChannelList (params) {
+		return fetch('/circle/channelList', params)
+	},
+	/*
+		我的首页
+	*/
+	userHomePage () {
+		return fetch('/user/HomePage', {
+			user_id: localStorage.getItem('userId')
+			// user_id: '100095'
+		})
+	},
+	/*
+		双十一订单
+	*/
+	doubleEleven (params) {
+		return fetch('/trade/confirm/book/doubleEleven', params, 'json')
 	}
 }

@@ -1,14 +1,14 @@
 <template>
-	<section class="peridocial-ording-home">
-		<div class="tab">
+	<section class="peridocial-ording-home" :style="{ paddingTop: doubleEleven ? 0 : '' }">
+		<div v-if="!doubleEleven" class="tab">
 			<div class="" :class="{ active: tabIndex === 0 }" @click="changeTabIndex(0)">
-				刊物
+				{{ title }}
 			</div>
 			<div class="" :class="{ active: tabIndex === 1 }" @click="changeTabIndex(1)">
 				关于我们
 			</div>
 		</div>
-		<component :is="tabView" :listData="listData" :oldSum="oldSum" :nowSum="nowSum"  ref="list"></component>
+		<component :is="tabView" :doubleEleven="doubleEleven" :listData="listData" :title="title" :oldSum="oldSum" :nowSum="nowSum"  ref="list"></component>
 	</section>
 </template>
 <script>
@@ -16,7 +16,7 @@
 	import about from '../about/about'
 	export default {
 		name: 'periodical-ording',
-		props: ['listData', 'tabIndex'],
+		props: ['listData', 'tabIndex', 'title', 'doubleEleven'],
 		data () {
 			return {
 				tabList: ['list', 'about']
@@ -61,18 +61,6 @@
 			// 减少
 			reduceNum (index) {
 				this.$refs.list.reduceNum(index)
-			},
-			// 停止刷新
-			finishPullToRefresh () {
-				this.$refs.list.finishPullToRefresh()
-			},
-			// 停止加载
-			finishInfinite () {
-				this.$refs.list.finishInfinite()
-			},
-			// 没有数据
-			hasNoData () {
-				this.$refs.list.hasNoData()
 			}
 		}
 	}

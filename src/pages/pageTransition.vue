@@ -1,6 +1,6 @@
 <template>
   <div>
-	  <transition :name="transitionName">
+		<transition :name="transitionName">
 	    <router-view class="child-view"></router-view>
 	  </transition>
   </div>

@@ -100,18 +100,22 @@
 			// 回到初始页面
 			backToRoot () {
 				clearInterval(this.interval)
-				let historyBack = -parseInt(localStorage.getItem('historyLength'))
 				if (this.isIosQQ || this.isAndroidQQ && this.$route.query.href) {
 					window.location.href = this.$route.query.href
 					return
 				}
+				if (this.$route.query.href) {
+					window.location.href = this.$route.query.href
+					return
+				}
+				// 之前的活动分享页
+				let historyBack = -parseInt(localStorage.getItem('historyLength'))
 				if (historyBack !== 0) {
 					localStorage.setItem('historyLength', 0)
 					window.history.go(historyBack)
 					return
 				}
 				localStorage.setItem('historyLength', 0)
-				window.location.href = this.$route.query.href
 			},
 			// 画图
 			drawArc (start, end) {

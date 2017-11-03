@@ -33,7 +33,7 @@
 					<div class="right-desc">
 						<div class="box">
 							<p class="name">{{ item.name }}</p>
-							<p class="price">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getDecimal }}</p>
+							<p class="price">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getFixed1 }}</p>
 							<span class="dot">{{ item.number }}</span>
 						</div>
 					</div>
@@ -52,11 +52,15 @@
 		<section class="amount">
 			<p class="price">
 				<span class="title">商品金额</span>
-				<span class="num">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getDecimal }}</span>
+				<span class="num">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getFixed1 }}</span>
 			</p>
 			<p class="price">
 				<span class="title">运费</span>
-				<span class="num">+<span class="big">{{ carriage | getInteger }}</span>{{ carriage | getDecimal }}</span>
+				<span class="num">+<span class="big">{{ carriage | getInteger }}</span>{{ carriage | getFixed1 }}</span>
+			</p>
+			<p class="price">
+				<span class="title">优惠金额</span>
+				<span class="num">-<span class="big">{{ discount | getInteger }}</span>{{ discount | getFixed1 }}</span>
 			</p>
 		</section>
 		<split></split>
@@ -68,7 +72,7 @@
 			<div class="left-part">
 				<p>
 					<span class="title">实付款 </span>
-					<span class="price">￥<span class="big">{{ totalSum | getInteger }}</span>{{ totalSum | getDecimal }}</span>
+					<span class="price">￥<span class="big">{{ totalSum | getInteger }}</span>{{ totalSum | getFixed1 }}</span>
 				</p>
 			</div>
 			<div class="right-button" @click="doSubmit()">提交订单</div>
@@ -88,10 +92,32 @@
 				listData: [],
 				nowSum: 0,
 				leaveText: '',
-				defaultAddressChange: false
+				defaultAddressChange: false,
+				isDoubleEleven: false
 			}
 		},
 		computed: {
+			// 优惠金额
+			discount () {
+				// let start = new Date('2017-11-11 00:00:00.000').getTime()
+				let end = new Date('2017-11-12 00:00:00.000').getTime()
+				let nowTime = new Date().getTime()
+				if (nowTime >= end) {
+					return 0
+				}
+				if (!this.isDoubleEleven) {
+					return 0
+				}
+				if (parseFloat(this.nowSum) < 50) {
+					return 0
+				} else if (parseFloat(this.nowSum) < 100) {
+					return 5
+				} else if (parseFloat(this.nowSum) < 200) {
+					return 15
+				} else {
+					return 40
+				}
+			},
 			// 动态设置地址栏的 bottom
 			addressBottom () {
 				return this.address.address.length > 23 ? '15px' : '25px'
@@ -101,7 +127,7 @@
 				return parseFloat(this.nowSum) >= 99 ? 0 : 10
 			},
 			totalSum () {
-				return (parseFloat(this.nowSum) + parseFloat(this.carriage)).toFixed(2)
+				return (parseFloat(this.nowSum) + parseFloat(this.carriage) - parseFloat(this.discount)).toFixed(1)
 			},
 			address () {
 				let obj = {}
@@ -128,10 +154,17 @@
 			// 获取数据
 			this.listData = JSON.parse(this.$route.query.selectedData) || []
 			this.nowSum = this.$route.query.nowSum || 0
+			console.log(this.$route.query.entrance)
+			// 判断是否为双十一
+			if (this.$route.query.entrance && this.$route.query.entrance === 'doubleEleven') {
+				this.isDoubleEleven = true
+			}
 		},
 		mounted () {
-			// 首先清空购物车
-			this.clearShopcat()
+			// 首先清空购物车，双十一不用清空
+			if (!this.isDoubleEleven) {
+				this.clearShopcat()
+			}
 			// 监听更新
 			this.$root.Bus.$on('updateAddress', obj => {
 				this.defaultAddressChange = true
@@ -159,86 +192,14 @@
 					})
 					return
 				}
-				let firstPromiseArr = []
-				let quantityParamsArr = []
-				this.listData.forEach((item, index) => {
-					let _uid = localStorage.getItem('userId') // 用户 id
-					let host = this.Host // 接口地址
-					// let _url = `${host}/api/shop_cart/save_all`
-					let _urlSave = `${host}/api/shop_cart/save`
-					firstPromiseArr.push(this.$ajax.postAjax(`${_urlSave}`, {
-						_uid: _uid,
-						id: item.id,
-						cls: '2'
-					}))
-					if (item.number > 1) {
-						quantityParamsArr.push({
-							_uid: _uid,
-							id: item.id,
-							cls: '2',
-							quantity: item.number
-						})
-					}
-					// let _url = `${host}/api/shop_cart/save?_uid=${_uid}&id=${item.id}&cls=2`
-					// promiseArr = promiseArr.concat(this.addItemsToShopcat(item, _url))
+				this.Toast.loading({
+					title: '提交中...'
 				})
-				let _itemIds = ''
-				let _addressId = this.address.id
-				let _quantity = 0
-				Promise.all(firstPromiseArr).then(values => {
-					// 取出最后完全返回数据
-					let _result = this.getListResult(values)
-					let quantityPromiseArr = this.getQuantityPromiseArr(_result, quantityParamsArr)
-					Promise.all(quantityPromiseArr).then(res => {
-						// 获取购物车列表
-						this.$ajax.shopcatList().then(res => {
-							console.log(res.data.data.item_list.length)
-							// 计算总数
-							res.data.data.item_list.forEach(item => {
-								console.log('quantity: ' + parseInt(item.quantity))
-								_quantity += parseInt(item.quantity)
-							})
-							_itemIds = getWithCommaString(res.data.data.item_list, 'id')
-							let params = {}
-							params._uid = localStorage.getItem('userId')
-							params.quantity = _quantity
-							// if (this.listData.length > 1) {
-							// 	params.item_ids = _itemIds
-							// } else {
-							// 	params.item_id = _itemIds
-							// }
-							params.item_ids = _itemIds
-							params.cls = '2'
-							params.address_id = _addressId
-							params.child_id = ''
-							params.is_use_quantity = ''
-							params.remark = this.leaveText
-							// 调用提交订单接口
-							this.$ajax.tradeConfirm(params).then(res => {
-								let data = res.data
-								// 下一个页面需要的数据
-								let fee = (parseFloat(res.data.data.item_total_fee) + parseFloat(res.data.data.delivery_fee)).toFixed(2)
-								let outtradeno = data.data.no
-								let cls = '2'
-								let protocol = window.location.protocol
-								let host = window.location.host
-								let href = `${protocol}//${host}/peridoical/ording`
-								window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
-								// this.$router.push({
-								// 	path: '/pay',
-								// 	query: {
-								// 		fee: fee,
-								// 		cls: '2'
-								// 	}
-								// })
-							}, err => {
-								console.log(err)
-							})
-						}, err => {
-							console.log(err)
-						})
-					})
-				})
+				if (this.isDoubleEleven) {
+					this.submitDoubleElevenTrage()
+				} else {
+					this.submitByShopcat()
+				}
 			},
 			// 根据数量添加进购物车
 			addItemsToShopcat (item, url) {
@@ -290,6 +251,115 @@
 					}
 				}
 				return promiseArr
+			},
+			// 提交双十一订单
+			submitDoubleElevenTrage () {
+				let params = {}
+				params.uid = localStorage.getItem('userId')
+				params.items = this.listData.map(item => {
+					return {
+						item_id: item.id,
+						quantity: item.number.toString()
+					}
+				})
+				params.addressId = this.address.id
+				params.remark = this.leaveText
+				console.log(params)
+				setTimeout(() => {
+					// 调用提交订单接口
+					this.$ajax.doubleEleven(params).then(res => {
+						let data = res.data
+						// 下一个页面需要的数据
+						let fee = parseFloat(data.total_fee).toFixed(1)
+						let outtradeno = data.no
+						let cls = '2'
+						let protocol = window.location.protocol
+						let host = window.location.host
+						let href = ''
+						if (this.isDoubleEleven) {
+							href = `${protocol}//${host}/periodical/double-eleven`
+						} else {
+							href = `${protocol}//${host}/periodical/ording`
+						}
+						window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+					}, err => {
+						console.log(err)
+					})
+				}, 300)
+			},
+			// 不是双十一活动的话，通过购物车提交
+			submitByShopcat () {
+				// 暂不用
+				let firstPromiseArr = []
+				let quantityParamsArr = []
+				this.listData.forEach((item, index) => {
+					let _uid = localStorage.getItem('userId') // 用户 id
+					let host = this.Host // 接口地址
+					let _urlSave = `${host}/api/shop_cart/save`
+					firstPromiseArr.push(this.$ajax.postAjax(`${_urlSave}`, {
+						_uid: _uid,
+						id: item.id,
+						cls: '2'
+					}))
+					if (item.number > 1) {
+						quantityParamsArr.push({
+							_uid: _uid,
+							id: item.id,
+							cls: '2',
+							quantity: item.number
+						})
+					}
+				})
+				let _itemIds = ''
+				let _addressId = this.address.id
+				let _quantity = 0
+				Promise.all(firstPromiseArr).then(values => {
+					// 取出最后完全返回数据
+					let _result = this.getListResult(values)
+					let quantityPromiseArr = this.getQuantityPromiseArr(_result, quantityParamsArr)
+					Promise.all(quantityPromiseArr).then(res => {
+						// 获取购物车列表
+						this.$ajax.shopcatList().then(res => {
+							console.log(res.data.data.item_list.length)
+							// 计算总数
+							res.data.data.item_list.forEach(item => {
+								console.log('quantity: ' + parseInt(item.quantity))
+								_quantity += parseInt(item.quantity)
+							})
+							_itemIds = getWithCommaString(res.data.data.item_list, 'id')
+							let params = {}
+							params._uid = localStorage.getItem('userId')
+							params.quantity = _quantity
+							params.item_ids = _itemIds
+							params.cls = '2'
+							params.address_id = _addressId
+							params.child_id = ''
+							params.is_use_quantity = ''
+							params.remark = this.leaveText
+							// 调用提交订单接口
+							this.$ajax.tradeConfirm(params).then(res => {
+								let data = res.data
+								// 下一个页面需要的数据
+								let fee = (parseFloat(res.data.data.item_total_fee) + parseFloat(res.data.data.delivery_fee)).toFixed(1)
+								let outtradeno = data.data.no
+								let cls = '2'
+								let protocol = window.location.protocol
+								let host = window.location.host
+								let href = ''
+								if (this.isDoubleEleven) {
+									href = `${protocol}//${host}/periodical/double-eleven`
+								} else {
+									href = `${protocol}//${host}/periodical/ording`
+								}
+								window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+							}, err => {
+								console.log(err)
+							})
+						}, err => {
+							console.log(err)
+						})
+					})
+				})
 			}
 		},
 		components: {

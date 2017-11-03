@@ -1,7 +1,7 @@
 <template>
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide" v-for="(str, index) in listImg" :style="{ backgroundImage: 'url(' + str.url + ')' }">
+			<div class="swiper-slide" v-for="(str, index) in listImg" :style="{ backgroundImage: 'url(' + str.url + ')' }" @click.prevent.stop="chooseItem(index)">
 			</div>
 		</div>
 		<div class="swiper-pagination swiper-pagination-white"></div>
@@ -30,24 +30,28 @@
 		},
 		methods: {
 			updateSwiper () {
-				// if (this.bannerSwiper) {
-				// 	this.bannerSwiper.update()
-				// } else {
-				this.bannerSwiper = new Swiper('.swiper-container', {
-					pagination: '.swiper-pagination',
-					paginationClickable: true,
-					loop: true,
-					speed: 600,
-					autoplay: 2000,
-					autoplayDisableOnInteraction: false,
-					onInit: function (swiper) {
-						swiper.startAutoplay()
-					},
-					onTouchEnd: function (swiper) {
-						swiper.startAutoplay()
-					}
-				})
-				// }
+				if (this.bannerSwiper) {
+					this.bannerSwiper.update()
+				} else {
+					this.bannerSwiper = new Swiper('.swiper-container', {
+						pagination: '.swiper-pagination',
+						paginationClickable: true,
+						loop: true,
+						speed: 600,
+						autoplay: 2000,
+						autoplayDisableOnInteraction: false,
+						onInit: function (swiper) {
+							swiper.startAutoplay()
+						},
+						onTouchEnd: function (swiper) {
+							swiper.startAutoplay()
+						}
+					})
+				}
+			},
+			// 选中元素
+			chooseItem (index) {
+				this.$emit('chooseItem', index)
 			}
 		}
 	}
@@ -62,7 +66,6 @@
 			height: 100%
 			.swiper-slide
 				background-position: center
-				background-size: cover
 				width: 100%
 				height: 100%
 				background-size contain

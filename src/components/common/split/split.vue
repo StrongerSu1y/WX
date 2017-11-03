@@ -1,9 +1,15 @@
 <template>
-  <div class="split"></div>
+  <div class="split" :style="{ height: height + 'px' }"></div>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+  export default {
+  	props: {
+  		height: {
+  			type: String
+  		}
+  	}
+  }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
   .split {

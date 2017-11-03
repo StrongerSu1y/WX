@@ -17,3 +17,10 @@ bg-image($url)
   background-image url($url)
   @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio)
     background-image url($url)
+
+load-animation($speed, $delay)
+  animation move $speed
+  animation-delay $delay
+  animation-iteration-count infinite
+  animation-timing-function linear
+

@@ -15,7 +15,7 @@
 						<span>清空</span>
 					</div>
 				</div>
-				<ul class="list-body" @click.prevent.stop="">
+				<ul class="list-body" :style="{ maxHeight: listHeight + 'px' }" @click.prevent.stop="">
 					<li v-for="(item, index) in listData" v-if="item.number > 0" class="list-item underline">
 						<div class="left-part">
 							<img v-lazy="item.logo">
@@ -37,7 +37,7 @@
 				<div class="shopcat-icon" @click="showShopcatList()">
 					<span v-if="total" class="dot">{{ total }}</span>
 				</div>
-				<span @click="clearStorage()" class="now-sum">￥<span class="big">{{ nowSum }}</span></span>
+				<span @click="clearStorage()" class="now-sum">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getFixed1 }}</span>
 				<!-- <span class="old-sum">￥{{ oldSum }}</span> -->
 			</div>
 			<div class="right-button" @click="orderPay()">
@@ -104,7 +104,8 @@
 				// 报名图标
 				applyIconSrc: `apply.png`,
 				// 展开购物车
-				fold: false
+				fold: false,
+				listHeight: window.innerHeight - 50 - 60
 			}
 		},
 		computed: {

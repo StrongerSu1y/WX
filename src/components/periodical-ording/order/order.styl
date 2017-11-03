@@ -76,12 +76,20 @@
 					.left-media
 						width 1.6rem
 						height 1.6rem
+						line-height 1.6rem
+						font-size 0
 						padding 0.02rem
 						border 1px solid #d6d6d6
 						border-radius 0.1rem
+						text-align center
+						overflow hidden
 						> img
-							width 100%
-							height 100%
+							display inline-block
+							max-width 100%
+							max-height 100%
+							min-width 50%
+							min-height 50%
+							vertical-align top
 					.right-desc
 						flex 1
 						position relative
@@ -109,6 +117,7 @@
 								line-height 0.34rem
 								> .big
 									font-size 0.34rem
+									vertical-align baseline
 							.dot
 								position absolute
 								display inline-block
@@ -166,6 +175,7 @@
 					text-align right
 					> .big
 						font-size 0.3rem
+						vertical-align baseline
 		.bottom
 			position: fixed
 			bottom: 0
@@ -192,7 +202,7 @@
 						vertical-align middle
 						> .big
 							font-size 0.48rem
-							// vertical-align middle
+							vertical-align baseline
 			.right-button
 				flex 1
 				text-align center

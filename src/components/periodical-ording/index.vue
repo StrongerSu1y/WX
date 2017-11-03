@@ -11,7 +11,7 @@
       </div>
     </div>
 		<keep-alive>
-			<router-view :tabIndex="tabIndex" :listData="listData" v-if="$route.meta.keepAlive" @changeTabIndex="changeTabIndex" ref="home"></router-view>
+			<router-view :tabIndex="tabIndex" :listData="listData" v-if="$route.meta.keepAlive" @changeTabIndex="changeTabIndex" :title="title" ref="home"></router-view>
 		</keep-alive>
 		<router-view :listData="listData" v-if="!$route.meta.keepAlive"></router-view>
 		<v-shopcat v-if="shopcatShow" :entrance="'ording'" :nowSum="nowSum" :oldSum="oldSum" :total="total" :listData="listData" ref="shopcat" @addNum="addNum" @reduceNum="reduceNum" @clearShopcat="clearShopcat" @orderPay="orderPay"></v-shopcat>
@@ -20,20 +20,6 @@
 
 <script>
 	import { getPrice, getNeedDataList, getDistinctArray } from '../../common/js/common.js'
-	// let listData = [{
-	// 	src: require('./list/gift_icon.png'),
-	// 	title: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称',
-	// 	desc: '益智DIY万变串珠+弹射飞机+笑脸橡皮sfasdasda',
-	// 	daysText: '半年12期',
-	// 	daysNum: '2018.1~2018.6',
-	// 	last_fee: 236.80,
-	// 	original_fee: 300.50,
-	// 	number: 0,
-	// 	times: '半年12期',
-	// 	grade: '2~6年级适读',
-	// 	carriage: '免运费',
-	// 	index: 0
-	// }]
 	import list from './list/list'
 	import about from './about/about'
 	import shopcat from '../shopcat/shopcat'
@@ -41,6 +27,7 @@
 		name: 'periodical-ording',
 		data () {
 			return {
+				title: '刊物',
 				tabIndex: 0,
 				listData: [],
 				// 第几页
@@ -63,7 +50,7 @@
 				this.listData.forEach((item, index) => {
 					sum += item.number * getPrice(item.last_fee)
 				})
-				return sum.toFixed(2)
+				return sum.toFixed(1)
 			},
 			// 原价
 			oldSum () {
@@ -204,7 +191,7 @@
 					return false
 				}
 				this.$router.push({
-					path: '/peridoical/order',
+					path: '/periodical/order',
 					query: {
 						selectedData: JSON.stringify(this.selectedData),
 						nowSum: this.nowSum
@@ -239,7 +226,7 @@
 				let protocol = location.protocol
 				let host = location.host
 				let nowSum = this.nowSum
-				let _href = encodeURIComponent(`${protocol}//${host}/peridoical/order?selectedData=${selectedData}&cls=${cls}&nowSum=${nowSum}`)
+				let _href = encodeURIComponent(`${protocol}//${host}/periodical/order?selectedData=${selectedData}&cls=${cls}&nowSum=${nowSum}`)
 				let apiUrl = 'https://www.51weixiao.com/app-api/api/user/wxLogin'
 				let redirectUrl = encodeURIComponent(`${apiUrl}?finalUrl=${_href}`)
 				let appId = 'wx701b0e6e6faac47c'

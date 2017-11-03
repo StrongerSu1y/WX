@@ -197,7 +197,6 @@
 							// alert('返回: ' + JSON.stringify(res))
 							success = true
 							// 设置 history
-							// alert(localStorage.getItem('historyLength'))
 							vm.$router.push({
 								path: '/result',
 								query: {

@@ -44,8 +44,13 @@
   #app {
   	font-size: 0.24rem;
     color: #2c3e50;
-    /*padding-top: 0.8rem;*/
     background: #ffffff;
     height: 100%;
+    // max-width 425px;
+    // margin 0 auto;
+    // position relative;
+  }
+  #app div {
+  	// width: 100%;
   }
 </style>

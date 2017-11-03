@@ -1,9 +1,9 @@
 <template>
-	<div class="search-index-page">
+	<div class="search-index-page" @click="hideSelector()">
 		<v-reminder v-show="reminderShow" @hideReminder="hideReminder"></v-reminder>
 		<section class="bar">
 			<div class="top">
-				<div class="select-box" @click="triggerSelector()">
+				<div class="select-box" @click.prevent.stop="triggerSelector()">
 					<span class="text">{{ selectedType.name }}</span>
 					<span class="bottom-arrow"></span>
 				</div>
@@ -187,6 +187,9 @@
 			// 切换选择器显示
 			triggerSelector () {
 				this.selectorShow = !this.selectorShow
+			},
+			hideSelector () {
+				this.selectorShow = false
 			},
 			// 切换选择类型
 			changeTypeIndex (index) {

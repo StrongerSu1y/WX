@@ -113,6 +113,9 @@
 				if (!this.checkForm()) {
 					return
 				}
+				this.Toast.loading({
+					title: '提交中...'
+				})
 				let params = {}
 				params._uid = localStorage.getItem('userId')
 				params.name = this.address.name
@@ -126,23 +129,27 @@
 				if (addressList.length && addressList[0].hasOwnProperty('id')) {
 					params.id = addressList[0].id
 				}
+				// 调用设置地址接口，新增和更新为同一个
 				this.$ajax.addressUpdate(params).then(res => {
-					if (res.status === 200) {
-						this.$ajax.addressList({
-							_uid: localStorage.getItem('userId')
-						}).then(res => {
-							this.address.id = res.data.data.filter(item => {
-								return item.address === this.address.address
-							})[0].id
-							// 目前只能存在一个地址，先将地址列表清空
-							addressList = []
-							addressList.push(this.address)
-							localStorage.setItem('addressList', JSON.stringify(addressList))
-							this.$root.Bus.$emit('updateAddress', JSON.stringify(this.address))
-							this.$router.goBack()
-						}, err => {
-							console.log(err)
-						})
+					if (res.data.msg === 'success') {
+						setTimeout(() => {
+							this.$ajax.addressList({
+								_uid: localStorage.getItem('userId')
+							}).then(res => {
+								let _that = this
+								this.address.id = res.data.data.filter(item => {
+									return item.address === _that.address.address
+								})[0].id
+								// 目前只能存在一个地址，先将地址列表清空
+								addressList = []
+								addressList.push(this.address)
+								localStorage.setItem('addressList', JSON.stringify(addressList))
+								this.$root.Bus.$emit('updateAddress', JSON.stringify(this.address))
+								this.$router.goBack()
+							}, err => {
+								console.log(err)
+							})
+						}, 200)
 					}
 				}, err => {
 					console.log(err)
