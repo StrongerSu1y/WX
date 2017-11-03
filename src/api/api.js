@@ -61,28 +61,28 @@ axios.interceptors.response.use((res) => {
 	return Promise.reject(error)
 })
 
-export function fetch (url, params, type) {
+export function fetch (url, params, type, dataType) {
 	return new Promise((resolve, reject) => {
-		if (type) {
+		if (dataType) {
+			axios({
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: type,
+				data: params,
+				url: url
+			})
+			.then(response => {
+				resolve(response)
+			}, err => {
+				reject(err)
+			})
+			.catch((error) => {
+				reject(error)
+			})
+		} else if (type) {
 			if (type === 'get') {
 				axios.get(url).then(response => {
-					resolve(response)
-				}, err => {
-					reject(err)
-				})
-				.catch((error) => {
-					reject(error)
-				})
-			} else if (type === 'json') {
-				axios({
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					method: 'post',
-					data: params,
-					url: url
-				})
-				.then(response => {
 					resolve(response)
 				}, err => {
 					reject(err)
@@ -339,6 +339,12 @@ export default {
 		双十一订单
 	*/
 	doubleEleven (params) {
-		return fetch('/trade/confirm/book/doubleEleven', params, 'json')
+		return fetch('/trade/confirm/book/doubleEleven', params, 'post', 'json')
+	},
+	/*
+		微信配置信息
+	*/
+	weixinConfig (params) {
+		return fetch('/weixin/config', params, 'get', 'json')
 	}
 }

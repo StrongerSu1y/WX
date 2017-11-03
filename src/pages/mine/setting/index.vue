@@ -81,7 +81,7 @@
 					<img :src="rightArrowSrc">
 				</div>
 			</li>
-			<li class="input-item">
+			<li class="input-item" @click.prevent.stop="openItem('/mine/setting/about')">
 				<div class="left-part">
 					<span class="text">关于我们</span>
 				</div>

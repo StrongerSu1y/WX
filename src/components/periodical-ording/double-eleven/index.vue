@@ -96,6 +96,7 @@
 		mounted () {
 			// this.$refs.top.src += '?x-oss-process=image/resize,w_100'
 			// console.log(this.$refs.top.src)
+			this.weiXinShare()
 		},
 		methods: {
 			// 初始化窗口
@@ -123,16 +124,29 @@
 					}
 				})
 			},
-			weiXinShare (data) {
-				window.wx.config({
-					debug: false,
-					appId: data.appId,
-					timestamp: data.timeStamp,
-					nonceStr: data.nonceStr,
-					signature: data.sign,
-					jsApiList: [
-						'chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage'
-					]
+			weiXinShare () {
+				this.$ajax.weixinConfig({
+					url: window.location.href
+				}).then(res => {
+					let data = res.data.data
+					window.wx.config({
+						debug: true,
+						appId: data.appId,
+						timestamp: data.timestamp,
+						nonceStr: data.nonceStr,
+						signature: data.signature,
+						jsApiList: [
+							'chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage'
+						]
+					})
+					window.wx.ready(() => {
+						window.wx.onMenuShareTimeline({
+							title: '这是title',
+							desc: '这是desc',
+							link: window.location.href,
+							imgUrl: ''
+						})
+					})
 				})
 			}
 		}
