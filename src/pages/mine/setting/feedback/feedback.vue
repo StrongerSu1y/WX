@@ -7,7 +7,7 @@
 			</div>
 			<p class="title">意见反馈</p>
 			<div class="submit-btn" @click="doSubmit()">
-				<img :src="settingIconSrc">
+				提交
 			</div>
 		</section>
 		<!-- 评价内容 -->
@@ -27,7 +27,6 @@
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
-				settingIconSrc: require('@/common/icons/setting_icon.png'),
 				text: '',
 				limit: 300
 			}
