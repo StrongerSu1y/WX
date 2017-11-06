@@ -21,36 +21,49 @@
 				height 1.76rem
 				line-height 1.76rem
 				position relative
-				// padding 0.3rem 0
 				display flex
+				overflow hidden
 				.left-part
 					flex 1
+					overflow hidden
 					padding-left 0.32rem
+					height 1.76rem
+					line-height 1.76rem
+					display -webkit-box
+					-webkit-box-orient horizontal
+					-webkit-box-pack center
+					-webkit-box-align center
+					.address-box
+						width 100%
+						.contract
+							// margin-top 0.3rem
+							display flex
+							width 100%
+							font-size 0.34rem
+							line-height 0.34rem
+							.name
+								display inline-block
+								flex 1
+							.mobile
+								display inline-block
+								text-align right
+						.address-text
+							width 100%
+							margin-top 0.2rem
+							padding-right 0.32rem
+							font-size 0.26rem
+							line-height 0.34rem
+							color #84836d
+							overflow hidden
+							text-overflow ellipsis
+							display -webkit-box
+							-webkit-line-clamp 2
+							-webkit-box-orient vertical
 					> .no-address
+						width 100%
 						color #84836D
 						font-size 0.28rem
 						line-height 1.76rem
-					.contract
-						margin-top 0.3rem
-						display flex
-						width 100%
-						font-size 0.34rem
-						line-height 0.34rem
-						.name
-							display inline-block
-							flex 1
-						.mobile
-							display inline-block
-							text-align right
-					.address
-						position absolute
-						width 90%
-						bottom 0.3rem
-						// margin-top 0.2rem
-						padding-right 0.32rem
-						font-size 0.26rem
-						line-height 0.34rem
-						color #84836d
 				.right-arrow
 					padding 0 0.32rem
 					> img

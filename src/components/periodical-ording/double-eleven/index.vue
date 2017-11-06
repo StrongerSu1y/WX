@@ -60,6 +60,7 @@
 			id: idList[i - 1]
 		})
 	}
+	import { weiXinConfig } from '@/common/js/common'
 	export default {
 		data () {
 			return {
@@ -89,13 +90,14 @@
 		},
 		created () {
 			this.initWrapWidth()
+			// addScript('//res.wx.qq.com/open/js/jweixin-1.0.0.js')
 			window.addEventListener('resize', () => {
 				this.initWrapWidth()
 			})
 		},
 		mounted () {
 			// this.$refs.top.src += '?x-oss-process=image/resize,w_100'
-			// console.log(this.$refs.top.src)
+			console.log(window.wx)
 			this.weiXinShare()
 		},
 		methods: {
@@ -125,28 +127,10 @@
 				})
 			},
 			weiXinShare () {
-				this.$ajax.weixinConfig({
-					url: window.location.href
-				}).then(res => {
-					let data = res.data.data
-					window.wx.config({
-						debug: true,
-						appId: data.appId,
-						timestamp: data.timestamp,
-						nonceStr: data.nonceStr,
-						signature: data.signature,
-						jsApiList: [
-							'chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage'
-						]
-					})
-					window.wx.ready(() => {
-						window.wx.onMenuShareTimeline({
-							title: '这是title',
-							desc: '这是desc',
-							link: window.location.href,
-							imgUrl: ''
-						})
-					})
+				weiXinConfig({
+					title: '双十一活动',
+					desc: '这是微校网双十一活动',
+					imgUrl: 'https://m.51weixiao.com/static/imgs/share_logo.png'
 				})
 			}
 		}

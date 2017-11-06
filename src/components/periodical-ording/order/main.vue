@@ -5,11 +5,13 @@
 			<div class="top-border border-bg"></div>
 			<div class="main">
 				<div class="left-part" v-if="hasDefaultAddress">
-					<div class="contract">
-						<span class="name">{{ address.name }}</span>
-						<span class="mobile">{{ address.mobile }}</span>
+					<div class="address-box">
+						<div class="contract">
+							<span class="name">{{ address.name }}</span>
+							<span class="mobile">{{ address.mobile }}</span>
+						</div>
+						<div class="address-text">{{ address | getFullAddress }}</div>
 					</div>
-					<div class="address" :style="{ bottom: addressBottom }">{{ address | getFullAddress }}</div>
 				</div>
 				<div class="left-part" v-if="!hasDefaultAddress">
 					<div class="no-address">
@@ -117,10 +119,6 @@
 				} else {
 					return 40
 				}
-			},
-			// 动态设置地址栏的 bottom
-			addressBottom () {
-				return this.address.address.length > 23 ? '15px' : '25px'
 			},
 			// 运费
 			carriage () {

@@ -109,7 +109,7 @@
 					<img :src="rightArrowSrc">
 				</div>
 			</li>
-			<li class="input-item">
+			<li class="input-item" @click.prevent.stop="openItem('/mine/setting/help/index')">
 				<div class="left-part">
 					<span class="text">使用帮助</span>
 				</div>

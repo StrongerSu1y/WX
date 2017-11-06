@@ -207,3 +207,47 @@ export function isEmojiCharacter (substring) {
 		}
 	}
 }
+
+// 微信配置
+export function weiXinConfig (share) {
+	Obj.$ajax.weixinConfig({
+		url: window.location.href
+	}).then(res => {
+		let data = res.data
+		window.wx.config({
+			debug: false,
+			appId: data.appId,
+			timestamp: data.timestamp,
+			nonceStr: data.nonceStr,
+			signature: data.signature,
+			jsApiList: [
+				'chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'
+			]
+		})
+		window.wx.ready(() => {
+			// 朋友圈
+			window.wx.onMenuShareTimeline({
+				title: share.title,
+				link: window.location.href,
+				imgUrl: share.imgUrl,
+				success: (res) => {}
+			})
+			// 分享给朋友
+			window.wx.onMenuShareAppMessage({
+				title: share.title,
+				desc: share.desc,
+				link: window.location.href,
+				imgUrl: share.imgUrl,
+				success: (res) => {}
+			})
+			// 分享到QQ
+			window.wx.onMenuShareQQ({
+				title: share.title,
+				desc: share.desc,
+				link: window.location.href,
+				imgUrl: share.imgUrl,
+				success: (res) => {}
+			})
+		})
+	})
+}

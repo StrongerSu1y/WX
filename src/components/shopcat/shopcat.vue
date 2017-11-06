@@ -37,7 +37,7 @@
 				<div class="shopcat-icon" @click="showShopcatList()">
 					<span v-if="total" class="dot">{{ total }}</span>
 				</div>
-				<span @click="clearStorage()" class="now-sum">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getFixed1 }}</span>
+				<span v-if="total" @click="clearStorage()" class="now-sum">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getFixed1 }}</span>
 				<!-- <span class="old-sum">￥{{ oldSum }}</span> -->
 			</div>
 			<div class="right-button" @click="orderPay()">

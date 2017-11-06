@@ -6,13 +6,15 @@ let Obj = new Vue()
 
 let productHost = location.protocol + '//app.51weixiao.com'
 // let productHost = location.protocol + '//192.168.0.231:8080'
+// let productHost = location.protocol + '//192.168.0.200:8080'
 
 // axios 配置
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 15000
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 // axios.defaults.headers['Content-Type'] = 'application/json'
 axios.defaults.baseURL = location.protocol + '//app.51weixiao.com/app-api/api'
 // axios.defaults.baseURL = location.protocol + '//192.168.0.231:8080/app-api/api'
+// axios.defaults.baseURL = location.protocol + '//192.168.0.200:8080/app-api/api'
 
 // POST 传参序列化
 axios.interceptors.request.use((config) => {
@@ -55,15 +57,16 @@ axios.interceptors.response.use((res) => {
 	return res
 }, (error) => {
 	Obj.Toast.hide()
-	Obj.Toast.fail({
-		title: '网络异常'
-	})
+	// Obj.Toast.fail({
+	// 	title: '网络异常'
+	// })
 	return Promise.reject(error)
 })
 
 export function fetch (url, params, type, dataType) {
 	return new Promise((resolve, reject) => {
 		if (dataType) {
+			console.log(params)
 			axios({
 				headers: {
 					'Content-Type': 'application/json'
@@ -345,6 +348,6 @@ export default {
 		微信配置信息
 	*/
 	weixinConfig (params) {
-		return fetch('/weixin/config', params, 'get', 'json')
+		return fetch('/weixin/config', params, 'post', 'json')
 	}
 }

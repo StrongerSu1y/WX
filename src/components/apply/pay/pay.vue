@@ -181,10 +181,16 @@
 					nonceStr: data.nonceStr,
 					signature: data.sign,
 					jsApiList: [
-						'chooseWXPay'
+						'chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage'
 					]
 				})
 				window.wx.ready(() => {
+					window.wx.onMenuShareTimeline({
+						title: '这是title',
+						desc: '这是desc',
+						link: window.location.href,
+						imgUrl: ''
+					})
 					let success = false
 					let vm = this
 					window.wx.chooseWXPay({

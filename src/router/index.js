@@ -72,6 +72,8 @@ import mineSetting from '@/pages/mine/setting/index' // 我的页面-设置
 import mineSettingUsername from '@/pages/mine/setting/username/username' // 我的页面-设置
 import mineSettingFeedback from '@/pages/mine/setting/feedback/feedback' // 我的页面-反馈
 import mineSettingAbout from '@/pages/mine/setting/about/about' // 我的页面-关于我们
+import mineSettingHelp from '@/pages/mine/setting/help/help' // 我的页面-使用帮助
+import mineSettingHelpDetail from '@/pages/mine/setting/help/detail' // 我的页面-使用帮助
 
 // 双十一活动页面
 import doubleEleven from '@/components/periodical-ording/double-eleven/index'
@@ -356,6 +358,12 @@ export default new Router({
 		}, {
 			path: '/mine/setting/about',
 			component: mineSettingAbout
+		}, {
+			path: '/mine/setting/help/index',
+			component: mineSettingHelp
+		}, {
+			path: '/mine/setting/help/detail',
+			component: mineSettingHelpDetail
 		}]
 	}]
 })
