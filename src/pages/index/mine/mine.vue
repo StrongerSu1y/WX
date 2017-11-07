@@ -10,7 +10,7 @@
 				<div class="setting" @click.prevent.stop="openItem('/mine/setting')">
 					<img src="./setting_icon.png">
 				</div>
-				<div class="message">
+				<div class="message" @click.prevent.stop="openItem('/mine/message/index')">
 					<img src="./message_icon.png">
 				</div>
 			</section>

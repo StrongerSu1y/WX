@@ -74,6 +74,10 @@ import mineSettingFeedback from '@/pages/mine/setting/feedback/feedback' // 我�
 import mineSettingAbout from '@/pages/mine/setting/about/about' // 我的页面-关于我们
 import mineSettingHelp from '@/pages/mine/setting/help/help' // 我的页面-使用帮助
 import mineSettingHelpDetail from '@/pages/mine/setting/help/detail' // 我的页面-使用帮助
+import mineMessage from '@/pages/mine/message/index' // 我的页面-消息中心
+import mineMessageSystem from '@/pages/mine/message/system/system' // 我的页面-消息中心
+import mineMessageOrder from '@/pages/mine/message/order/order' // 我的页面-订单中心
+import mineMessageFunction from '@/pages/mine/message/function/function' // 我的页面-功能中心
 
 // 双十一活动页面
 import doubleEleven from '@/components/periodical-ording/double-eleven/index'
@@ -364,6 +368,18 @@ export default new Router({
 		}, {
 			path: '/mine/setting/help/detail',
 			component: mineSettingHelpDetail
+		}, {
+			path: '/mine/message/index',
+			component: mineMessage
+		}, {
+			path: '/mine/message/system',
+			component: mineMessageSystem
+		}, {
+			path: '/mine/message/order',
+			component: mineMessageOrder
+		}, {
+			path: '/mine/message/function',
+			component: mineMessageFunction
 		}]
 	}]
 })
