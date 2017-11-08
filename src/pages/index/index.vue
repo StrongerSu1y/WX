@@ -1,7 +1,7 @@
 <template>
 	<div class="index">
 		<keep-alive>
-			<component :is="tabView" @changeTabIndex="changeTabIndex"></component>
+			<component :is="tabView" @changeTabIndex="changeTabIndex" ref="view"></component>
 		</keep-alive>
 		<footer class="footer">
 			<div @click="changeTabIndex(0)" class="home">
@@ -48,7 +48,6 @@
 			}
 		},
 		mounted () {
-			console.log(this.$store.state.homePageTabIndex)
 		},
 		methods: {
 			changeTabIndex (index) {

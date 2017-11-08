@@ -70,7 +70,6 @@
 				this.$ajax.getCircleList({
 					page_number: this.pageNo
 				}).then(res => {
-					console.log(res)
 					let list = res.data.data.list
 					// 通知父组件可加载更多
 					if (list.length >= 20) {

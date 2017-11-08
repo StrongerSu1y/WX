@@ -79,11 +79,17 @@ import mineMessageSystem from '@/pages/mine/message/system/system' // 我的页�
 import mineMessageOrder from '@/pages/mine/message/order/order' // 我的页面-订单中心
 import mineMessageFunction from '@/pages/mine/message/function/function' // 我的页面-功能中心
 
+// 购物车
+import shopcatIndex from '@/pages/shopcat/home' // 购物车首页
+
 // 双十一活动页面
 import doubleEleven from '@/components/periodical-ording/double-eleven/index'
 
 // 页面间切换动画
 import pageTransition from '@/pages/pageTransition'
+
+// match
+import match from '@/pages/match/index'
 
 Router.prototype.goBack = function () {
 	this.isBack = true
@@ -380,6 +386,12 @@ export default new Router({
 		}, {
 			path: '/mine/message/function',
 			component: mineMessageFunction
+		}, {
+			path: '/match',
+			component: match
+		}, {
+			path: '/shopcat/index',
+			component: shopcatIndex
 		}]
 	}]
 })

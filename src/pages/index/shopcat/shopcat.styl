@@ -1,15 +1,7 @@
 .index-shopcat
 	padding-top 1.48rem
+	min-height 100%
 	background-color #f3f4f5
-	.fixed-title
-		width 100%
-		position fixed
-		top 0.88rem
-		font-size 0.26rem
-		line-height 0.6rem
-		color #523f1a
-		padding 0 0.32rem
-		background-color #fff9ab
 	.header-title
 		position fixed
 		width 100%
@@ -21,107 +13,15 @@
 		color #523f1a
 		text-align center
 		background #fcfaf8
-	.login-box
-		margin-top 0.8rem
-		text-align center
-		> button
-			display inline-block
-			padding 0 0.5rem
+		.edit-icon
+			position absolute
+			top 0
+			right 0
+			padding 0 0.3rem
+			line-height 0.88rem
 			font-size 0.34rem
-			line-height 0.8rem
-			color #fff
-			vertical-align middle
-			background #f8bd48
-			border-radius 0.1rem
-			text-decoration none
-			outline none
-			-webkit-appearance button
-			border none
-	.no-data-box
-		width 100%
-		margin-top 50%
-		text-align center
-		> img
-			display inline-block
+			color #f8bd48
 			width 2rem
 			height 2rem
 			margin 0 auto
-	.loading 
-		position: absolute
-		top: 0
-		right: 0
-		bottom: 0
-		left: 0
-		background: #eee
-		.loading-indicator 
-			position: absolute
-			top: 50%
-			left: 50%
-			margin-left: -25px
-			margin-top: -25px
-			width: 50px
-			height: 50px
-			&:before 
-				content: ""
-				display: block
-				width: 50px
-				height: 25px
-				padding-bottom: 0
-				box-sizing: border-box
-				border-top-left-radius: 25px
-				border-top-right-radius: 25px
-				background: -webkit-linear-gradient(0deg, red, #bbb)
-			&:after 
-				content: ""
-				display: block
-				width: 50px
-				height: 25px
-				padding-top: 0
-				box-sizing: border-box
-				border-bottom-left-radius: 25px
-				border-bottom-right-radius: 25px
-				background: -webkit-linear-gradient(0deg, red, #bbb)
-			> i 
-				display: block
-				position: absolute
-				width: 40px
-				height: 40px
-				background: #eee
-				top: 5px
-				left: 5px
-				border-radius: 20px
-	.main
-		.book-part
-			margin-top 0.16rem
-			.content-header
-				display flex
-				line-height 0.88rem
-				background-color #fbfaf9
-				> .check-box
-					padding 0 0.24rem
-					line-height inherit
-					> img
-						display inline-block
-						width 0.44rem
-						height 0.44rem
-						vertical-align middle
-				.title
-					flex 1
-					font-size 0.3rem
-					line-height inherit
-					color #333
-			.shopcat-list
-				.list-item
-					padding 0.3rem 0.3rem 0.3rem 0
-					background-color #fff
-					.content
-						width 100%
-				> .check-box
-					padding 0 0.24rem
-					line-height inherit
-					> img
-						display inline-block
-						width 0.44rem
-						height 0.44rem
-						vertical-align middle
-					
+	
