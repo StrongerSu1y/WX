@@ -66,7 +66,7 @@
 					<v-order></v-order>
 					<split :height="'8'"></split>
 					<!-- 领券中心 -->
-					<p class="discount" @click="openItem('mine/coupon')">
+					<p class="discount" @click="openItem('/mine/coupon')">
 						<img src="./discount_icon.png">
 						<span class="text">领券中心</span>
 						<img class="right-arrow" src="./right_arrow.png">

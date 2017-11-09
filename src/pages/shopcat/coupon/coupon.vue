@@ -1,24 +1,34 @@
 <template>
-	<div class="mine-discount">
+	<div class="mine-coupon">
 		<!-- 头部 -->
-		<section class="mine-discount-top underline">
+		<section class="mine-coupon-top underline">
 			<div class="back-icon" @click="goBack()">
 				<img :src="backIconSrc">
 			</div>
 			<p class="title">我的优惠券</p>
 		</section>
 		<!-- 浮动层 -->
-		<section class="discount-link">
+		<section class="coupon-link">
 			<p class="text">想要更多优惠券？去领券中心看看吧！</p>
 			<div class="right-part" @click="openItem('/mine/coupon')">
 				<span>去领取</span>
 			</div>
 			<div class="close-icon"></div>
 		</section>
+		<!-- 不使用优惠券 -->
+		<section class="not-use">
+			<p class="text">不使用优惠券</p>
+			<div class="check-box">
+				<img :src="checkActiveSrc">
+			</div>
+		</section>
 		<!-- 列表 -->
-		<ul v-if="listData && listData.length" class="discount-list">
-			<li v-for="(item, index) in listData" ref="listItem" class="discount-item">
+		<ul v-if="listData && listData.length" class="coupon-list">
+			<li v-for="(item, index) in listData" :class="{ noUse: item.noUse}" ref="listItem" class="coupon-item">
 				<div class="item-body">
+					<div v-if="!item.noUse" class="check-box" @click="selectItem(item.price)">
+						<img :src="checkActiveSrc">
+					</div>
 					<div class="left-part">
 						<p class="price">
 							<span class="big">{{ item.price }}</span>
@@ -27,8 +37,10 @@
 						<p class="condition">满{{ item.condition }}元可用</p>
 					</div>
 					<div class="center-part">
-						<p class="type">{{ item.type }}</p>
-						<p class="deadline">有效期 {{ item.deadline }}</p>
+						<div class="box">
+							<p class="type">{{ item.type }}</p>
+							<p class="deadline">有效期 {{ item.deadline }}</p>
+						</div>
 					</div>
 				</div>
 				<div class="item-footer">{{ item.content }}</div>
@@ -54,12 +66,22 @@
 		remain: 20,
 		deadline: '2017年10月12日',
 		loadingShow: false
+	}, {
+		type: '通用券',
+		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
+		price: '100',
+		condition: '1000',
+		remain: 20,
+		deadline: '2017年10月12日',
+		loadingShow: false,
+		noUse: true
 	}]
 	import loading from '@/components/common/loading/loading'
 	export default {
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
+				checkActiveSrc: require('@/common/icons/check_active.png'),
 				listData: listData
 			}
 		},
@@ -75,7 +97,7 @@
 				this.$router.goBack()
 			},
 			// 点击领取
-			getdiscountItem (index) {
+			getcouponItem (index) {
 				this.listData = this.listData.map((item, index2) => {
 					if (index === index2) {
 						item.loadingShow = true
@@ -93,6 +115,11 @@
 				this.$router.push({
 					path: path
 				})
+			},
+			// 选中
+			selectItem (price) {
+				this.$root.Bus.$emit('getCoupon', price)
+				this.$router.goBack()
 			}
 		},
 		components: {
@@ -102,5 +129,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-	@import './discount.styl'
+	@import './coupon.styl'
 </style>

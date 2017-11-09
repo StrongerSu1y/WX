@@ -10,8 +10,7 @@
 				添加
 			</div>
 		</section>
-		<empty v-if="!addressList.length"></empty>
-		<ul v-if="addressList.length" class="input-list">
+		<ul class="input-list">
 			<li v-for="(address, index) in addressList" class="input-item" @click="openAddressItem(address)">
 				<section class="header">
 					<div class="main">
@@ -33,37 +32,27 @@
 </template>
 
 <script>
-	import empty from '@/components/common/empty/empty'
+	let addressList = [{
+		name: '张三丰',
+		mobile: '13777818859',
+		address: '翠苑第一小学(翠苑校区)一年级1班',
+		cityArea: ''
+	}]
 	export default {
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				rightArrowSrc: require('@/common/icons/right_arrow.png'),
-				addressList: []
+				addressList: addressList
 			}
 		},
 		computed: {
-		},
-		created () {
-			this.loadData()
 		},
 		mounted () {
 			this.$nextTick(() => {
 			})
 		},
 		methods: {
-			// 加载数据
-			loadData () {
-				this.$ajax.addressList({
-					_uid: localStorage.getItem('userId')
-				}).then(res => {
-					if (res.data.data && res.data.data.length) {
-						this.addressList = res.data.data
-					}
-				}, err => {
-					console.log(err)
-				})
-			},
 			// 返回
 			goBack () {
 				this.$router.goBack()
@@ -87,9 +76,6 @@
 					}
 				})
 			}
-		},
-		components: {
-			empty
 		}
 	}
 </script>

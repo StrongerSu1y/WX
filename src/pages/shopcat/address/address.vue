@@ -3,7 +3,7 @@
 		<!-- 头部 -->
 		<section class="mine-address-index-top underline">
 			<div class="back-icon" @click="$router.goBack()">
-				<img :src="backIconSrc">
+				<img src="./back_icon.png">
 			</div>
 			<p class="title">地址管理</p>
 			<div class="add-btn" @click="doSave()">
@@ -23,7 +23,7 @@
 				<span class="name">省市区</span>
 				<span class="input" :class="{ placeholder: !address.cityArea }" @click="showPicker()">{{ address.cityArea || '请选择地区' }}</span>
 				<input type="hidden" v-model="address.cityArea" required placeholder="请选择地区">
-				<img :src="rightArrowSrc">
+				<img src="./arrow_right.png">
 			</li>
 			<li class="list-item">
 				<span class="name">地址</span>
@@ -41,8 +41,6 @@
 		name: 'address',
 		data () {
 			return {
-				backIconSrc: require('@/common/icons/back_icon.png'),
-				rightArrowSrc: require('@/common/icons/right_arrow.png'),
 				picker: '',
 				data: area.result,
 				tempIndex: [0, 0, 0],

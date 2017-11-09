@@ -42,6 +42,11 @@
 				tabList: ['home', 'v-circle', 'shopcat', 'mine']
 			}
 		},
+		created () {
+			this.$root.Bus.$on('goHangout', (value, event) => {
+				this.changeTabIndex(0)
+			})
+		},
 		computed: {
 			tabView () {
 				return this.tabList[this.tabIndex]

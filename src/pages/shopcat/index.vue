@@ -1,21 +1,21 @@
 <template>
-	<section class="shopcat-main">
+	<section class="shopcat-main" :style="{ minHeight: windowHeight }">
 		<empty v-if="!userId" :text="'您暂时还未登录哦！'"></empty>
 		<div v-if="!userId" class="login-box">
 			<button @click.prevent.stop="goLogin()">去登录</button>
 		</div>
-		<section v-if="userId && !bookList.length" class="no-data-box">
+		<section v-if="goHomePageShow" class="no-data-box">
 			<img src="./shopcat_empty.png">
 		</section>
-		<div v-if="userId && !bookList.length && !goodsList.length" class="login-box">
+		<div v-if="goHomePageShow" class="login-box">
 			<button @click.prevent.stop="goHomePage()">去逛逛</button>
 		</div>
 		<!-- 悬浮层 -->
 		<p class="fixed-title">购买微校网商品满99元包邮哦亲！</p>
-		<section v-if="userId && (bookList.length || goodsList.length)" class="wrapper" ref="wrapper" :style="{ height: winHeight }">
+		<section v-if="bookList.length || goodsList.length" class="wrapper" ref="wrapper" :style="{ height: winHeight }">
 			<div ref="content" class="content">
 				<!-- 报刊杂志 -->
-				<section v-if="userId && bookList.length" class="book-part">
+				<section v-if="bookList.length" class="book-part">
 					<div class="content-header">
 						<div class="check-box" @click.prevent.stop="selectAllBookItems()">
 							<img v-if="bookAll" :src="checkActiveSrc">
@@ -24,8 +24,8 @@
 						<p class="title">报刊杂志</p>
 					</div>
 					<ul class="shopcat-list">
-						<transition-group leave-active-class="animated slideOutLeft">
-							<li :key="'book' + index" ref="bookItem" v-for="(item, index) in bookList" class="list-item" :class="{ deleteShow: index === bookDeleteIndex }">
+						<transition-group enter-active-class="animated" leave-active-class="animated slideOutRight">
+							<li v-for="(item, index) in bookList" :key="item.id" ref="bookItem" class="list-item" :class="{ deleteShow: index === bookDeleteIndex }">
 								<div class="content">
 									<div class="check-box" @click.prevent.stop="selectBookItem(index)">
 										<img v-if="item.active" :src="checkActiveSrc">
@@ -40,8 +40,8 @@
 												<p class="name">{{ item.name }}</p>
 												<p class="price">
 													<span class="small">¥</span>
-													<span class="big">{{ item.price | getInteger }}</span>
-													<span class="small">{{ item.price | getDecimal }}</span>
+													<span class="big">{{ item.last_fee | getInteger }}</span>
+													<span class="small">{{ item.last_fee | getDecimal }}</span>
 												</p>
 												<!-- 控制器 -->
 												<div class="cart-control">
@@ -64,7 +64,7 @@
 					</ul>
 				</section>
 				<!-- 商品 -->
-				<section v-if="userId && goodsList.length" class="goods-part">
+				<section v-if="goodsList.length" class="goods-part">
 					<div class="content-header">
 						<div class="check-box" @click.prevent.stop="selectAllGoodsItems()">
 							<img v-if="goodsAll" :src="checkActiveSrc">
@@ -73,8 +73,8 @@
 						<p class="title">商品</p>
 					</div>
 					<ul class="shopcat-list">
-						<transition-group leave-active-class="animated slideOutLeft">
-							<li :key="'goods' + index" ref="goodsItem" v-for="(item, index) in goodsList" class="list-item" :class="{ deleteShow: index === goodsDeleteIndex }">
+						<transition-group enter-active-class="animated" leave-active-class="animated slideOutRight">
+							<li v-for="(item, index) in goodsList" :key="item.id" ref="goodsItem" class="list-item" :class="{ deleteShow: index === goodsDeleteIndex }">
 								<div class="content">
 									<div class="check-box" @click.prevent.stop="selectGoodsItem(index)">
 										<img v-if="item.active" :src="checkActiveSrc">
@@ -89,8 +89,8 @@
 												<p class="name">{{ item.name }}</p>
 												<p class="price">
 													<span class="small">¥</span>
-													<span class="big">{{ item.price | getInteger }}</span>
-													<span class="small">{{ item.price | getDecimal }}</span>
+													<span class="big">{{ item.last_fee | getInteger }}</span>
+													<span class="small">{{ item.last_fee | getDecimal }}</span>
 												</p>
 												<!-- 控制器 -->
 												<div class="cart-control">
@@ -147,37 +147,38 @@
 <script>
 	let bookList = [{
 		name: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名',
-		price: '158.00',
+		last_fee: '158.00',
 		number: 3,
 		logo: require('@/common/icons/avatar.jpg'),
 		id: '1333'
 	}, {
 		name: '儿额问问各位',
-		price: '111.00',
+		last_fee: '111.00',
 		number: 2,
 		logo: require('@/common/icons/avatar.jpg'),
 		id: '13sss33'
 	}]
 	let goodsList = [{
 		name: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名',
-		price: '158.00',
+		last_fee: '158.00',
 		number: 2,
-		logo: require('@/common/icons/avatar.jpg')
+		logo: require('@/common/icons/avatar.jpg'),
+		id: 'sss13322223'
 	}, {
 		name: '到谷歌的是都是割发代首工人干活惹我他广告我我天天',
-		price: '222.00',
+		last_fee: '222.00',
 		number: 5,
 		logo: require('@/common/icons/avatar.jpg'),
 		id: '13322223'
 	}, {
 		name: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名',
-		price: '158.00',
+		last_fee: '158.00',
 		number: 2,
 		logo: require('@/common/icons/avatar.jpg'),
 		id: '13355553'
 	}, {
 		name: '到谷歌的是都是割发代首工人干活惹我他广告我我天天',
-		price: '222.00',
+		last_fee: '222.00',
 		number: 5,
 		logo: require('@/common/icons/avatar.jpg'),
 		id: '123212333'
@@ -197,8 +198,9 @@
 		},
 		data () {
 			return {
-				// winHeight: window.innerHeight - 52 - 44 - 49 - 30 - 8 + 'px',
-				winHeight: window.innerHeight - 52 + 'px',
+				windowHeight: window.innerHeight + 'px',
+				winHeight: window.innerHeight - 52 - 44 - 49 - 30 - 8 + 'px',
+				// winHeight: window.innerHeight - 52 + 'px',
 				userId: localStorage.getItem('userId'),
 				bookList: bookList,
 				goodsList: goodsList,
@@ -213,6 +215,14 @@
 			}
 		},
 		computed: {
+			// 显示去逛逛
+			goHomePageShow () {
+				if (this.bookList.length || this.goodsList.length || !this.userId) {
+					return false
+				} else {
+					return true
+				}
+			},
 			// 图书全选
 			bookAll () {
 				let flag = true
@@ -246,12 +256,12 @@
 				let sum = 0
 				this.bookList.forEach(item => {
 					if (item.active) {
-						sum += parseFloat(item.price) * item.number
+						sum += parseFloat(item.last_fee) * item.number
 					}
 				})
 				this.goodsList.forEach(item => {
 					if (item.active) {
-						sum += parseFloat(item.price) * item.number
+						sum += parseFloat(item.last_fee) * item.number
 					}
 				})
 				return sum
@@ -306,6 +316,24 @@
 					}
 				})
 				return flag
+			},
+			// 图书已选
+			bookSelectedData () {
+				if (!this.bookList.length) {
+					return []
+				}
+				return this.bookList.filter(item => {
+					return item.active
+				})
+			},
+			// 商品已选
+			goodsSelectedData () {
+				if (!this.goodsList.length) {
+					return []
+				}
+				return this.goodsList.filter(item => {
+					return item.active
+				})
 			}
 		},
 		created () {
@@ -315,10 +343,10 @@
 			this.$nextTick(() => {
 				this.getDeleteLineHeight()
 				if (this.bookList.length) {
-					this.listenBookTouchEvent()
+					// this.listenBookTouchEvent()
 				}
 				if (this.goodsList.length) {
-					this.listenGoodsTouchEvent()
+					// this.listenGoodsTouchEvent()
 				}
 				setTimeout(() => {
 					this.initBetterScroll()
@@ -328,9 +356,13 @@
 		methods: {
 			// 去逛逛
 			goHomePage () {
-				this.$router.push({
-					path: '/index'
-				})
+				if (this.entrance === 'homepage') {
+					this.$root.Bus.$emit('goHangout')
+				} else {
+					this.$router.push({
+						path: '/index'
+					})
+				}
 			},
 			// 初始化 scroller
 			initBetterScroll () {
@@ -349,7 +381,9 @@
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y
 					if (this.scrollTop < 0) {
-						this.initBetterScroll()
+						this.$nextTick(() => {
+							this.initBetterScroll()
+						})
 					}
 				})
 				this.scroller.on('touchend', (pos) => {
@@ -510,7 +544,6 @@
 			},
 			// 选择单项 goods
 			selectGoodsItem (index) {
-				// this.goodsList[index].active = !this.goodsList[index].active
 				this.goodsList = this.goodsList.map((item, index2) => {
 					if (index === index2) {
 						item.active = !item.active
@@ -520,20 +553,34 @@
 			},
 			// 去结算
 			goPay () {
-				if (!this.canClear) {
-					if (this.hasGoodsSelected && this.hasBookSelected) {
-						this.Dialog.alert({
-							title: '提示',
-							msg: '刊物杂志不能与其它商品同时结算，请分别选中再去结算~'
-						})
-						return
-					}
-					this.$router.push({
-						path: '/periodical/order'
-					})
-				} else {
+				// 清除状态
+				if (this.canClear) {
 					this.clearItems()
+					return
 				}
+				// 两种不同商品不能同时结算
+				if (this.hasGoodsSelected && this.hasBookSelected) {
+					this.Dialog.alert({
+						title: '提示',
+						msg: '刊物杂志不能与其它商品同时结算，请分别选中再去结算~'
+					})
+					return
+				}
+				// 未选择内容
+				if (!this.hasGoodsSelected && !this.hasBookSelected) {
+					this.Toast.warning({
+						title: '请先选择需要结算的内容'
+					})
+					return
+				}
+				let selectedData = this.bookSelectedData.length ? this.bookSelectedData : this.goodsSelectedData
+				this.$router.push({
+					path: '/shopcat/order',
+					query: {
+						selectedData: JSON.stringify(selectedData),
+						nowSum: this.totalOriginPrice
+					}
+				})
 			},
 			// 移除
 			clearItems () {
@@ -552,7 +599,14 @@
 			deleteBookItem (id) {
 				this.bookList.forEach((item, index) => {
 					if (id === item.id) {
+						this.bookDeleteIndex = -1
 						this.bookList.splice(index, 1)
+						this.$nextTick(() => {
+							// 动画结束后刷新scroll
+							setTimeout(() => {
+								this.initBetterScroll()
+							}, 320)
+						})
 					}
 				})
 			},
@@ -560,7 +614,14 @@
 			deleteGoodsItem (id) {
 				this.goodsList.forEach((item, index) => {
 					if (id === item.id) {
+						this.goodsDeleteIndex = -1
 						this.goodsList.splice(index, 1)
+						this.$nextTick(() => {
+							// 动画结束后刷新scroll
+							setTimeout(() => {
+								this.initBetterScroll()
+							}, 320)
+						})
 					}
 				})
 			}

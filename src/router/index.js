@@ -81,6 +81,9 @@ import mineMessageFunction from '@/pages/mine/message/function/function' // 我�
 
 // 购物车
 import shopcatIndex from '@/pages/shopcat/home' // 购物车首页
+import shopcatOrder from '@/pages/shopcat/order/order' // 购物车首页
+import shopcatOrderMain from '@/pages/shopcat/order/main' // 购物车首页
+import shopcatCoupon from '@/pages/shopcat/coupon/coupon' // 购物车优惠券
 
 // 双十一活动页面
 import doubleEleven from '@/components/periodical-ording/double-eleven/index'
@@ -96,6 +99,8 @@ Router.prototype.goBack = function () {
 	// window.history.go(-1)
 	this.go(-1)
 }
+
+Router.isBack = false
 
 Vue.use(Router)
 
@@ -392,6 +397,19 @@ export default new Router({
 		}, {
 			path: '/shopcat/index',
 			component: shopcatIndex
+		}, {
+			path: '/shopcat/order',
+			component: shopcatOrder,
+			children: [{
+				path: '/',
+				component: shopcatOrderMain,
+				meta: {
+					keepAlive: true
+				}
+			}, {
+				path: 'coupon',
+				component: shopcatCoupon
+			}]
 		}]
 	}]
 })
