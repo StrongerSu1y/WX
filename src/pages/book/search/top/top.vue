@@ -20,7 +20,8 @@
 					<img ref="searchIcon" src="./search_icon_black.png">
 				</div>
 			</div>
-			<div class="message">
+			<div class="search_top_shopcat" @click="goShopcat()">
+				<span v-if="shopcatList.length" class="dot">{{ shopcatList.length }}</span>
 				<img ref="messageIcon" src="./shopcat_icon.png">
 			</div>
 		</header>
@@ -111,7 +112,9 @@
 				minPrice: '',
 				maxPrice: '',
 				// 收起
-				fold: true
+				fold: true,
+				// 购物车
+				shopcatList: []
 			}
 		},
 		computed: {
@@ -169,16 +172,20 @@
 		watch: {
 		},
 		created () {
+			// 加载数据
 			this.loadData()
+			// 获取购物车
+			this.getShopcat()
 		},
 		mounted () {
+			// 获取被选中的种类
 			this.getSelectedType()
 		},
 		methods: {
 			loadData () {
 				// 图书种类列表
 				this.$ajax.bookConstant().then(res => {
-					console.log(res)
+					console.log('typelist loadData')
 					let bookTypeList = res.data.bookTypeList
 					bookTypeList.forEach(item => {
 						item.active = false
@@ -234,6 +241,8 @@
 					this.bookTypeList.forEach(item => {
 						item.active = false
 					})
+					// 通知重置
+					this.$emit('reset')
 				}
 				if (type === 'age') {
 					this.itemAgeList.forEach(item => {
@@ -258,7 +267,7 @@
 				if (type === 'price') {
 					this.params.minPrice = this.minPrice
 					this.params.maxPrice = this.maxPrice
-					if (this.minPrice > this.maxPrice) {
+					if (this.maxPrice && this.minPrice > this.maxPrice) {
 						this.Toast.warning({
 							title: '<p>最低价</p>不得高于最高价'
 						})
@@ -285,6 +294,7 @@
 			goBack () {
 				this.$router.goBack()
 			},
+			// 获取被选中的种类
 			getSelectedType () {
 				if (!this.bookTypeList.length) {
 					return false
@@ -295,6 +305,20 @@
 						this.bookTypeList[index].active = true
 						this.doConfirm('book')
 					}
+				})
+			},
+			// 获取购物车
+			getShopcat () {
+				this.$ajax.shopcatList().then(res => {
+					this.shopcatList = res.data.data.item_list
+				}, err => {
+					console.log(err)
+				})
+			},
+			// 前往购物车
+			goShopcat () {
+				this.$router.push({
+					path: '/shopcat/index'
 				})
 			}
 		}

@@ -134,6 +134,11 @@ input {
   font-size: 0.28rem;
 }
 
+/* 颜色 */
+.cf8bd48 {
+  color: #f8bd48;
+}
+
 /* aui */
 .aui-mask {
   position: fixed;

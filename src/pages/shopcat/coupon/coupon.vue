@@ -8,26 +8,28 @@
 			<p class="title">我的优惠券</p>
 		</section>
 		<!-- 浮动层 -->
-		<section class="coupon-link">
+		<section v-if="linkShow" class="coupon-link">
 			<p class="text">想要更多优惠券？去领券中心看看吧！</p>
 			<div class="right-part" @click="openItem('/mine/coupon')">
 				<span>去领取</span>
 			</div>
-			<div class="close-icon"></div>
+			<div class="close-icon" @click="linkShow = false"></div>
 		</section>
 		<!-- 不使用优惠券 -->
 		<section class="not-use">
 			<p class="text">不使用优惠券</p>
-			<div class="check-box">
-				<img :src="checkActiveSrc">
+			<div class="check-box" @click="clearCoupon()">
+				<img v-if="!couponPrice" :src="checkActiveSrc">
+				<img v-if="couponPrice" :src="checkSrc">
 			</div>
 		</section>
 		<!-- 列表 -->
 		<ul v-if="listData && listData.length" class="coupon-list">
 			<li v-for="(item, index) in listData" :class="{ noUse: item.noUse}" ref="listItem" class="coupon-item">
 				<div class="item-body">
-					<div v-if="!item.noUse" class="check-box" @click="selectItem(item.price)">
-						<img :src="checkActiveSrc">
+					<div v-if="!item.noUse" class="check-box" @click="selectItem(item)">
+						<img v-if="item.id === couponId" :src="checkActiveSrc">
+						<img v-if="item.id !== couponId" :src="checkSrc">
 					</div>
 					<div class="left-part">
 						<p class="price">
@@ -57,15 +59,8 @@
 		condition: '1000',
 		remain: 20,
 		deadline: '2017年10月12日',
-		loadingShow: false
-	}, {
-		type: '通用券',
-		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
-		price: '100',
-		condition: '1000',
-		remain: 20,
-		deadline: '2017年10月12日',
-		loadingShow: false
+		loadingShow: false,
+		id: '1'
 	}, {
 		type: '通用券',
 		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
@@ -74,7 +69,17 @@
 		remain: 20,
 		deadline: '2017年10月12日',
 		loadingShow: false,
-		noUse: true
+		id: '2'
+	}, {
+		type: '通用券',
+		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
+		price: '100',
+		condition: '1000',
+		remain: 20,
+		deadline: '2017年10月12日',
+		loadingShow: false,
+		noUse: true,
+		id: '3'
 	}]
 	import loading from '@/components/common/loading/loading'
 	export default {
@@ -82,12 +87,20 @@
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				checkActiveSrc: require('@/common/icons/check_active.png'),
-				listData: listData
+				checkSrc: require('@/common/icons/check.png'),
+				listData: listData,
+				linkShow: true,
+				couponPrice: '',
+				couponId: ''
 			}
 		},
 		computed: {
 		},
 		mounted () {
+			if (this.$route.query.couponPrice) {
+				this.couponPrice = this.$route.query.couponPrice
+				this.couponId = this.$route.query.couponId
+			}
 			this.$nextTick(() => {
 			})
 		},
@@ -117,8 +130,21 @@
 				})
 			},
 			// 选中
-			selectItem (price) {
-				this.$root.Bus.$emit('getCoupon', price)
+			selectItem (item) {
+				this.$root.Bus.$emit('getCoupon', {
+					couponPrice: item.price,
+					couponId: item.id
+				})
+				this.$router.goBack()
+			},
+			// 不使用优惠券
+			clearCoupon () {
+				this.couponPrice = ''
+				this.couponId = ''
+				this.$root.Bus.$emit('getCoupon', {
+					couponPrice: '',
+					couponId: ''
+				})
 				this.$router.goBack()
 			}
 		},

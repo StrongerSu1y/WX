@@ -10,18 +10,21 @@
 				添加
 			</div>
 		</section>
-		<ul class="input-list">
+		<empty v-if="!addressList.length"></empty>
+		<ul v-if="addressList.length" class="input-list">
 			<li v-for="(address, index) in addressList" class="input-item" @click="openAddressItem(address)">
 				<section class="header">
 					<div class="main">
 						<div class="left-part">
-							<div class="contract">
-								<span class="name">{{ address.name }}</span>
-								<span class="mobile">{{ address.mobile }}</span>
+							<div class="box">
+								<div class="contract">
+									<span class="name">{{ address.name }}</span>
+									<span class="mobile">{{ address.mobile }}</span>
+								</div>
+								<div class="address" :style="getAddressBottom(address.address)">{{ address | getFullAddressName }}</div>
 							</div>
-							<div class="address" :style="getAddressBottom(address.address)">{{ address | getFullAddress }}</div>
 						</div>
-						<div class="right-arrow" @click="modifyAddress('order/address')">
+						<div class="right-arrow">
 							<img :src="rightArrowSrc">
 						</div>
 					</div>
@@ -32,27 +35,37 @@
 </template>
 
 <script>
-	let addressList = [{
-		name: '张三丰',
-		mobile: '13777818859',
-		address: '翠苑第一小学(翠苑校区)一年级1班',
-		cityArea: ''
-	}]
+	import empty from '@/components/common/empty/empty'
 	export default {
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				rightArrowSrc: require('@/common/icons/right_arrow.png'),
-				addressList: addressList
+				addressList: []
 			}
 		},
 		computed: {
+		},
+		created () {
+			this.loadData()
 		},
 		mounted () {
 			this.$nextTick(() => {
 			})
 		},
 		methods: {
+			// 加载数据
+			loadData () {
+				this.$ajax.addressList({
+					_uid: localStorage.getItem('userId')
+				}).then(res => {
+					if (res.data.data && res.data.data.length) {
+						this.addressList = res.data.data
+					}
+				}, err => {
+					console.log(err)
+				})
+			},
 			// 返回
 			goBack () {
 				this.$router.goBack()
@@ -60,7 +73,7 @@
 			// 添加
 			doAdd () {
 				this.$router.push({
-					path: '/mine/address/edit'
+					path: 'address/edit'
 				})
 			},
 			// 获得底部距离
@@ -69,13 +82,18 @@
 			},
 			// 打开单条地址
 			openAddressItem (address) {
-				this.$router.push({
-					path: '/mine/address/edit',
-					query: {
-						address: JSON.stringify(address)
-					}
-				})
+				this.$root.Bus.$emit('chooseAddress', address)
+				this.$router.goBack()
+				// this.$router.push({
+				// 	path: '/mine/address/edit',
+				// 	query: {
+				// 		address: JSON.stringify(address)
+				// 	}
+				// })
 			}
+		},
+		components: {
+			empty
 		}
 	}
 </script>

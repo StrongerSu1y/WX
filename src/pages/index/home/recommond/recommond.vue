@@ -88,8 +88,9 @@
 							id: id
 						}
 					})
+				} else {
+					window.location.href = link
 				}
-				window.location.href = link
 			}
 		}
 	}

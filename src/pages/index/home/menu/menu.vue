@@ -13,7 +13,7 @@
 	let menuList = [{
 		src: require('./periodical_logo.png'),
 		title: '刊物',
-		path: '/periodical/ording'
+		path: '/book'
 	}, {
 		src: require('./bookmall_logo.png'),
 		title: '微书城',

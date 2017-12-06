@@ -106,6 +106,8 @@
 			this.getData()
 			// 重置历史
 			this.resetHistory()
+			// 清空缓存
+			localStorage.clear()
 			// localStorage.setItem('userId', '100095')
 		},
 		components: {
@@ -120,7 +122,6 @@
 				this.Toast.loading({
 					title: '加载中...'
 				})
-				// this.$ajax.getAjax(`/book?itemIds=151,308,309,310&pageNum=${pageNum}&pageSize=5`)
 				this.$ajax.getAjax('/book/open?itemIds=3100,3101,3102,3103')
 					.then(res => {
 						// console.log(res)

@@ -22,20 +22,25 @@ import index from '@/pages/index/index'
 // 刊物征订
 import periodicalOrding from '@/components/periodical-ording/index'
 import periodicalOrdingOther from '@/components/periodical-ording/other'
-import periodicalOrdingDoubleEleven from '@/components/periodical-ording/doubleEleven'
+// import periodicalOrdingDoubleEleven from '@/components/periodical-ording/doubleEleven'
+import periodicalOrdingDoubleTwelve from '@/components/periodical-ording/doubleTwelve'
 import periodicalOrdingHome from '@/components/periodical-ording/home/home'
+import periodicalOrdingTwelveHome from '@/components/periodical-ording/double-twelve/home/home'
+import periodicalOrdingTwelveDetail from '@/components/periodical-ording/double-twelve/detail/detail'
 import periodicalOrdingOrder from '@/components/periodical-ording/order/order'
 import periodicalOrdingMain from '@/components/periodical-ording/order/main'
 import periodicalOrdingLeave from '@/components/periodical-ording/leave/leave'
 import periodicalOrdingAddress from '@/components/periodical-ording/address/address'
 import periodicalOrdingDetail from '@/components/periodical-ording/detail/detail'
+// 广东深圳
+import periodicalOrdingOther1 from '@/components/periodical-ording/other1'
 // 搜索
 import search from '@/pages/search/search'
 import searchIndex from '@/pages/search/index'
 import searchResult from '@/pages/search/result/result'
 // 微书城
-import book from '@/pages/book/book'
-import bookIndex from '@/pages/book/index'
+import book from '@/pages/book/book' // 路由控制页面
+import bookIndex from '@/pages/book/index' // 微书城首页
 import bookSearch from '@/pages/book/search/search'
 import bookSingle from '@/pages/book/single/single'
 import bookDetail from '@/pages/book/detail/index'
@@ -84,9 +89,13 @@ import shopcatIndex from '@/pages/shopcat/home' // 购物车首页
 import shopcatOrder from '@/pages/shopcat/order/order' // 购物车首页
 import shopcatOrderMain from '@/pages/shopcat/order/main' // 购物车首页
 import shopcatCoupon from '@/pages/shopcat/coupon/coupon' // 购物车优惠券
+import shopcatAddress from '@/pages/shopcat/address/index' // 购物车地址列表
+import shopcatAddressEdit from '@/pages/shopcat/address/address' // 购物车地址添加
+import shopcatOrderLeave from '@/pages/shopcat/leave/leave' // 购物车留言
 
 // 双十一活动页面
-import doubleEleven from '@/components/periodical-ording/double-eleven/index'
+// import doubleEleven from '@/components/periodical-ording/double-eleven/index'
+import doubleTwelve from '@/components/periodical-ording/double-twelve/index'
 
 // 页面间切换动画
 import pageTransition from '@/pages/pageTransition'
@@ -179,7 +188,7 @@ export default new Router({
 			path: '/view',
 			component: view
 		}, {
-			path: '/index',
+			path: '/',
 			component: index,
 			meta: {
 				before: true
@@ -216,9 +225,9 @@ export default new Router({
 					keepAlive: false // 需要缓存
 				}
 			}]
-		}, { // 刊物征订双十一
-			path: '/periodical/double-eleven',
-			component: periodicalOrdingDoubleEleven,
+		}, { // 刊物征订新加广东深圳
+			path: '/periodical/other1',
+			component: periodicalOrdingOther1,
 			children: [{
 				path: '/',
 				component: periodicalOrdingHome,
@@ -228,6 +237,22 @@ export default new Router({
 			}, {
 				path: 'detail',
 				component: periodicalOrdingDetail,
+				meta: {
+					keepAlive: false // 需要缓存
+				}
+			}]
+		}, { // 刊物征订双十二
+			path: '/periodical/double-twelve',
+			component: periodicalOrdingDoubleTwelve,
+			children: [{
+				path: '/',
+				component: periodicalOrdingTwelveHome,
+				meta: {
+					keepAlive: true // 需要缓存
+				}
+			}, {
+				path: 'detail',
+				component: periodicalOrdingTwelveDetail,
 				meta: {
 					keepAlive: false // 需要缓存
 				}
@@ -278,7 +303,10 @@ export default new Router({
 				component: bookIndex
 			}, {
 				path: 'search',
-				component: bookSearch
+				component: bookSearch,
+				meta: {
+					keepAlive: false
+				}
 			}, {
 				path: 'single',
 				component: bookSingle
@@ -359,8 +387,8 @@ export default new Router({
 			path: '/mine/circle',
 			component: mineCircle
 		}, {
-			path: '/double-eleven',
-			component: doubleEleven
+			path: '/double-twelve',
+			component: doubleTwelve
 		}, {
 			path: '/mine/setting',
 			component: mineSetting
@@ -409,6 +437,15 @@ export default new Router({
 			}, {
 				path: 'coupon',
 				component: shopcatCoupon
+			}, {
+				path: 'address',
+				component: shopcatAddress
+			}, {
+				path: 'address/edit',
+				component: shopcatAddressEdit
+			}, {
+				path: 'leave',
+				component: shopcatOrderLeave
 			}]
 		}]
 	}]

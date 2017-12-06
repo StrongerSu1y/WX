@@ -35,7 +35,7 @@
 	import BScroll from 'better-scroll'
 	export default {
 		name: 'publish',
-		props: ['listData', 'title', 'doubleEleven'],
+		props: ['listData', 'title', 'doubleEleven', 'area'],
 		data () {
 			return {
 				noData: '',
@@ -54,7 +54,6 @@
 						if (item.getAttribute('data-id') === this.$route.query.id) {
 							scrollTop = item.offsetTop
 						}
-						console.log(item.offsetTop)
 					})
 					setTimeout(() => {
 						window.scrollTo(0, scrollTop)
@@ -63,11 +62,11 @@
 			})
 		},
 		mounted () {
-			console.log(document.body.scrollTop)
 		},
 		methods: {
 			// 显示详情
 			showDetail (index) {
+				console.log(this.area)
 				if (this.title && this.title === '双十一') {
 					this.$router.push({
 						path: 'double-eleven/detail',
@@ -79,6 +78,17 @@
 					return
 				}
 				if (this.title && this.title === '图书') {
+					// 深圳区域
+					if (this.area) {
+						this.$router.push({
+							path: 'other1/detail',
+							query: {
+								info: JSON.stringify(this.listData[index]),
+								index: index
+							}
+						})
+						return
+					}
 					this.$router.push({
 						path: 'other/detail',
 						query: {

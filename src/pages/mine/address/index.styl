@@ -55,33 +55,41 @@
 					line-height 1.76rem
 					position relative
 					display flex
+					overflow hidden
 					.left-part
 						flex 1
+						overflow hidden
 						padding-left 0.4rem
-						> .no-address
-							color #84836D
-							font-size 0.28rem
-							line-height 1.76rem
-						.contract
-							margin-top 0.4rem
-							display flex
+						height 2rem
+						line-height 2rem
+						display -webkit-box
+						-webkit-box-orient horizontal
+						-webkit-box-align center
+						-webkit-box-pack center
+						.box
 							width 100%
-							font-size 0.34rem
-							line-height 0.34rem
-							.name
-								display inline-block
-								flex 1
-							.mobile
-								display inline-block
-								text-align right
-						.address
-							position absolute
-							width 90%
-							bottom 0.3rem
-							padding-right 0.32rem
-							font-size 0.26rem
-							line-height 0.34rem
-							color #84836d
+							.contract
+								display flex
+								width 100%
+								font-size 0.34rem
+								line-height 0.34rem
+								.name
+									display inline-block
+									flex 1
+								.mobile
+									display inline-block
+									text-align right
+							.address
+								margin-top 0.2rem
+								width 100%
+								font-size 0.26rem
+								line-height 0.34rem
+								color #84836d
+								overflow hidden
+								text-overflow ellipsis
+								display -webkit-box
+								-webkit-box-orient vertical
+								-webkit-line-clamp 2
 					.right-arrow
 						padding 0 0.4rem
 						> img

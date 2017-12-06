@@ -8,7 +8,8 @@ const store = new Vuex.Store({
 	state: {
 		author: 'zqczx00',
 		history: 0,
-		homePageTabIndex: 0
+		homePageTabIndex: 0,
+		lastScrollTop: 0
 	},
 	// 设置方法
 	mutations: {

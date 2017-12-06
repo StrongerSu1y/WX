@@ -96,8 +96,6 @@
 			})
 		},
 		mounted () {
-			// this.$refs.top.src += '?x-oss-process=image/resize,w_100'
-			console.log(window.wx)
 			this.weiXinShare()
 		},
 		methods: {
@@ -119,6 +117,10 @@
 				}
 			},
 			openBookList (id) {
+				// this.Dialog.alert({
+				// 	title: '温馨提示',
+				// 	msg: '双十一活动已结束<br>敬请期待双十二...'
+				// })
 				this.$router.push({
 					path: '/periodical/double-eleven',
 					query: {

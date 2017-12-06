@@ -25,11 +25,15 @@
 			return {}
 		},
 		methods: {
+			// 减少
 			decreaseCart (index) {
-				this.$root.Bus.$emit('decrement', index)
+				this.$emit('decrement', index)
+				// this.$root.Bus.$emit('decrement', index)
 			},
+			// 增加
 			increaseCart (index, event) {
-				this.$root.Bus.$emit('increment', index, event)
+				this.$emit('increaseCart', index, event)
+				// this.$root.Bus.$emit('increment', index, event)
 			}
 		}
 	}

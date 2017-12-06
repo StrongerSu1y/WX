@@ -8,7 +8,7 @@
 				关于我们
 			</div>
 		</div>
-		<component :is="tabView" :doubleEleven="doubleEleven" :listData="listData" :title="title" :oldSum="oldSum" :nowSum="nowSum"  ref="list"></component>
+		<component :is="tabView" :doubleEleven="doubleEleven" :listData="listData" :title="title" :area="area" :oldSum="oldSum" :nowSum="nowSum"  ref="list"></component>
 	</section>
 </template>
 <script>
@@ -16,7 +16,7 @@
 	import about from '../about/about'
 	export default {
 		name: 'periodical-ording',
-		props: ['listData', 'tabIndex', 'title', 'doubleEleven'],
+		props: ['listData', 'tabIndex', 'title', 'doubleEleven', 'area'],
 		data () {
 			return {
 				tabList: ['list', 'about']

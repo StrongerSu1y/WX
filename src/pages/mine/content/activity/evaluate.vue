@@ -245,12 +245,6 @@
 			},
 			// 提交
 			doSubmit () {
-				// this.$router.push({
-				// 	path: 'result',
-				// 	query: {
-				// 		score: this.score
-				// 	}
-				// })
 				this.$router.goBack()
 			}
 		}

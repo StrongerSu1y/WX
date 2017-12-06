@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page_transition_box">
 		<transition :name="transitionName">
 	    <router-view class="child-view"></router-view>
 	  </transition>
@@ -29,6 +29,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+	.page_transition_box
+		width 100%
+		height 100%
 	.child-view
 		position absolute
 		width 100%

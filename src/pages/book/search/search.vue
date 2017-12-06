@@ -1,11 +1,12 @@
 <template>
 	<div class="book-search-page">
-		<v-top :scrollTop="scrollTop" :params="params" :id="id" @refreshData="refreshData"></v-top>
+		<v-top :scrollTop="scrollTop" :params="params" :id="id" @refreshData="refreshData" @reset="reset"></v-top>
 		<!-- scroll 外层容器 -->
 		<div ref="wrapper" class="wrapper" :style="{ height: winHeight }">
 			<!-- 内容 -->
 			<section ref="content" class="content">
-				<v-list ref="list" :bookList="bookList" :type="'2'"></v-list>
+				<v-list v-if="bookList.length" ref="list" :bookList="bookList"></v-list>
+				<empty v-if="!bookList.length"></empty>
 			</section>
 		</div>
 	</div>
@@ -13,31 +14,70 @@
 
 <script>
 	import top from './top/top'
-	import list from '../list/list'
+	import list from './list/list'
+	import BScroll from 'better-scroll'
+	import empty from '@/components/common/empty/empty'
+	import { getDistinctArray } from '@/common/js/common.js'
 	export default {
 		name: 'book-search-page',
 		data () {
 			return {
 				// 屏幕高度
-				winHeight: window.innerHeight - 50 + 'px',
+				winHeight: window.innerHeight - 50 - 45 + 'px',
 				scroller: '',
 				scrollTop: 0,
+				// 可加载
+				loadMore: false,
 				// 图书列表
 				bookList: [],
-				params: {
-					pageNum: 1,
-					pageSize: 20
-				},
-				id: this.$route.query.id
+				// 页码
+				pageNum: 1,
+				// 总页数
+				pages: 0,
+				bookTypeIds: null,
+				id: this.$route.query.id,
+				// itemTypeId
+				itemTypeId: this.$route.query.itemTypeId || '',
+				itemIds: this.$route.query.itemIds || ''
 			}
 		},
 		computed: {
+			// 传参
+			params () {
+				let params = {}
+				// 类型id，选择了则不再过滤双十二的ids
+				if (this.bookTypeIds) {
+					params.bookTypeIds = this.bookTypeIds
+				} else {
+					if (this.itemTypeId) {
+						params.itemTypes = [this.itemTypeId]
+					}
+					if (this.itemIds) {
+						params.itemIds = this.itemIds
+					}
+				}
+				params.pageNum = this.pageNum
+				return params
+			}
 		},
-		components: {
-			'v-top': top,
-			'v-list': list
+		watch: {
+			scrollTop (newVal, oldVal) {
+				let loadTop = this.$refs.content.offsetHeight - window.innerHeight - 50
+				// 关闭 loadMore
+				if (newVal > loadTop && this.loadMore) {
+					this.loadMore = false
+					// 如果没到最大一页，继续加载数据
+					if (this.pageNum < this.pages) {
+						this.pageNum += 1
+						this.loadData()
+					}
+				}
+			}
 		},
 		created () {
+			setTimeout(() => {
+				window.scrollTo(0, 0)
+			}, 200)
 			this.loadData()
 		},
 		mounted () {
@@ -45,21 +85,77 @@
 		methods: {
 			// 加载
 			loadData () {
+				console.log('loadData')
+				console.log('bookList length: ' + this.bookList.length)
+				this.Toast.loading({
+					title: '加载中...'
+				})
 				this.$ajax.bookList(this.params).then(res => {
-					// console.log(res)
-					this.bookList = this.bookList.concat(res.data.pageInfo.list)
+					// 返回的数据
+					let list = res.data.pageInfo.list
+					// 总页数
+					this.pages = res.data.pageInfo.pages
+					// 加载不重复的数据
+					this.bookList = getDistinctArray(list, this.bookList, 'id')
+					// this.bookList = this.bookList.concat(list)
+					// 更新scroll
+					this.$nextTick(() => {
+						this.initBetterScroll()
+					})
 				}, err => {
 					console.log(err)
 				})
 			},
 			// 更新数据
-			refreshData () {
-				console.log(this.params)
+			refreshData (params) {
 				this.bookList = []
-				this.params.pageNum = 1
-				this.$refs.list.itemList = []
+				this.pageNum = 1
+				this.bookTypeIds = params.bookTypeIds
 				this.loadData()
+			},
+			// 刷新 scroll
+			initBetterScroll () {
+				if (!this.scroller) {
+					this.scroller = new BScroll(this.$refs.wrapper, {
+						probeType: 3,
+						click: true
+					})
+					// 监听滚动条
+					this.listenScroll()
+				} else {
+					this.scroller.refresh()
+				}
+				// 可以加载更多
+				this.loadMore = true
+			},
+			// 监听滚动条
+			listenScroll () {
+				this.scroller.on('scroll', (pos) => {
+					this.scrollTop = -pos.y
+				})
+				this.scroller.on('touchend', (pos) => {
+					if (pos.y > 50) {
+						// 刷新
+						// this.loadData()
+					}
+				})
+			},
+			// 滑动到上次位置
+			backToLastTop () {
+				if (this.scroller) {
+					this.scroller.scrollTo(0, 300, 300)
+				}
+			},
+			// 重置
+			reset () {
+				this.itemIds = ''
+				this.itemTypeId = ''
 			}
+		},
+		components: {
+			'v-top': top,
+			'v-list': list,
+			empty
 		}
 	}
 </script>

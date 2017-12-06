@@ -1,5 +1,5 @@
 <template>
-	<div class="periodical-detail">
+	<div class="periodical_detail_page">
 		<div class="wrapper" ref="wrapper" :style="{ height: wrapperHeight }">
 			<div class="content">
 				<section class="header">
@@ -15,13 +15,13 @@
 						</p>
 						<p class="carriage">
 							<span>运费: </span>
-							<span class="carriage-price">{{ info.delivery_fee || '满99包邮' }}</span>
+							<span class="carriage-price">{{ info.delivery_fee || defaultTransportText }}</span>
 						</p>
 						<p class="price">
 							<span class="new">￥<span class="big">{{ info.last_fee | getInteger }}</span>{{ info.last_fee | getFixed1 }}</span>
 							<!-- <span class="old">￥{{ info.original_fee | getInteger }}</span> -->
 						</p>
-						<v-cartControl ref="cartcontrol" :index="index" :num="localNumber" class="cart"></v-cartControl>
+						<v-cartControl ref="cartcontrol" :index="index" :num="localNumber" class="cart" @decrement="decrement" @increaseCart="increaseCart"></v-cartControl>
 					</div>
 				</section>
 				<section class="main">
@@ -50,7 +50,7 @@
 	import BScroll from 'better-scroll'
 	export default {
 		name: 'publish',
-		props: ['listData', 'doubleEleven'],
+		props: ['listData', 'doubleEleven', 'area'],
 		data () {
 			return {
 				bannerHeight: window.innerWidth * 0.6 + 'px',
@@ -63,6 +63,14 @@
 			}
 		},
 		computed: {
+			// 默认运费
+			defaultTransportText () {
+				// 深圳区域满150包邮
+				if (this.area) {
+					return '满150包邮'
+				}
+				return '满99包邮'
+			},
 			localNumber () {
 				if (this.listData && this.listData.length) {
 					return this.listData[this.index].number
@@ -144,6 +152,14 @@
 			// 滑到顶部
 			scrollToTop () {
 				this.scroller.scrollTo(0, 0, 100)
+			},
+			// 减少
+			decrement (index) {
+				this.$emit('decrement', index)
+			},
+			// 增加
+			increaseCart (index, event) {
+				this.$emit('increaseCart', index, event)
 			}
 		},
 		components: {

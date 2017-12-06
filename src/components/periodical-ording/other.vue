@@ -105,6 +105,8 @@
 			this.getData()
 			// 重置历史
 			this.resetHistory()
+			// 清空缓存
+			localStorage.clear()
 			// localStorage.setItem('userId', '100095')
 		},
 		components: {

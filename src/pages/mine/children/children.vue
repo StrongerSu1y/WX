@@ -12,16 +12,16 @@
 		</section>
 		<!-- 列表 -->
 		<ul class="children-list">
-			<li ref="listItem" v-for="(item, index) in listData" class="children-item" :class="{ deleteShow: deleteIndex === index }" @click.prevent="goEdit(index)">
+			<li ref="listItem" v-for="(item, index) in listData" class="children-item" :class="{ deleteShow: deleteIndex === index }" @click.prevent="goEdit(item.id)">
 				<div class="content">
 					<div class="left-part">
-						<img v-lazy="item.avatar">
+						<img :src="item.avatar || defaultAvatar">
 					</div>
 					<div class="center-part">
 						<div class="box">
 							<p class="name">
 								<span class="text">{{ item.name }}</span>
-								<img :src="getGendleSrc(item.gendle)">
+								<img :src="getGendleSrc(item.sex)">
 								<span class="active" v-if="item.active">当前</span>
 							</p>
 							<p class="address">{{ item.address }}</p>
@@ -59,6 +59,8 @@
 	export default {
 		data () {
 			return {
+				// 默认头像
+				defaultAvatar: require('@/common/icons/avatar.jpg'),
 				listData: listData,
 				startX: 0,
 				deleteIndex: -1,
@@ -67,12 +69,24 @@
 		},
 		computed: {
 		},
+		created () {
+			this.loadData()
+		},
 		mounted () {
 			this.$nextTick(() => {
 				this.listenDelete()
 			})
 		},
 		methods: {
+			// 加载数据
+			loadData () {
+				this.$ajax.childList().then(res => {
+					console.log(res)
+					this.listData = res.data.data
+				}, err => {
+					console.log(err)
+				})
+			},
 			// 监听删除
 			listenDelete () {
 				this.$refs.listItem.forEach((item, index) => {
@@ -118,11 +132,14 @@
 				}
 			},
 			// 去编辑
-			goEdit (index) {
+			goEdit (id) {
+				let child = this.listData.filter(item => {
+					return item.id === id
+				})[0]
 				this.$router.push({
 					path: 'children/edit',
 					query: {
-						item: JSON.stringify(this.listData[index])
+						item: JSON.stringify(child)
 					}
 				})
 			},

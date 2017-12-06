@@ -101,24 +101,20 @@
 		computed: {
 			// 优惠金额
 			discount () {
-				// let start = new Date('2017-11-11 00:00:00.000').getTime()
-				let end = new Date('2017-11-12 00:00:00.000').getTime()
+				// 测试用
+				let start = new Date('2017-11-08 00:00:00.000').getTime()
+				// 正式用
+				// let start = new Date('2017-12-08 00:00:00.000').getTime()
+				let end = new Date('2017-12-13 00:00:00.000').getTime()
 				let nowTime = new Date().getTime()
-				if (nowTime >= end) {
+				if (nowTime >= end || nowTime < start) {
 					return 0
 				}
 				if (!this.isDoubleEleven) {
 					return 0
 				}
-				if (parseFloat(this.nowSum) < 50) {
-					return 0
-				} else if (parseFloat(this.nowSum) < 100) {
-					return 5
-				} else if (parseFloat(this.nowSum) < 200) {
-					return 15
-				} else {
-					return 40
-				}
+				console.log(this.nowSum)
+				return parseFloat(this.nowSum) > 200 ? 50 : 0
 			},
 			// 运费
 			carriage () {
@@ -173,6 +169,7 @@
 			})
 		},
 		methods: {
+			// 修改信息
 			modifyAddress (path) {
 				this.$router.push({
 					path: path

@@ -16,13 +16,15 @@
 				<section class="header">
 					<div class="main">
 						<div class="left-part">
-							<div class="contract">
-								<span class="name">{{ address.name }}</span>
-								<span class="mobile">{{ address.mobile }}</span>
+							<div class="box">
+								<div class="contract">
+									<span class="name">{{ address.name }}</span>
+									<span class="mobile">{{ address.mobile }}</span>
+								</div>
+								<div class="address" :style="getAddressBottom(address.address)">{{ address | getFullAddressName }}</div>
 							</div>
-							<div class="address" :style="getAddressBottom(address.address)">{{ address | getFullAddress }}</div>
 						</div>
-						<div class="right-arrow" @click="modifyAddress('order/address')">
+						<div class="right-arrow">
 							<img :src="rightArrowSrc">
 						</div>
 					</div>

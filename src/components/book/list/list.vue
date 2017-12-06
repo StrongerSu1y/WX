@@ -16,8 +16,8 @@
 						<span class="price old-price">￥{{ item.original_fee }}</span>
 					</div>
 					<div class="cart">
-						<span>收藏</span>
-						<span>加入购物车</span>
+						<!-- <span>收藏</span> -->
+						<span @click.prevent.stop="addToShopcat(item.id)">加入购物车</span>
 					</div>
 				</div>
 			</div>
@@ -46,6 +46,30 @@
 					query: {
 						id: id
 					}
+				})
+			},
+			// 加入购物车
+			addToShopcat (id) {
+				// 判断登录
+				this.$ajax.configLogin(this)
+				// 修改购物车
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					id: id,
+					cls: '2'
+				}
+				// 提示
+				this.Toast.loading({
+					title: '提交中...'
+				})
+				// 请求服务器
+				this.$ajax.shopcatSave(params).then(res => {
+					console.log(res)
+					this.Toast.success({
+						title: '添加成功！'
+					})
+				}, err => {
+					console.log(err)
 				})
 			}
 		}

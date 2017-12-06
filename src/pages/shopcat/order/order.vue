@@ -1,10 +1,10 @@
 <template>
 	<section class="shopcat-order">
 		<keep-alive>
-			<router-view v-if="$route.meta.keepAlive"></router-view>
+			<router-view v-if="$route.meta.keepAlive" class="child-page"></router-view>
 		</keep-alive>
 		<transition enter-active-class="animated slideInRight" leave-active-class="animated slideOutRight">
-		<router-view v-if="!$route.meta.keepAlive"></router-view>
+		<router-view v-if="!$route.meta.keepAlive" class="child-page"></router-view>
 		</transition>
 	</section>
 </template>
@@ -18,7 +18,8 @@
 		created () {
 		},
 		beforeRouteLeave (to, from, next) {
-			if (to.path === '/pay') {
+			let path = to.path
+			if (path === '/pay' || path === '/shopcat/address') {
 				next(true)
 				return
 			}

@@ -14,7 +14,7 @@
 	    			<span v-if="item.hardcover === '0'" class="package">平装</span>
 	    		</p>
 	    		<p class="age">
-	    			适度年龄({{ item.age_id }}儿童)
+	    			适读年龄({{ item.age_id }}儿童)
 	    		</p>
 	    		<p class="price">
 	    			<span class="num">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getDecimal }}</span>
@@ -23,17 +23,18 @@
 	    		<p class="origin-price">
 	    			原价：¥{{ item.original_fee }}
 	    		</p>
-	    		<p class="integral">
+	    		<!-- 暂时不显示积分 -->
+	    		<!-- <p class="integral">
 	    			<img src="./integral_icon.png">
 	    			<span class="text">100积分=0.10元 (最多可用500积分)</span>
-	    		</p>
+	    		</p> -->
 				</section>
 				<!-- 运费及销量 -->
 				<section class="carriage-sales">
 					<div>
 						<p class="carriage">
 							<span class="text-label">运费：</span>
-							<span class="text">免运费</span>
+							<span class="text">满99包邮</span>
 						</p>
 					</div>
 					<div>
@@ -62,23 +63,23 @@
 				<split :height="'8'"></split>
 				<!-- 链接 -->
 				<ul class="link-list">
-					<li class="link-item">
+					<li class="link-item" @click="changeTopTabIndex(1, 0)">
 						<span class="text">商品详情</span>
 						<img src="./right-arrow.png">
 					</li>
-					<li class="link-item">
+					<li class="link-item" @click="changeTopTabIndex(1, 1)">
 						<span class="text">内容目录</span>
 						<img src="./right-arrow.png">
 					</li>
-					<li class="link-item">
+					<li class="link-item" @click="changeTopTabIndex(1, 2)">
 						<span class="text">出版信息</span>
 						<img src="./right-arrow.png">
 					</li>
 				</ul>
 				<split :height="'8'"></split>
 				<!-- 礼物 -->
-				<section class="gift-box">
-					<div v-if="item.gift_logo || item.gift_name" class="gift">
+				<section v-if="item.gift_name" class="gift-box">
+					<div v-if="item.gift_name" class="gift">
 						<div class="img">
 							<img src="./gift_icon.png">
 						</div>
@@ -94,7 +95,7 @@
 				</p>
 				<v-comment v-if="item.commentList && item.commentList.length" :commentList="item.commentList" @totalComment="totalComment"></v-comment>
 				<!-- 查看全部评价 -->
-				<div class="view-comment" @click.prevent.stop="showAllComment()">
+				<div class="view-comment" @click.prevent.stop="changeTopTabIndex(2)">
 					<span class="comment-button">查看全部评价</span>
 				</div>
 				<!-- 拖动查看详情 -->
@@ -124,7 +125,7 @@
 			return {
 				bannerHeight: window.innerWidth + 'px',
 				// 屏幕高度
-				winHeight: window.innerHeight + 'px',
+				winHeight: window.innerHeight - 50 - 45 + 'px',
 				commentTruthTotal: 0,
 				scroller: '',
 				scrollTop: 0,
@@ -154,11 +155,6 @@
 				}
 			}
 		},
-		components: {
-			'v-banner': banner,
-			split,
-			'v-comment': comment
-		},
 		watch: {
 			scrollTop (newVal, oldVal) {
 				let nowHeight = newVal + parseInt(window.innerHeight, 10) - 50
@@ -166,14 +162,17 @@
 				if (nowHeight > goLine - 50) {
 					setTimeout(() => {
 						this.canGoComment = true
+						return
 					}, 1500)
 				} else {
 					this.canGoComment = false
 				}
-				if (nowHeight > goLine) {
+				if (nowHeight > goLine + 100) {
 					if (this.canGoComment) {
 						// 查看评价
-						this.showAllComment()
+						setTimeout(() => {
+							this.changeTopTabIndex(2)
+						}, 300)
 					}
 				}
 			},
@@ -186,6 +185,9 @@
 			}
 		},
 		created () {
+			setTimeout(() => {
+				window.scrollTo(0, 0, 200)
+			}, 20)
 		},
 		mounted () {
 			this.$nextTick(() => {
@@ -203,9 +205,13 @@
 				}, 20)
 			},
 			// 查看全部评价
-			showAllComment () {
+			changeTopTabIndex (index, secondIndex) {
 				setTimeout(() => {
-					this.$emit('changeTopTabIndex', 2)
+					if (arguments.length > 1) {
+						this.$emit('changeTopTabIndex', index, secondIndex)
+					} else {
+						this.$emit('changeTopTabIndex', index)
+					}
 				}, 100)
 			},
 			// 初始化 scroller
@@ -232,6 +238,11 @@
 					}
 				})
 			}
+		},
+		components: {
+			'v-banner': banner,
+			split,
+			'v-comment': comment
 		}
 	}
 </script>

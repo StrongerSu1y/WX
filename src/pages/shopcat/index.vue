@@ -11,23 +11,23 @@
 			<button @click.prevent.stop="goHomePage()">去逛逛</button>
 		</div>
 		<!-- 悬浮层 -->
-		<p class="fixed-title">购买微校网商品满99元包邮哦亲！</p>
-		<section v-if="bookList.length || goodsList.length" class="wrapper" ref="wrapper" :style="{ height: winHeight }">
+		<p class="fixed-title">商品实付金额满99元包邮！</p>
+		<section v-if="periodicalList.length || goodsList.length" class="wrapper" ref="wrapper" :style="{ height: winHeight }">
 			<div ref="content" class="content">
 				<!-- 报刊杂志 -->
-				<section v-if="bookList.length" class="book-part">
+				<section v-if="periodicalList.length" class="periodical-part">
 					<div class="content-header">
-						<div class="check-box" @click.prevent.stop="selectAllBookItems()">
-							<img v-if="bookAll" :src="checkActiveSrc">
-							<img v-if="!bookAll" :src="checkSrc">
+						<div class="check-box" @click.prevent.stop="selectAllperiodicalItems()">
+							<img v-if="periodicalAll" :src="checkActiveSrc">
+							<img v-if="!periodicalAll" :src="checkSrc">
 						</div>
 						<p class="title">报刊杂志</p>
 					</div>
 					<ul class="shopcat-list">
 						<transition-group enter-active-class="animated" leave-active-class="animated slideOutRight">
-							<li v-for="(item, index) in bookList" :key="item.id" ref="bookItem" class="list-item" :class="{ deleteShow: index === bookDeleteIndex }">
+							<li v-for="(item, index) in periodicalList" :key="item.id" ref="periodicalItem" class="list-item" :class="{ deleteShow: index === periodicalDeleteIndex }" @click="resetDeleteIndex()">
 								<div class="content">
-									<div class="check-box" @click.prevent.stop="selectBookItem(index)">
+									<div class="check-box" @click.prevent.stop="selectperiodicalItem(index)">
 										<img v-if="item.active" :src="checkActiveSrc">
 										<img v-if="!item.active" :src="checkSrc">
 									</div>
@@ -36,20 +36,20 @@
 											<img :src="item.logo">
 										</div>
 										<div class="right-part">
-											<div class="book-detail">
+											<div class="periodical-detail">
 												<p class="name">{{ item.name }}</p>
 												<p class="price">
 													<span class="small">¥</span>
-													<span class="big">{{ item.last_fee | getInteger }}</span>
-													<span class="small">{{ item.last_fee | getDecimal }}</span>
+													<span class="big">{{ item.fee | getInteger }}</span>
+													<span class="small">{{ item.fee | getDecimal }}</span>
 												</p>
 												<!-- 控制器 -->
 												<div class="cart-control">
-													<div class="left-icon" @click.prevent.stop="changeNum('bookList', index, -1)">
+													<div class="left-icon" @click.prevent.stop="changeNum('periodicalList', index, -1)">
 														<img :src="reduceIconSrc">
 													</div>
 													<p class="num">{{ item.number }}</p>
-													<div class="right-icon" @click.prevent.stop="changeNum('bookList', index, 1)">
+													<div class="right-icon" @click.prevent.stop="changeNum('periodicalList', index, 1)">
 														<img :src="addIconSrc">
 													</div>
 												</div>
@@ -58,7 +58,7 @@
 									</div>
 								</div>
 								<!-- 删除按钮 -->
-								<div ref="deleteBox" class="delete-box" @click.prevent.stop="deleteBookItem(item.id)">移除</div>
+								<div ref="deleteBox" class="delete-box" @click.prevent.stop="deleteperiodicalItem(item.id)">移除</div>
 							</li>
 						</transition-group>
 					</ul>
@@ -74,7 +74,7 @@
 					</div>
 					<ul class="shopcat-list">
 						<transition-group enter-active-class="animated" leave-active-class="animated slideOutRight">
-							<li v-for="(item, index) in goodsList" :key="item.id" ref="goodsItem" class="list-item" :class="{ deleteShow: index === goodsDeleteIndex }">
+							<li v-for="(item, index) in goodsList" :key="item.id" ref="goodsItem" class="list-item" :class="{ deleteShow: index === goodsDeleteIndex }" @click="resetDeleteIndex()">
 								<div class="content">
 									<div class="check-box" @click.prevent.stop="selectGoodsItem(index)">
 										<img v-if="item.active" :src="checkActiveSrc">
@@ -85,12 +85,12 @@
 											<img :src="item.logo">
 										</div>
 										<div class="right-part">
-											<div class="book-detail">
+											<div class="periodical-detail">
 												<p class="name">{{ item.name }}</p>
 												<p class="price">
 													<span class="small">¥</span>
-													<span class="big">{{ item.last_fee | getInteger }}</span>
-													<span class="small">{{ item.last_fee | getDecimal }}</span>
+													<span class="big">{{ item.fee | getInteger }}</span>
+													<span class="small">{{ item.fee | getDecimal }}</span>
 												</p>
 												<!-- 控制器 -->
 												<div class="cart-control">
@@ -104,10 +104,10 @@
 												</div>
 											</div>
 											<!-- 商品有积分 -->
-											<div class="integral">
+											<!-- <div class="integral">
 												<img src="./integral_icon.png">
 												<span class="text">10积分=0.01元 最多可用200积分</span>
-											</div>
+											</div> -->
 										</div>
 									</div>
 								</div>
@@ -120,7 +120,7 @@
 			</div>
 		</section>
 		<!-- 购物车底部 -->
-		<footer v-if="userId && (bookList.length || goodsList.length)" class="shopcat-footer" :class="{ homepage: entrance === 'homepage' }">
+		<footer v-if="userId && (periodicalList.length || goodsList.length)" class="shopcat-footer" :class="{ homepage: entrance === 'homepage' }">
 			<div class="left-foot">
 				<div class="check-box" @click.prevent.stop="selectAllItems()">
 					<img v-if="selectAll" :src="checkActiveSrc">
@@ -145,44 +145,6 @@
 </template>
 
 <script>
-	let bookList = [{
-		name: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名',
-		last_fee: '158.00',
-		number: 3,
-		logo: require('@/common/icons/avatar.jpg'),
-		id: '1333'
-	}, {
-		name: '儿额问问各位',
-		last_fee: '111.00',
-		number: 2,
-		logo: require('@/common/icons/avatar.jpg'),
-		id: '13sss33'
-	}]
-	let goodsList = [{
-		name: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名',
-		last_fee: '158.00',
-		number: 2,
-		logo: require('@/common/icons/avatar.jpg'),
-		id: 'sss13322223'
-	}, {
-		name: '到谷歌的是都是割发代首工人干活惹我他广告我我天天',
-		last_fee: '222.00',
-		number: 5,
-		logo: require('@/common/icons/avatar.jpg'),
-		id: '13322223'
-	}, {
-		name: '杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名杂志名称杂志名称杂志名称杂志名称杂志名称杂志名称杂志名',
-		last_fee: '158.00',
-		number: 2,
-		logo: require('@/common/icons/avatar.jpg'),
-		id: '13355553'
-	}, {
-		name: '到谷歌的是都是割发代首工人干活惹我他广告我我天天',
-		last_fee: '222.00',
-		number: 5,
-		logo: require('@/common/icons/avatar.jpg'),
-		id: '123212333'
-	}]
 	import empty from '@/components/common/empty/empty'
 	import { hasClass } from '@/common/js/common'
 	import BScroll from 'better-scroll'
@@ -202,13 +164,13 @@
 				winHeight: window.innerHeight - 52 - 44 - 49 - 30 - 8 + 'px',
 				// winHeight: window.innerHeight - 52 + 'px',
 				userId: localStorage.getItem('userId'),
-				bookList: bookList,
-				goodsList: goodsList,
+				periodicalList: [],
+				goodsList: [],
 				checkSrc: require('@/common/icons/check.png'),
 				checkActiveSrc: require('@/common/icons/check_active.png'),
 				reduceIconSrc: require('@/common/icons/reduce_icon.png'),
 				addIconSrc: require('@/common/icons/add_icon.png'),
-				bookDeleteIndex: -1,
+				periodicalDeleteIndex: -1,
 				goodsDeleteIndex: -1,
 				scrollTop: 0,
 				scroller: ''
@@ -217,16 +179,16 @@
 		computed: {
 			// 显示去逛逛
 			goHomePageShow () {
-				if (this.bookList.length || this.goodsList.length || !this.userId) {
+				if (this.periodicalList.length || this.goodsList.length || !this.userId) {
 					return false
 				} else {
 					return true
 				}
 			},
 			// 图书全选
-			bookAll () {
+			periodicalAll () {
 				let flag = true
-				this.bookList.forEach(item => {
+				this.periodicalList.forEach(item => {
 					if (!item.active) {
 						flag = false
 					}
@@ -245,7 +207,7 @@
 			},
 			// 全选
 			selectAll () {
-				if (this.bookAll && this.goodsAll) {
+				if (this.periodicalAll && this.goodsAll) {
 					return true
 				} else {
 					return false
@@ -254,25 +216,37 @@
 			// 原价总价
 			totalOriginPrice () {
 				let sum = 0
-				this.bookList.forEach(item => {
+				this.periodicalList.forEach(item => {
 					if (item.active) {
-						sum += parseFloat(item.last_fee) * item.number
+						sum += parseFloat(item.fee) * item.number
 					}
 				})
 				this.goodsList.forEach(item => {
 					if (item.active) {
-						sum += parseFloat(item.last_fee) * item.number
+						sum += parseFloat(item.fee) * item.number
 					}
 				})
 				return sum
 			},
 			// 优惠总价
 			totalDiscountPrice () {
-				if (this.totalOriginPrice > 200) {
-					return 40
-				} else {
-					return 0
-				}
+				// if (this.totalOriginPrice > 200) {
+				// 	return 50
+				// } else {
+				// 	return 0
+				// }
+				let sum = 0
+				this.periodicalList.forEach(item => {
+					if (item.active) {
+						sum += (parseFloat(item.fee) - parseFloat(item.last_fee)) * item.number
+					}
+				})
+				this.goodsList.forEach(item => {
+					if (item.active) {
+						sum += (parseFloat(item.fee) - parseFloat(item.last_fee)) * item.number
+					}
+				})
+				return sum
 			},
 			// 总价
 			totalResultPrice () {
@@ -281,7 +255,7 @@
 			// 底部文字
 			footBtnText () {
 				let count = 0
-				this.bookList.forEach(item => {
+				this.periodicalList.forEach(item => {
 					if (item.active) {
 						count += 1
 					}
@@ -298,9 +272,9 @@
 				}
 			},
 			// 有选中图书
-			hasBookSelected () {
+			hasperiodicalSelected () {
 				let flag = false
-				this.bookList.forEach(item => {
+				this.periodicalList.forEach(item => {
 					if (item.active) {
 						flag = true
 					}
@@ -318,11 +292,11 @@
 				return flag
 			},
 			// 图书已选
-			bookSelectedData () {
-				if (!this.bookList.length) {
+			periodicalSelectedData () {
+				if (!this.periodicalList.length) {
 					return []
 				}
-				return this.bookList.filter(item => {
+				return this.periodicalList.filter(item => {
 					return item.active
 				})
 			},
@@ -340,18 +314,6 @@
 			this.loadData()
 		},
 		mounted () {
-			this.$nextTick(() => {
-				this.getDeleteLineHeight()
-				if (this.bookList.length) {
-					// this.listenBookTouchEvent()
-				}
-				if (this.goodsList.length) {
-					// this.listenGoodsTouchEvent()
-				}
-				setTimeout(() => {
-					this.initBetterScroll()
-				}, 20)
-			})
 		},
 		methods: {
 			// 去逛逛
@@ -359,8 +321,9 @@
 				if (this.entrance === 'homepage') {
 					this.$root.Bus.$emit('goHangout')
 				} else {
+					// 判断是否为活动页
 					this.$router.push({
-						path: '/index'
+						path: localStorage.getItem('activityPage') || '/'
 					})
 				}
 			},
@@ -377,6 +340,7 @@
 					this.scroller.refresh()
 				}
 			},
+			// 监听滚动
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y
@@ -394,8 +358,8 @@
 				})
 			},
 			// 监听滑动事件
-			listenBookTouchEvent () {
-				this.$refs.bookItem.forEach((item, index) => {
+			listenperiodicalTouchEvent () {
+				this.$refs.periodicalItem.forEach((item, index) => {
 					item.addEventListener('touchstart', event => {
 						event.stopPropagation()
 						this.startX = event.targetTouches[0].clientX
@@ -405,14 +369,14 @@
 						let endX = event.changedTouches[0].clientX
 						if (hasClass(item, 'deleteShow')) {
 							if (endX - this.startX > 30) {
-								this.bookDeleteIndex = -1
+								this.periodicalDeleteIndex = -1
 							}
 							return false
 						} else {
-							this.bookDeleteIndex = -1
+							this.periodicalDeleteIndex = -1
 						}
 						if (this.startX - endX > 30) {
-							this.bookDeleteIndex = index
+							this.periodicalDeleteIndex = index
 						}
 					})
 				})
@@ -443,49 +407,93 @@
 			},
 			// 获得行高
 			getDeleteLineHeight () {
-				this.$refs.deleteBox.forEach(item => {
-					item.style.lineHeight = item.offsetHeight + 'px'
-				})
+				if (this.$refs.deleteBox && this.$refs.deleteBox.length) {
+					this.$refs.deleteBox.forEach(item => {
+						item.style.lineHeight = item.offsetHeight + 'px'
+					})
+				}
 			},
+			// 去登录
 			goLogin () {
 				this.$router.push({
 					path: '/login'
 				})
 			},
+			// 加载数据
 			loadData () {
-				this.bookList = this.bookList.map(item => {
+				// 杂志
+				this.periodicalList = this.periodicalList.map(item => {
 					item.active = false
 					return item
 				})
+				// 图书商品
 				this.goodsList = this.goodsList.map(item => {
 					item.active = false
 					return item
 				})
+				// 购物车
 				this.$ajax.shopcatList().then(res => {
 					console.log(res)
+					let list = res.data.data.item_list
+					// 刊物
+					this.periodicalList = list.filter((item) => {
+						item.number = parseInt(item.quantity, 10)
+						return item.cls === '1'
+					})
+					// 商品
+					this.goodsList = list.filter((item) => {
+						item.number = parseInt(item.quantity, 10)
+						return item.cls === '2'
+					})
+					this.$nextTick(() => {
+						this.getDeleteLineHeight()
+						if (this.periodicalList.length) {
+							// this.listenperiodicalTouchEvent()
+						}
+						if (this.goodsList.length) {
+							// this.listenGoodsTouchEvent()
+						}
+						setTimeout(() => {
+							this.initBetterScroll()
+						}, 20)
+					})
 				}, err => {
 					console.log(err)
 				})
 			},
 			// 改变数量
 			changeNum (type, index, num) {
+				// 如果数量为 0
 				if (this['' + type + ''][index].number <= 1 && num < 0) {
-					if (type === 'bookList') {
-						this.bookDeleteIndex = index
+					if (type === 'periodicalList') {
+						this.periodicalDeleteIndex = index
 					}
 					if (type === 'goodsList') {
 						this.goodsDeleteIndex = index
 					}
 					return
 				}
-				this.bookDeleteIndex = -1
+				this.periodicalDeleteIndex = -1
 				this.goodsDeleteIndex = -1
 				this['' + type + ''][index].number += num
+				// 修改购物车
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					id: this['' + type + ''][index].sid,
+					cls: '2',
+					quantity: this['' + type + ''][index].number
+				}
+				// 请求服务器
+				this.$ajax.updateShopcat(params).then(res => {
+					console.log(res)
+				}, err => {
+					console.log(err)
+				})
 			},
 			// 全选
 			selectAllItems () {
 				if (!this.selectAll) {
-					this.bookList = this.bookList.map(item => {
+					this.periodicalList = this.periodicalList.map(item => {
 						item.active = true
 						return item
 					})
@@ -494,7 +502,7 @@
 						return item
 					})
 				} else {
-					this.bookList = this.bookList.map(item => {
+					this.periodicalList = this.periodicalList.map(item => {
 						item.active = false
 						return item
 					})
@@ -505,14 +513,14 @@
 				}
 			},
 			// 图书全选
-			selectAllBookItems () {
-				if (!this.bookAll) {
-					this.bookList = this.bookList.map(item => {
+			selectAllperiodicalItems () {
+				if (!this.periodicalAll) {
+					this.periodicalList = this.periodicalList.map(item => {
 						item.active = true
 						return item
 					})
 				} else {
-					this.bookList = this.bookList.map(item => {
+					this.periodicalList = this.periodicalList.map(item => {
 						item.active = false
 						return item
 					})
@@ -532,10 +540,10 @@
 					})
 				}
 			},
-			// 选择单项 book
-			selectBookItem (index) {
+			// 选择单项 periodical
+			selectperiodicalItem (index) {
 				event.stopPropagation()
-				this.bookList = this.bookList.map((item, index2) => {
+				this.periodicalList = this.periodicalList.map((item, index2) => {
 					if (index === index2) {
 						item.active = !item.active
 					}
@@ -559,7 +567,7 @@
 					return
 				}
 				// 两种不同商品不能同时结算
-				if (this.hasGoodsSelected && this.hasBookSelected) {
+				if (this.hasGoodsSelected && this.hasperiodicalSelected) {
 					this.Dialog.alert({
 						title: '提示',
 						msg: '刊物杂志不能与其它商品同时结算，请分别选中再去结算~'
@@ -567,40 +575,62 @@
 					return
 				}
 				// 未选择内容
-				if (!this.hasGoodsSelected && !this.hasBookSelected) {
+				if (!this.hasGoodsSelected && !this.hasperiodicalSelected) {
 					this.Toast.warning({
 						title: '请先选择需要结算的内容'
 					})
 					return
 				}
-				let selectedData = this.bookSelectedData.length ? this.bookSelectedData : this.goodsSelectedData
+				let selectedData = this.periodicalSelectedData.length ? this.periodicalSelectedData : this.goodsSelectedData
+				let cls = this.periodicalSelectedData.length ? '1' : '2'
 				this.$router.push({
 					path: '/shopcat/order',
 					query: {
 						selectedData: JSON.stringify(selectedData),
-						nowSum: this.totalOriginPrice
+						nowSum: this.totalOriginPrice,
+						cls: cls
 					}
 				})
 			},
 			// 移除
 			clearItems () {
-				this.bookList.forEach((item, index) => {
+				this.Toast.loading({
+					title: '正在删除...'
+				})
+				this.periodicalList.forEach((item, index) => {
 					if (item.active) {
-						this.bookList.splice(index, 1)
+						// 请求服务器
+						this.$ajax.shopcatDel(item.id).then(res => {
+							this.Toast.success({
+								title: '移除成功！'
+							})
+							this.periodicalList.splice(index, 1)
+						}, err => {
+							console.log(err)
+						})
 					}
 				})
 				this.goodsList.forEach((item, index) => {
 					if (item.active) {
-						this.goodsList.splice(index, 1)
+						// 请求服务器
+						this.$ajax.shopcatDel(item.id).then(res => {
+							this.Toast.success({
+								title: '移除成功！'
+							})
+							this.goodsList.splice(index, 1)
+						}, err => {
+							console.log(err)
+						})
 					}
 				})
 			},
-			// 移除单条
-			deleteBookItem (id) {
-				this.bookList.forEach((item, index) => {
+			// 移除单条杂志
+			deleteperiodicalItem (id) {
+				// 筛选出需要删除的项目
+				this.periodicalList.forEach((item, index) => {
 					if (id === item.id) {
-						this.bookDeleteIndex = -1
-						this.bookList.splice(index, 1)
+						this.periodicalDeleteIndex = -1
+						this.periodicalList.splice(index, 1)
 						this.$nextTick(() => {
 							// 动画结束后刷新scroll
 							setTimeout(() => {
@@ -609,9 +639,16 @@
 						})
 					}
 				})
+				// 请求服务器
+				this.$ajax.shopcatDel(id).then(res => {
+					console.log(res)
+				}, err => {
+					console.log(err)
+				})
 			},
 			// 移除单条商品
 			deleteGoodsItem (id) {
+				// 筛选出需要删除的项目
 				this.goodsList.forEach((item, index) => {
 					if (id === item.id) {
 						this.goodsDeleteIndex = -1
@@ -624,6 +661,17 @@
 						})
 					}
 				})
+				// 请求服务器
+				this.$ajax.shopcatDel(id).then(res => {
+					console.log(res)
+				}, err => {
+					console.log(err)
+				})
+			},
+			// 重置
+			resetDeleteIndex () {
+				this.periodicalDeleteIndex = -1
+				this.goodsDeleteIndex = -1
 			}
 		},
 		components: {

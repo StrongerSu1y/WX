@@ -4,21 +4,25 @@ import Vue from 'vue'
 
 let Obj = new Vue()
 
+// 判断全局变量 NODE_ENV
+// let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
+let environment = 'product'
 let productHost = location.protocol + '//app.51weixiao.com'
-// let productHost = location.protocol + '//192.168.0.231:8080'
+let devHost = location.protocol + '//192.168.0.231:8080'
 // let productHost = location.protocol + '//192.168.0.200:8080'
 
+let serverHost = environment === 'dev' ? devHost : productHost
+
 // axios 配置
-axios.defaults.timeout = 15000
+axios.defaults.timeout = 5000
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 // axios.defaults.headers['Content-Type'] = 'application/json'
-axios.defaults.baseURL = location.protocol + '//app.51weixiao.com/app-api/api'
+axios.defaults.baseURL = environment === 'dev' ? location.protocol + '//192.168.0.231:8080/app-api/api' : location.protocol + '//app.51weixiao.com/app-api/api'
 // axios.defaults.baseURL = location.protocol + '//192.168.0.231:8080/app-api/api'
 // axios.defaults.baseURL = location.protocol + '//192.168.0.200:8080/app-api/api'
 
 // POST 传参序列化
 axios.interceptors.request.use((config) => {
-	console.log(config)
 	// 光 post
 	// if (config.method === 'post' && config.headers['Content-Type'] !== 'application/json') {
 	// 	config.data = qs.stringify(config.data)
@@ -66,7 +70,6 @@ axios.interceptors.response.use((res) => {
 export function fetch (url, params, type, dataType) {
 	return new Promise((resolve, reject) => {
 		if (dataType) {
-			console.log(params)
 			axios({
 				headers: {
 					'Content-Type': 'application/json'
@@ -113,6 +116,26 @@ export function fetch (url, params, type, dataType) {
 }
 
 export default {
+	// 判断登录
+	configLogin (obj) {
+		if (!localStorage.getItem('userId')) {
+			obj.Toast.warning({
+				title: '请先登录'
+			})
+			// 将当前页存入登录页
+			setTimeout(() => {
+				obj.$router.push({
+					path: '/login',
+					query: {
+						href: window.location.href
+					}
+				})
+				return false
+			}, 300)
+		} else {
+			return true
+		}
+	},
 	/*
 		get 方法
 	*/
@@ -219,13 +242,19 @@ export default {
 		添加购物车
 	*/
 	shopcatSave (params) {
-		return fetch('/shop_cart/save', params)
+		return fetch(`${serverHost}/api/shop_cart/save`, params)
+	},
+	/*
+		修改购物车
+	*/
+	updateShopcat (params) {
+		return fetch(`${serverHost}/api/shop_cart/update`, params)
 	},
 	/*
 		清空购物车
 	*/
 	shopcatDel (id) {
-		return fetch(`${productHost}/api/shop_cart/del`, {
+		return fetch(`${serverHost}/api/shop_cart/del`, {
 			_uid: localStorage.getItem('userId'),
 			id: id
 		})
@@ -234,7 +263,7 @@ export default {
 		购物车列表
 	*/
 	shopcatList () {
-		return fetch(`${productHost}/api/shop_cart/list`, {
+		return fetch(`${serverHost}/api/shop_cart/list`, {
 			_uid: localStorage.getItem('userId')
 		})
 	},
@@ -242,19 +271,25 @@ export default {
 		设置收货地址
 	*/
 	addressUpdate (params) {
-		return fetch(`${productHost}/api/address/update`, params)
+		return fetch(`${serverHost}/api/address/update`, params)
+	},
+	/*
+		设置收货地址
+	*/
+	addressDelete (params) {
+		return fetch(`${serverHost}/api/address/del`, params)
 	},
 	/*
 		地址列表
 	*/
 	addressList (params) {
-		return fetch(`${productHost}/api/address/list`, params)
+		return fetch(`${serverHost}/api/address/list`, params)
 	},
 	/*
 		订单提交
 	*/
 	tradeConfirm (params) {
-		return fetch(`${productHost}/api/trade/confirm`, params)
+		return fetch(`${serverHost}/api/trade/confirm`, params)
 	},
 	/*
 		获取首页数据
@@ -349,5 +384,30 @@ export default {
 	*/
 	weixinConfig (params) {
 		return fetch('/weixin/config', params, 'post', 'json')
+	},
+	/*
+		杂志下单
+	*/
+	tradeConfirmMagazine (params) {
+		return fetch('/trade/confirm/magzine', params, 'post', 'json')
+	},
+	/*
+		商品（图书）下单
+	*/
+	tradeConfirmBook (params) {
+		return fetch('/trade/confirm/book', params, 'post', 'json')
+	},
+	/*
+		孩子管理列表
+	*/
+	childList () {
+		let uid = localStorage.getItem('userId') || '100095'
+		return fetch(`${serverHost}/api/child/list?_uid=${uid}`, {}, 'get')
+	},
+	/*
+		孩子管理编辑
+	*/
+	childUpdate (params) {
+		return fetch(`${serverHost}/api/child/update`, params)
 	}
 }

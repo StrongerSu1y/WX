@@ -1,6 +1,6 @@
 <template>
 	<section class="home-popularize" @click="showToast()">
-		<ul class="list">
+		<ul v-if="themes && themes.hasOwnProperty('book')" class="list">
 			<!-- 图书 -->
 			<li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/book')">
 				<p class="title">{{ themes.book.title }}</p>
@@ -22,7 +22,6 @@
 				</div>
 			</li>
 		</ul>
-		<split></split>
 		<!-- 活动 -->
 		<div v-if="firstActivity" class="center">
 			<p class="title">{{ firstActivity.title }}</p>
@@ -39,7 +38,6 @@
 				</div>
 			</div>
 		</div>
-		<split></split>
 		<div v-if="otherActivity && otherActivity % 2 !== 0" class="center">
 			<p class="title">{{ otherActivity[0].title }}</p>
 			<p class="sub-title">{{ otherActivity[0].subTitle }}</p>
@@ -76,43 +74,6 @@
 </template>
 
 <script>
-	// let topList = [{
-	// 	title: '图书推广主题名称',
-	// 	subTitle: '推广主题名称副标题',
-	// 	leftImg: 'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 	rightImg: 'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
-	// }, {
-	// 	title: '商品推广主题名称',
-	// 	subTitle: '推广主题名称副标题',
-	// 	leftImg: 'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 	rightImg: 'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
-	// }]
-	// let center = {
-	// 	title: '活动培训推广主题名称推广主题',
-	// 	subTitle: '推广主题名称副标题推广主题名称副标题推广',
-	// 	imgList: [
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
-	// 	]
-	// }
-	// let bottomList = [{
-	// 	title: '活动培训推广主题',
-	// 	subTitle: '推广主题名称副标题',
-	// 	imgList: [
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
-	// 	]
-	// }, {
-	// 	title: '活动培训推广主题',
-	// 	subTitle: '推广主题名称副标题',
-	// 	imgList: [
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png',
-	// 		'http://www.res.51weixiao.com/upload/upload1/20170830/3461504079457665.png'
-	// 	]
-	// }]
 	import split from '@/components/common/split/split'
 	export default {
 		name: 'home-popularize',

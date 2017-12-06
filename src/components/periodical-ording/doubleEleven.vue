@@ -112,6 +112,8 @@
 			this.getData()
 			// 重置历史
 			this.resetHistory()
+			// 清空缓存
+			localStorage.clear()
 		},
 		components: {
 			'v-shopcat': shopcat

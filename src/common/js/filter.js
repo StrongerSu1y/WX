@@ -10,11 +10,20 @@ let getDecimal = value => {
 	return parseFloat(parseFloat(value) - Math.floor(parseFloat(value))).toFixed(2).substr(1)
 }
 
+// 老，杂志单独用
 let getFullAddress = obj => {
 	if (!obj.hasOwnProperty('cityArea')) {
 		return '未设置地址'
 	}
 	return obj.cityArea.split(',').join('') + obj.address
+}
+
+// 新
+let getFullAddressName = obj => {
+	if (!obj.hasOwnProperty('province_name')) {
+		return '未设置地址'
+	}
+	return obj.province_name + obj.city_name + obj.region_name + obj.address
 }
 
 let getUpdateDay = (time) => {
@@ -119,6 +128,7 @@ export {
 	getFixed1,
 	getDecimal,
 	getFullAddress,
+	getFullAddressName,
 	getUpdateDay,
 	getPastTimeText,
 	hideMobile,

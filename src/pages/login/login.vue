@@ -47,6 +47,8 @@
 				</li> -->
 			</ul>
 		</div>
+		<!-- 微博登陆按钮 -->
+		<div style="display: none;" id="wb_connect_btn" ref="weiboLoginBtn"></div>
 	</div>
 </template>
 
@@ -101,66 +103,28 @@
 				// 设置 history
 				localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 			}
-			// 判断微博登陆
-			// if (getQueryString('code')) {
-			// 	let href = window.location.href
-			// 	let clientId = this.weiboAppKey
-			// 	let clientSecret = this.weiboAppSecret
-			// 	let grantType = 'authorization_code'
-			// 	let code = getQueryString('code')
-			// 	let _url = `http://api.weibo.com/oauth2/access_token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=${grantType}&code=${code}&redirect_uri=${href}`
-			// 	this.$ajax.postAjax(_url)
-			// 	.then((res) => {
-			// 		let accessToken = res.data.access_token
-			// 		// let expires_in = res.data.expires_in
-			// 		// let remind_in = res.data.remind_in
-			// 		let uid = res.data.uid
-			// 		let _url = `http://api.weibo.com/2/users/show.json?access_token=${accessToken}&uid=${uid}`
-			// 		this.$ajax.getAjax(_url)
-			// 			.then(res => {
-			// 				let nickname = res.data.screen_name
-			// 				let avatar = res.data.profile_image_url
-			// 				let account = res.data.id
-			// 				let _url = `/user/login?account=${account}&nickname=${nickname}&avatar=${avatar}`
-			// 				this.$ajax.postAjax(_url)
-			// 					.then((res) => {
-			// 						let data = res.data.data
-			// 						if (res.data.status === '0') {
-			// 							this.Toast.success({
-			// 								title: '登录成功'
-			// 							})
-			// 							localStorage.setItem('userId', res.data.data.id)
-			// 							window.location.href = this.$route.query.redirectUrl
-			// 						} else {
-			// 							this.Toast.fail({
-			// 								title: data.tip
-			// 							})
-			// 						}
-			// 					}, err => {
-			// 						console.log(err)
-			// 					})
-			// 			}, err => {
-			// 				console.error(err)
-			// 			})
-			// 		// this.$ajax.postAjax('https://api.weibo.com/oauth2/get_token_info', {
-			// 		// 	access_token: access_token
-			// 		// })
-			// 		// .then(res => {
-			// 		// 	let uid = res.data.uid
-			// 		// 	let _url = `https://api.weibo.com/2/users/show.json?access_token=${access_token}&uid=${uid}`
-			// 		// 	this.$ajax.getAjax(_url)
-			// 		// 		.then(res=> {
-			// 		// 			alert('weibo userinfo: ' + JSON.stringify(res))
-			// 		// 		}, err => {
-			// 		// 			console.error(err)
-			// 		// 		})
-			// 		// }, err => {
-			// 		// 	console.log(err)
-			// 		// })
-			// 	}, err => {
-			// 		console.log(err)
-			// 	})
-			// }
+			this.$nextTick(() => {
+				window.WB2.anyWhere(function (W) {
+					W.widget.connectButton({
+						id: 'wb_connect_btn',
+						type: '3,2',
+						callback: {
+							login: function (o) {
+								console.log('login: ' + o.screen_name)
+								try {
+									document.getElementsByClassName('loginout')[0].click()
+									console.log('loginout success')
+								} catch (e) {
+									console.log('按钮点击失败: ' + JSON.stringify(e))
+								}
+							},
+							logout: function () {
+								alert('logout')
+							}
+						}
+					})
+				})
+			})
 		},
 		watch: {
 			mobile (curVal, oldVal) {
@@ -251,9 +215,17 @@
 									})
 									localStorage.setItem('userId', res.data.data.id)
 									// window.history.replaceState(null, '', _vm.$route.query.redirectUrl)
-									window.location.href = _vm.$route.query.redirectUrl
+									// 如果有，则返回
+									if (_vm.$route.query.redirectUrl) {
+										window.location.href = _vm.$route.query.redirectUrl
+									} else {
+										// 判断是否为活动页
+										_vm.$router.push({
+											path: localStorage.getItem('activityPage') || '/'
+										})
+									}
 								} else {
-									this.Toast.fail({
+									_vm.Toast.fail({
 										title: data.tip
 									})
 								}
@@ -272,9 +244,10 @@
 			},
 			// 微博登录
 			loginWeibo () {
-				let appkey = this.weiboAppKey
-				let href = window.location.href
-				window.location.href = `https://open.weibo.cn/oauth2/authorize?display=mobile&client_id=${appkey}&redirect_uri=${href}`
+				this.$refs.weiboLoginBtn.click()
+				// let appkey = this.weiboAppKey
+				// let href = window.location.href
+				// window.location.href = `https://open.weibo.cn/oauth2/authorize?display=mobile&client_id=${appkey}&redirect_uri=${href}`
 			}
 		},
 		components: {

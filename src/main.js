@@ -11,6 +11,7 @@ import VueLazyload from 'vue-lazyload'
 
 require('animate.css/animate.min.css')
 
+// 过滤器
 import * as custom from './common/js/filter.js'
 Object.keys(custom).forEach(key => {
 	Vue.filter(key, custom[key])
@@ -42,25 +43,15 @@ Vue.prototype.isIosQQ = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) && /QQ/.test(
 Vue.prototype.isWeixin = !!u.match(/MicroMessenger/i)
 Vue.prototype.isWeibo = !!u.match(/weibo/)
 Vue.prototype.isAndroidQQ = (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) && /QQ/.test(u)
-// let proURL = location.protocol + '//app.51weixiao.com/app-api/api'
-// Vue.prototype.$ajax = axios.create({
-// 	baseURL: proURL,
-// 	timeout: 3000,
-// 	headers: {
-// 		'Content-Type': 'application/x-www-form-urlencoded'
-// 	},
-// 	transformRequest: [function (data) {
-// 		data = qs.stringify(data)
-// 		return data
-// 	}]
-// })
 
+// 接口
 import api from './api/api.js'
-
 Vue.prototype.$ajax = api
 
 Vue.config.productionTip = false
 
+// 暂时将用户id 设为 100095
+// localStorage.setItem('userId', '100095')
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',

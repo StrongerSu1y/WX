@@ -138,7 +138,7 @@
 			return {
 				detailTabIndex: 0,
 				// 屏幕高度
-				winHeight: window.innerHeight - 50 + 'px',
+				winHeight: window.innerHeight - 50 - 55 + 'px',
 				detailShowContentList: ['v-product', 'v-detail', 'v-comment'],
 				detailShowItems: ['商品详情', '内容目录', '出版信息']
 			}
@@ -152,6 +152,7 @@
 		mounted () {
 		},
 		methods: {
+			// 切换
 			changeDetailTabIndex (index) {
 				this.detailTabIndex = index
 			}

@@ -9,10 +9,8 @@
 				<!-- 菜单 -->
 				<v-menu class="menu-list"></v-menu>
 				<!-- 推荐 -->
-				<v-recommond :recommends="data.recommends"></v-recommond>
-				<split></split>
-				<v-popularize :themes="data.themes"></v-popularize>
-				<split></split>
+				<v-recommond v-if="data.recommends && data.recommends.length" :recommends="data.recommends"></v-recommond>
+				<v-popularize v-if="data.themes" :themes="data.themes"></v-popularize>
 				<v-choiceness ref="circle" @scrollRefresh="scrollRefresh" @canLoadMore="canLoadMore"></v-choiceness>
 			</section>
 			<img v-show="showToTopBtn" @click="scrollToTop()" class="to-top-icon" src="./to_top_icon.png">
@@ -81,30 +79,26 @@
 					this.data = res.data
 					this.$nextTick(() => {
 						// 初始化 better-scroll
-						this.scroller = new BScroll(this.$refs.wrapper, {
-							probeType: 3,
-							click: true
-						})
+						this.freshScroll()
 						// 监听滚动条
 						this.listenScroll()
 					})
 				}, err => {
 					console.log(err)
 				})
-				// if (!this.scroller) {
-				// 	this.scroller = new BScroll(this.$refs.wrapper, {
-				// 		scrollY: true,
-				// 		click: true
-				// 	})
-				// 	this.scroller.on('touchend', (pos) => {
-				// 		alert(pos.y)
-				// 		if (pos.y > 50) {
-				// 			this.loadData()
-				// 		}
-				// 	})
-				// } else {
-				// 	this.scroller.refresh()
-				// }
+			},
+			// 刷新 freshScroll
+			freshScroll () {
+				if (!this.scroller) {
+					this.scroller = new BScroll(this.$refs.wrapper, {
+						probeType: 3,
+						click: true
+					})
+					// 监听滚动
+					this.listenScroll()
+				} else {
+					this.scroller.refresh()
+				}
 			},
 			// 滚动到顶部
 			scrollToTop () {
@@ -160,12 +154,9 @@
 					})
 					break
 				default:
-					// this.$router.push({
-					// 	path: '/activity/detail',
-					// 	query: {
-					// 		id: id
-					// 	}
-					// })
+					this.$router.push({
+						path: '/book'
+					})
 					break
 				}
 			}

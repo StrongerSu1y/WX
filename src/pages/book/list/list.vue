@@ -152,16 +152,21 @@
 		},
 		watch: {
 			bookList (newVal, oldVal) {
-				this.needCompute = true
-				this.$nextTick(() => {
-					this.getWaterfallList()
-				})
+				if (this.type !== '2') {
+					console.log('bookList change: ' + newVal.length)
+					this.needCompute = true
+					this.$nextTick(() => {
+						this.getWaterfallList()
+					})
+				}
 			}
 		},
 		computed: {},
 		mounted () {
 			this.$nextTick(() => {
-				this.getWaterfallList()
+				if (this.type !== '2') {
+					this.getWaterfallList()
+				}
 			})
 		},
 		methods: {
@@ -212,6 +217,7 @@
 			}
 		},
 		filters: {
+			// 类型文字
 			getTypeText (arr) {
 				if (!arr.length) {
 					return ''
