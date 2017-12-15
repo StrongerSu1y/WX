@@ -10,11 +10,11 @@
 		overflow hidden
 		transition 0.3s all linear
 		&.deleteShow
-			.content
+			.list_item_content
 				transform translate(-2.4rem, 0)
 			.delete-button
 				transform translate(-2.4rem, 0)
-		.content
+		.list_item_content
 			position relative
 			transition 0.3s all linear
 			.list-body
@@ -28,6 +28,9 @@
 					border 0.02rem solid #d6d6d6
 					border-radius 0.06rem
 					overflow hidden
+					background-repeat no-repeat
+					background-size contain
+					background-position center center
 					> img
 						display inline-block
 						width 100%

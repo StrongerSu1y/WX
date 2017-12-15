@@ -16,9 +16,11 @@ const store = new Vuex.Store({
 		newAuthod (state, msg) {
 			state.author = msg
 		},
+		// 设置历史
 		setHistory (state, num) {
 			state.history = num
 		},
+		// 首页切换
 		setHomePageIndex (state, num) {
 			state.homePageTabIndex = num
 		}

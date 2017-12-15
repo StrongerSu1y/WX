@@ -36,25 +36,7 @@
 		watch: {
 			recommends (newVal, oldVal) {
 				this.$nextTick(() => {
-					if (!this.recommondSwiper) {
-						this.recommondSwiper = new Swiper('.recommond-swiper-container', {
-							direction: 'vertical',
-							paginationClickable: false,
-							loop: true,
-							speed: 600,
-							autoplay: 2000,
-							simulateTouch: false,
-							autoplayDisableOnInteraction: false,
-							onInit: function (swiper) {
-								swiper.startAutoplay()
-							},
-							onTouchEnd: function (swiper) {
-								swiper.startAutoplay()
-							}
-						})
-					} else {
-						this.recommondSwiper.update()
-					}
+					this.freshSwiper()
 				})
 			}
 		},
@@ -73,6 +55,7 @@
 					}
 					arr.push(single)
 				}
+				console.log(333)
 				console.log(arr)
 				return arr
 			}
@@ -80,6 +63,7 @@
 		mounted () {
 		},
 		methods: {
+			// 打开链接
 			openLink (link, id) {
 				if (!link) {
 					this.$router.push({
@@ -90,6 +74,28 @@
 					})
 				} else {
 					window.location.href = link
+				}
+			},
+			// 更新 swiper
+			freshSwiper () {
+				if (!this.recommondSwiper) {
+					this.recommondSwiper = new Swiper('.recommond-swiper-container', {
+						direction: 'vertical',
+						paginationClickable: false,
+						loop: true,
+						speed: 600,
+						autoplay: 2000,
+						simulateTouch: false,
+						autoplayDisableOnInteraction: false,
+						onInit: function (swiper) {
+							swiper.startAutoplay()
+						},
+						onTouchEnd: function (swiper) {
+							swiper.startAutoplay()
+						}
+					})
+				} else {
+					this.recommondSwiper.update()
 				}
 			}
 		}

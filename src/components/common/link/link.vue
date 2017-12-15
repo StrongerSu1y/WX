@@ -1,12 +1,12 @@
 <template>
-	<div class="top-line">
-		<div class="logo">
+	<div class="link_top_line" :style="position">
+		<div class="link_logo_img">
 			<img src="./logo.png">
 		</div>
-		<div class="title">微校网</div>
-		<div class="text">快乐成长百宝箱</div>
-		<div class="link" @click="openApp()">打开APP</div>
-		<div class="close-button" @click="closeLink()">
+		<div class="link_title">微校网</div>
+		<div class="link_text">快乐成长百宝箱</div>
+		<div class="link_btn" @click="openApp()">打开APP</div>
+		<div class="link_close_button" @click="closeLink()">
 			<img src="./close_icon.png">
 		</div>
 	</div>
@@ -15,6 +15,14 @@
 <script>
 	let u = navigator.userAgent
 	export default {
+		props: {
+			position: {
+				type: Object,
+				default: {
+					top: '40px'
+				}
+			}
+		},
 		name: 'link',
 		data () {
 			return {

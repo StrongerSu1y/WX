@@ -120,7 +120,7 @@
 			// 设置 history
 			localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 			let _that = this
-			this.picker.on('picker.select', function (index, selectedIndex) {
+			this.picker.on('picker.select', (index, selectedIndex) => {
 				_that.list[_that.personIndex].relation = _that.relationList[index - 1].text
 			})
 		},

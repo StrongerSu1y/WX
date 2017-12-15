@@ -12,8 +12,7 @@
 		</section>
 		<!-- 评分 -->
 		<section class="score-box">
-			<div class="left-media">
-				<img src="./book.jpg">
+			<div class="left-media" :style="{ backgroundImage: 'url(' + item.logo + ')' }">
 			</div>
 			<div class="right-part">
 				<p class="title">
@@ -35,9 +34,9 @@
 		<!-- 评价内容 -->
 		<section class="evaluate-content">
 			<div class="text-box">
-				<textarea v-model="text" placeholder="请在此填写您的感受和评价"></textarea>
+				<textarea v-model="content" placeholder="请在此填写您的感受和评价"></textarea>
 				<span class="limit">
-					<span class="numbers" :class="{ red: text.length > 500 }">{{ text.length }}</span><span class="max">/500</span>
+					<span class="numbers" :class="{ red: content.length > 500 }">{{ content.length }}</span><span class="max">/500</span>
 				</span>
 			</div>
 			<ul class="pic-list">
@@ -59,14 +58,30 @@
 		data () {
 			return {
 				score: 0,
-				text: '',
+				// 评价内容
+				content: '',
 				starList: [0, 1, 2, 3, 4],
 				picList: [],
 				// 图片文件
-				imgFile: {}
+				imgFile: {},
+				item: JSON.parse(this.$route.query.item)
 			}
 		},
 		computed: {
+			formData () {
+				let formData = {}
+				formData.content = this.content
+				// 如果是追加评价
+				// formData.id = this.item.id
+				formData.score = this.score
+				formData.uid = localStorage.getItem('userId')
+				formData.tradeDetailId = this.item.item_id
+				formData.tradeId = this.item.id
+				formData.imgs = this.picList.map(item => {
+					return item.pic
+				})
+				return formData
+			}
 		},
 		mounted () {
 		},
@@ -231,11 +246,25 @@
 			},
 			// 提交
 			doSubmit () {
-				this.$router.push({
-					path: 'result',
-					query: {
-						score: this.score
+				this.$ajax.tradeComment(this.formData).then(res => {
+					if (res.data.result.status === '0') {
+						this.Toast.success({
+							title: '评价成功！'
+						})
+						setTimeout(() => {
+							// 显示评价结果
+							this.$router.push({
+								path: 'result',
+								query: {
+									score: this.score,
+									cls: this.$route.query.cls,
+									id: this.$route.query.id
+								}
+							})
+						}, 300)
 					}
+				}, err => {
+					console.log(err)
 				})
 			}
 		}

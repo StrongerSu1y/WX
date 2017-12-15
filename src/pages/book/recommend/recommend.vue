@@ -6,6 +6,7 @@
       <div class="line"></div>
     </div>
     <section class="book-list">
+    	<!-- 模拟高度 -->
     	<ul class="side-list" v-if="needCompute">
     		<li v-for="(item, index) in recommendList" :style="{ width: itemWidth }" class="item" ref="listItem">
 	    		<div class="img">
@@ -24,8 +25,9 @@
 					</div>
 	    	</li>
     	</ul>
+    	<!-- 瀑布流 -->
     	<ul v-for="(list, i) in itemList" :class="i" class="side-list">
-    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }">
+    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }" @click="openDetail(item.id)">
 	    		<div class="img">
 	    			<img :src="item.logo">
 	    		</div>
@@ -38,7 +40,7 @@
 	    		</div>
 					<div class="cart">
 						<span>收藏</span>
-						<span>加入购物车</span>
+						<span @click.prevent.stop="addToShopcat(item.id)">加入购物车</span>
 					</div>
 	    	</li>
     	</ul>
@@ -96,10 +98,10 @@
 				this.needCompute = false
 				// 通知父组件 DOM 元素更新完毕
 				this.$nextTick(() => {
-					// 初始化 better-scroll
+					// 初始化父组件 better-scroll
 					setTimeout(() => {
 						this.$emit('freshBScroll')
-					}, 20)
+					}, 200)
 				})
 			},
 			// 获取数组中最小值的下标
@@ -113,6 +115,39 @@
 					}
 				}
 				return index
+			},
+			// 打开详情
+			openDetail (id) {
+				this.$router.push({
+					path: '/book/detail',
+					query: {
+						id: id
+					}
+				})
+			},
+			// 加入购物车
+			addToShopcat (id) {
+				// 判断登录
+				this.$ajax.configLogin(this)
+				// 修改购物车
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					id: id,
+					cls: '2'
+				}
+				// 提示
+				this.Toast.loading({
+					title: '提交中...'
+				})
+				// 请求服务器
+				this.$ajax.shopcatSave(params).then(res => {
+					console.log(res)
+					this.Toast.success({
+						title: '添加成功！'
+					})
+				}, err => {
+					console.log(err)
+				})
 			}
 		}
 	}

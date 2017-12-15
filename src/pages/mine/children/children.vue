@@ -11,11 +11,11 @@
 			</div>
 		</section>
 		<!-- 列表 -->
-		<ul class="children-list">
+		<ul v-if="listData.length" class="children-list">
 			<li ref="listItem" v-for="(item, index) in listData" class="children-item" :class="{ deleteShow: deleteIndex === index }" @click.prevent="goEdit(item.id)">
 				<div class="content">
-					<div class="left-part">
-						<img :src="item.avatar || defaultAvatar">
+					<div class="left-part" :style="{ backgroundImage: 'url(' + item.avatar + ')' }">
+						<!-- <img :src="item.avatar || defaultAvatar"> -->
 					</div>
 					<div class="center-part">
 						<div class="box">
@@ -34,6 +34,8 @@
 				<div class="delete-button" @click.prevent.stop="deleteChild(item, index)">删除</div>
 			</li>
 		</ul>
+		<!-- 没有数据 -->
+		<empty v-if="!listData.length"></empty>
 		<!-- 重新设置当前孩子 -->
 		<transition enter-active-class="animated fadeInRight" leave-active-class="animated fadeOut">
 			<v-reset v-if="resetShow" :listData="listData" @closeSelector="closeSelector"></v-reset>
@@ -56,6 +58,7 @@
 	}]
 	import { hasClass } from '@/common/js/common.js'
 	import reset from './reset/reset'
+	import empty from '@/components/common/empty/empty'
 	export default {
 		data () {
 			return {
@@ -158,7 +161,8 @@
 			}
 		},
 		components: {
-			'v-reset': reset
+			'v-reset': reset,
+			empty
 		}
 	}
 </script>

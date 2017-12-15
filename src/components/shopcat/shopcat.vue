@@ -16,16 +16,16 @@
 					</div>
 				</div>
 				<ul class="list-body" :style="{ maxHeight: listHeight + 'px' }" @click.prevent.stop="">
-					<li v-for="(item, index) in shopcatList" v-if="item.number > 0" class="list-item underline">
+					<li v-for="(item, index) in listData" v-if="item.number > 0" class="list-item underline">
 						<div class="left-part">
 							<img v-lazy="item.logo">
 							<span class="title">{{ item.name }}</span>
 						</div>
 						<p class="price">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getDecimal }}元</p>
 						<div class="list-buttons">
-							<img @click="shopcatDecrement(item.id)" src="./reduce_icon.png">
+							<img @click="reduceNum(index)" src="./reduce_icon.png">
 							<span>{{ item.number }}</span>
-							<img @click="shopcatIncreaseCart(item.id)" src="./add_icon.png">
+							<img @click="addNum(index)" src="./add_icon.png">
 						</div>
 					</li>
 				</ul>
@@ -37,7 +37,7 @@
 				<div class="shopcat-icon" @click="showShopcatList()">
 					<span v-if="total" class="dot">{{ total }}</span>
 				</div>
-				<span v-if="total" class="now-sum">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getFixed1 }}</span>
+				<span v-if="total" @click="clearStorage()" class="now-sum">￥<span class="big">{{ nowSum | getInteger }}</span>{{ nowSum | getFixed1 }}</span>
 				<!-- <span class="old-sum">￥{{ oldSum }}</span> -->
 			</div>
 			<div class="right-button" @click="orderPay()">
@@ -83,14 +83,18 @@
 </template>
 
 <script>
-	import { getPrice } from '../../common/js/common.js'
 	export default {
 		name: 'shopcat',
 		props: [
 			'entrance',
 			'onlyBuy',
 			'activity',
-			'id'
+			'id',
+			'nowSum',
+			'oldSum',
+			'total',
+			'selectedListData',
+			'listData'
 		],
 		data () {
 			return {
@@ -101,10 +105,7 @@
 				applyIconSrc: `apply.png`,
 				// 展开购物车
 				fold: false,
-				// 购物车列表高度
-				listHeight: window.innerHeight - 50 - 60,
-				// 购物车列表
-				shopcatList: []
+				listHeight: window.innerHeight - 50 - 60
 			}
 		},
 		computed: {
@@ -113,56 +114,7 @@
 			},
 			collectText () {
 				return this.collectOn ? '已收藏' : '收藏'
-			},
-			// 所有购物车 id 数组
-			shopcatIdList () {
-				return this.shopcatList.map(item => {
-					return item.id
-				})
-			},
-			// 留下非零的购物车
-			computedShopcatList () {
-				if (!this.shopcatList.length) {
-					return []
-				}
-				return this.shopcatList.filter((item) => {
-					return item.number > 0
-				})
-			},
-			// 总数
-			total () {
-				let total = 0
-				this.shopcatList.forEach((item, index) => {
-					total += item.number
-				})
-				return total
-			},
-			// 总价
-			nowSum () {
-				let sum = 0
-				this.shopcatList.forEach((item, index) => {
-					sum += item.number * getPrice(item.last_fee)
-				})
-				return sum.toFixed(1)
-			},
-			// 原价
-			oldSum () {
-				let sum = 0
-				this.shopcatList.forEach((item, index) => {
-					sum += item.number * getPrice(item.original_fee)
-				})
-				return sum
 			}
-		},
-		watch: {
-			computedShopcatList (newVal, oldVal) {
-				// 将更改保存入本地
-				localStorage.setItem('shopcatList', JSON.stringify(newVal))
-			}
-		},
-		created () {
-			// 获取本地购物车数据
-			this.getLocalShopcat()
 		},
 		methods: {
 			// 切换收藏
@@ -185,34 +137,20 @@
 				this.changeListShow()
 			},
 			// 添加
-			shopcatIncreaseCart (id) {
-				// 比较购物车列表
-				this.shopcatList.forEach(item => {
-					if (item.id === id) {
-						item.number += 1
-					}
-				})
-				this.$emit('shopcatIncreaseCart', id)
+			addNum (index) {
+				this.$emit('addNum', index)
 			},
 			// 减少
-			shopcatDecrement (id) {
-				// 比较购物车列表
-				this.shopcatList.forEach(item => {
-					if (item.id === id) {
-						item.number -= 1
-					}
-				})
+			reduceNum (index) {
 				if (this.total <= 1) {
 					this.changeListShow()
 				}
-				// 通知父组件更改
-				this.$emit('shopcatDecrement', id)
+				this.$emit('reduceNum', index)
 			},
 			// 清空购物车
 			clearShopcat () {
 				this.changeListShow()
 				this.$emit('clearShopcat')
-				this.shopcatList = []
 			},
 			// 去结算
 			orderPay () {
@@ -221,34 +159,6 @@
 			// 清空缓存
 			clearStorage () {
 				localStorage.clear()
-			},
-			// 获取购物车数据
-			getLocalShopcat () {
-				if (localStorage.getItem('shopcatList') && localStorage.getItem('shopcatList').length) {
-					this.shopcatList = JSON.parse(localStorage.getItem('shopcatList'))
-				}
-			},
-			// 购物车增加
-			addShopcat (obj, number) {
-				console.log('shopcatIdList: ' + this.shopcatIdList)
-				console.log('changeShopcat: ' + number)
-				// 如果有则更改，没有则新增
-				if (this.shopcatIdList.indexOf(obj.id) > -1) {
-					this.shopcatList[this.shopcatIdList.indexOf(obj.id)].number += 1
-				} else {
-					this.shopcatList.push(obj)
-				}
-			},
-			// 购物车减少
-			reduceShopcat (obj, number) {
-				console.log('shopcatIdList: ' + this.shopcatIdList)
-				console.log('changeShopcat: ' + number)
-				// 如果有则更改，没有则新增
-				if (this.shopcatIdList.indexOf(obj.id) > -1) {
-					this.shopcatList[this.shopcatIdList.indexOf(obj.id)].number -= 1
-				} else {
-					this.shopcatList.push(obj)
-				}
 			}
 		}
 	}

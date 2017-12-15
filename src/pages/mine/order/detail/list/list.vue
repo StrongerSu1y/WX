@@ -11,13 +11,13 @@
 				<p class="name">{{ item.name }}</p>
 				<p class="numbers">
 					<span class="label-name">数量:</span>
-					<span class="value">X{{ item.count }}</span>
+					<span class="value">X{{ item.quantity }}</span>
 				</p>
 				<div class="numbers price">
 					<span class="label-name">单价:</span>
-					<span class="value">¥{{ item.price }}</span>
+					<span class="value">¥{{ item.fee }}</span>
 					<!-- 如果是评价列表页 -->
-					<div v-if="entrance === 'evaluate'" class="btn-box" @click.prevent.stop="goEvaluate()">
+					<div v-if="entrance === 'evaluate'" class="btn-box" @click.prevent.stop="goEvaluate(item)">
 						<span>去评价</span>
 					</div>
 					<!-- 入口是退款页 -->
@@ -85,11 +85,14 @@
 			}
 		},
 		mounted () {
-			this.getCompData()
+			// this.getCompData()
 		},
 		methods: {
 			// 计算过的数据
 			getCompData () {
+				if (!this.listData.length) {
+					return false
+				}
 				this.compListData = this.listData.map(item => {
 					if (item.explain && item.explain.length > 24) {
 						item.showAll = false
@@ -101,9 +104,14 @@
 				})
 			},
 			// 去评价
-			goEvaluate () {
+			goEvaluate (item) {
 				this.$router.push({
-					path: 'evaluate/single'
+					path: 'evaluate/single',
+					query: {
+						item: JSON.stringify(item),
+						cls: this.$route.query.cls,
+						id: this.$route.query.id
+					}
 				})
 			},
 			// 申请退款

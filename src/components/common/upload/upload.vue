@@ -1,5 +1,5 @@
 <template>
-	<input type="file" name="image" accept="image/*" @change="handleChange($event)">
+	<input ref="file" type="file" name="image" accept="image/*" @change="handleChange($event)">
 </template>
 
 <script>
@@ -11,6 +11,10 @@
 			}
 		},
 		methods: {
+			// 点击上传
+			uploadFile () {
+				this.$refs.file.click()
+			},
 			handleChange (event) {
 				console.log(event)
 				// 当前文件

@@ -33,54 +33,25 @@
 					</div>
 					<div class="left-part">
 						<p class="price">
-							<span class="big">{{ item.price }}</span>
+							<span class="big">{{ item.amount }}</span>
 							<span class="desc">元</span>
 						</p>
-						<p class="condition">满{{ item.condition }}元可用</p>
+						<p class="condition">满{{ item.reachamount }}元可用</p>
 					</div>
 					<div class="center-part">
 						<div class="box">
-							<p class="type">{{ item.type }}</p>
-							<p class="deadline">有效期 {{ item.deadline }}</p>
+							<p class="type">{{ item.name }}</p>
+							<p class="deadline">有效期 {{ item.validtime | getUpdateDay }}</p>
 						</div>
 					</div>
 				</div>
-				<div class="item-footer">{{ item.content }}</div>
+				<div class="item-footer">{{ item.description }}</div>
 			</li>
 		</ul>
 	</div>
 </template>
 
 <script>
-	let listData = [{
-		type: '通用券',
-		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
-		price: '100',
-		condition: '1000',
-		remain: 20,
-		deadline: '2017年10月12日',
-		loadingShow: false,
-		id: '1'
-	}, {
-		type: '通用券',
-		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
-		price: '100',
-		condition: '1000',
-		remain: 20,
-		deadline: '2017年10月12日',
-		loadingShow: false,
-		id: '2'
-	}, {
-		type: '通用券',
-		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
-		price: '100',
-		condition: '1000',
-		remain: 20,
-		deadline: '2017年10月12日',
-		loadingShow: false,
-		noUse: true,
-		id: '3'
-	}]
 	import loading from '@/components/common/loading/loading'
 	export default {
 		data () {
@@ -88,13 +59,27 @@
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				checkActiveSrc: require('@/common/icons/check_active.png'),
 				checkSrc: require('@/common/icons/check.png'),
-				listData: listData,
+				listData: [],
 				linkShow: true,
 				couponPrice: '',
-				couponId: ''
+				couponId: '',
+				// 页码
+				pageNum: 1,
+				pageSize: 20
 			}
 		},
 		computed: {
+			params () {
+				let params = {}
+				params.cls = this.$route.query.cls
+				params.items = JSON.parse(this.$route.query.items)
+				params.uid = localStorage.getItem('userId')
+				return params
+			}
+		},
+		created () {
+			// 加载数据
+			this.loadData()
 		},
 		mounted () {
 			if (this.$route.query.couponPrice) {
@@ -105,23 +90,19 @@
 			})
 		},
 		methods: {
+			// 加载数据
+			loadData () {
+				this.$ajax.mineCouponOrder(this.params).then(res => {
+					console.log(res)
+					let list = res.data.list
+					this.listData = this.listData.concat(list)
+				}, err => {
+					console.log(err)
+				})
+			},
 			// 返回上一页
 			goBack () {
 				this.$router.goBack()
-			},
-			// 点击领取
-			getcouponItem (index) {
-				this.listData = this.listData.map((item, index2) => {
-					if (index === index2) {
-						item.loadingShow = true
-					}
-					return item
-				})
-				this.$nextTick(() => {
-					setTimeout(() => {
-						this.listData[index].loadingShow = false
-					}, 1000)
-				})
 			},
 			// 打开页面
 			openItem (path) {
@@ -132,7 +113,7 @@
 			// 选中
 			selectItem (item) {
 				this.$root.Bus.$emit('getCoupon', {
-					couponPrice: item.price,
+					couponPrice: item.amount,
 					couponId: item.id
 				})
 				this.$router.goBack()

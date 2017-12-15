@@ -13,32 +13,37 @@
 </template>
 
 <script>
-	let listData = [{
-		name: '刊物名称刊物名称刊物名称刊物名称刊...',
-		count: 2,
-		price: '100.00',
-		logo: require('./back_icon.png')
-	}, {
-		name: '刊物名称刊物名称刊物名称刊物名称刊...',
-		count: 2,
-		price: '100.00',
-		logo: require('./back_icon.png')
-	}, {
-		name: '刊物名称刊物名称刊物名称刊物名称刊...',
-		count: 2,
-		price: '100.00',
-		logo: require('./back_icon.png')
-	}]
 	import list from '../detail/list/list'
 	export default {
 		data () {
 			return {
-				listData: listData
+				listData: []
 			}
+		},
+		computed: {
+			params () {
+				let params = {}
+				params.id = this.$route.query.id
+				params.cls = this.$route.query.cls
+				return params
+			}
+		},
+		created () {
+			// 加载数据
+			this.loadData()
 		},
 		mounted () {
 		},
 		methods: {
+			// 加载数据
+			loadData () {
+				this.$ajax.tradeDetail(this.params).then(res => {
+					console.log(res)
+					this.listData = res.data.bookMagazineView.itemList
+				}, err => {
+					console.log(err)
+				})
+			},
 			// 返回上一页
 			goBack () {
 				this.$router.goBack()

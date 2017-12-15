@@ -34,10 +34,11 @@
 							<span v-if="info.role">({{ info.role }})</span>
 						</p>
 						<!-- 孩子们 -->
-						<div class="swiper-container">
+						<!-- <div class="swiper-container"> -->
+						<div v-if="childrenList.length" class="swiper-container">
 							<div class="swiper-wrapper">
-								<div class="swiper-slide" v-for="(item, index) in listImg" :style="{ left: slidePosLeft }">
-									<img :src="item.url">
+								<div class="swiper-slide" v-for="(item, index) in childrenList" :style="{ left: slidePosLeft, height: slideHeight }" @click="openChildDetail(item.id)">
+									<img :src="item.avatar">
 								</div>
 							</div>
 						</div>
@@ -105,23 +106,16 @@
 		data () {
 			return {
 				winHeight: window.innerHeight - 52 - 44 + 'px',
-				listImg: [{
-					url: require('./avatar.jpg')
-				}, {
-					url: require('./address_icon.png')
-				}, {
-					url: require('./child_icon.png')
-				}, {
-					url: require('./discount_icon.png')
-				}, {
-					url: require('./setting_icon.png')
-				}],
 				childrenSwiper: '',
 				slidePosLeft: window.innerWidth * 2 / 5 + 'px',
 				scroller: '',
 				scrollTop: 0,
 				userId: localStorage.getItem('userId'),
-				info: {}
+				info: {},
+				// 滑块高度
+				slideHeight: window.innerWidth / 5 + 'px',
+				// 孩子列表
+				childrenList: []
 			}
 		},
 		computed: {
@@ -180,14 +174,10 @@
 		},
 		created () {
 			this.loadData()
+			// 获取孩子列表
+			this.getChildrenList()
 		},
 		mounted () {
-			this.$nextTick(() => {
-				this.updateSwiper()
-				setTimeout(() => {
-					this.initBetterScroll()
-				}, 20)
-			})
 		},
 		methods: {
 			// 加载数据
@@ -201,6 +191,7 @@
 			},
 			// 孩子轮播
 			updateSwiper () {
+				console.log(this.childrenSwiper)
 				if (this.childrenSwiper) {
 					this.childrenSwiper.update()
 				} else {
@@ -254,9 +245,9 @@
 			},
 			// 去登录
 			goLogin () {
-				this.$router.push({
-					path: '/login'
-				})
+				if (!this.$ajax.configLogin(this)) {
+					return false
+				}
 			},
 			// 打开单项
 			openItem (path, title) {
@@ -274,6 +265,30 @@
 			// scrollToTop
 			scrollToTop () {
 				window.scrollTo(0, 0)
+			},
+			// 获取孩子列表
+			getChildrenList () {
+				this.$ajax.childList().then(res => {
+					console.log(res)
+					this.childrenList = res.data.data
+					this.$nextTick(() => {
+						this.updateSwiper()
+						setTimeout(() => {
+							this.initBetterScroll()
+						}, 20)
+					})
+				}, err => {
+					console.log(err)
+				})
+			},
+			// 查看孩子详情
+			openChildDetail (id) {
+				this.$router.push({
+					path: '/mine/children/edit',
+					query: {
+						id: id
+					}
+				})
 			}
 		},
 		components: {

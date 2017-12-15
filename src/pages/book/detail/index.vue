@@ -99,7 +99,9 @@
 			// 加入购物车
 			addToShopcat () {
 				// 判断登录
-				this.$ajax.configLogin(this)
+				if (!this.$ajax.configLogin(this)) {
+					return false
+				}
 				// 修改购物车
 				let params = {
 					_uid: localStorage.getItem('userId'),
@@ -122,7 +124,9 @@
 			// 立即购买
 			goOrder () {
 				// 判断登录
-				this.$ajax.configLogin(this)
+				if (!this.$ajax.configLogin(this)) {
+					return false
+				}
 				let data = this.item
 				data.number = 1
 				let selectedData = [data]

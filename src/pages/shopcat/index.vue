@@ -40,8 +40,8 @@
 												<p class="name">{{ item.name }}</p>
 												<p class="price">
 													<span class="small">¥</span>
-													<span class="big">{{ item.fee | getInteger }}</span>
-													<span class="small">{{ item.fee | getDecimal }}</span>
+													<span class="big">{{ item.last_fee | getInteger }}</span>
+													<span class="small">{{ item.last_fee | getDecimal }}</span>
 												</p>
 												<!-- 控制器 -->
 												<div class="cart-control">
@@ -89,8 +89,8 @@
 												<p class="name">{{ item.name }}</p>
 												<p class="price">
 													<span class="small">¥</span>
-													<span class="big">{{ item.fee | getInteger }}</span>
-													<span class="small">{{ item.fee | getDecimal }}</span>
+													<span class="big">{{ item.last_fee | getInteger }}</span>
+													<span class="small">{{ item.last_fee | getDecimal }}</span>
 												</p>
 												<!-- 控制器 -->
 												<div class="cart-control">
@@ -218,12 +218,12 @@
 				let sum = 0
 				this.periodicalList.forEach(item => {
 					if (item.active) {
-						sum += parseFloat(item.fee) * item.number
+						sum += parseFloat(item.original_fee) * item.number
 					}
 				})
 				this.goodsList.forEach(item => {
 					if (item.active) {
-						sum += parseFloat(item.fee) * item.number
+						sum += parseFloat(item.original_fee) * item.number
 					}
 				})
 				return sum
@@ -238,12 +238,12 @@
 				let sum = 0
 				this.periodicalList.forEach(item => {
 					if (item.active) {
-						sum += (parseFloat(item.fee) - parseFloat(item.last_fee)) * item.number
+						sum += (parseFloat(item.original_fee) - parseFloat(item.last_fee)) * item.number
 					}
 				})
 				this.goodsList.forEach(item => {
 					if (item.active) {
-						sum += (parseFloat(item.fee) - parseFloat(item.last_fee)) * item.number
+						sum += (parseFloat(item.original_fee) - parseFloat(item.last_fee)) * item.number
 					}
 				})
 				return sum
@@ -415,9 +415,9 @@
 			},
 			// 去登录
 			goLogin () {
-				this.$router.push({
-					path: '/login'
-				})
+				if (!this.$ajax.configLogin(this)) {
+					return false
+				}
 			},
 			// 加载数据
 			loadData () {
@@ -587,7 +587,7 @@
 					path: '/shopcat/order',
 					query: {
 						selectedData: JSON.stringify(selectedData),
-						nowSum: this.totalOriginPrice,
+						nowSum: this.totalResultPrice,
 						cls: cls
 					}
 				})

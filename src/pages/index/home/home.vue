@@ -9,7 +9,7 @@
 				<!-- 菜单 -->
 				<v-menu class="menu-list"></v-menu>
 				<!-- 推荐 -->
-				<v-recommond v-if="data.recommends && data.recommends.length" :recommends="data.recommends"></v-recommond>
+				<v-recommond ref="recommond" v-if="data.recommends && data.recommends.length" :recommends="data.recommends"></v-recommond>
 				<v-popularize v-if="data.themes" :themes="data.themes"></v-popularize>
 				<v-choiceness ref="circle" @scrollRefresh="scrollRefresh" @canLoadMore="canLoadMore"></v-choiceness>
 			</section>
@@ -82,6 +82,8 @@
 						this.freshScroll()
 						// 监听滚动条
 						this.listenScroll()
+						// 通知 recommond 更新
+						this.$refs.recommond.freshSwiper()
 					})
 				}, err => {
 					console.log(err)
@@ -155,7 +157,7 @@
 					break
 				default:
 					this.$router.push({
-						path: '/book'
+						path: '/double-twelve'
 					})
 					break
 				}

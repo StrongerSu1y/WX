@@ -1,66 +1,197 @@
 <template>
-	<ul ref="list" class="mine-order-list">
-		<li v-if="listData && listData.length" ref="listItem" v-for="(item, index) in listData" :class="{ deleteShow: deleteIndex === index}" class="list-item" @click.prevent.stop="openDetail()">
-			<div class="content">
-				<div class="list-body">
-					<!-- 左侧图片 -->
-					<div class="left-media">
-						<img src="./back_icon.png">
-					</div>
-					<!-- 右侧文字 -->
-					<div class="right-part">
-						<div class="title">
-							<span class="number">共{{ item.numbers }}件</span>
-							<div class="status">
-								<img v-if="item.complete" src="./complete_logo.png">
-								<span class="text">{{ item.status }}</span>
+	<section class="order_list_component">
+		<section class="wrapper" ref="wrapper" :style="{ height: scrollWrapHeight }">
+			<ul ref="list" class="mine-order-list">
+				<li ref="listItem" v-for="(item, index) in listData" :class="{ deleteShow: deleteIndex === index}" class="list-item" @click.prevent.stop="openDetail(item.id)">
+					<div class="list_item_content">
+						<div class="list-body">
+							<!-- 左侧图片 -->
+							<div class="left-media" :style="{ backgroundImage: 'url(' + item.logo[0] + ')' }">
+								<!-- <img v-lazy="item.logo[0]"> -->
+							</div>
+							<!-- 右侧文字 -->
+							<div class="right-part">
+								<div class="title">
+									<span class="number">共{{ item.item_quantity }}件</span>
+									<!-- 待付款 -->
+									<div v-if="item.trade_status === '1'" class="status">
+										<span class="text">待付款</span>
+									</div>
+									<!-- 待付款 -->
+									<div v-if="item.trade_status === '2'" class="status">
+										<span class="text">已付款</span>
+									</div>
+									<!-- 待付款 -->
+									<div v-if="item.trade_status === '3'" class="status">
+										<span class="text">已发货</span>
+									</div>
+									<!-- 待付款 -->
+									<div v-if="item.trade_status === '4'" class="status">
+										<img src="./complete_logo.png">
+										<span class="text">已收货</span>
+									</div>
+									<!-- 待付款 -->
+									<div v-if="item.trade_status === '7'" class="status">
+										<img src="./refund_logo.png">
+										<!-- <span class="text">已退款</span> -->
+									</div>
+									<!-- 待付款 -->
+									<div v-if="item.trade_status === '12'" class="status">
+										<img v-if="item.complete" src="./complete_logo.png">
+										<span class="text fail">订单失效</span>
+									</div>
+									<!-- 完成 -->
+									<div v-if="item.trade_status === '5'" class="status">
+										<img src="./complete_logo.png">
+									</div>
+								</div>
+								<p class="id">订单号: {{ item.no }}</p>
+								<p class="price">实付: ¥{{ item.total_fee }}</p>
 							</div>
 						</div>
-						<p class="id">订单号: {{ item.orderId }}</p>
-						<p class="price">实付: ¥{{ item.price }}</p>
+						<!-- 底部按钮 -->
+						<!-- 待付款 -->
+						<div v-if="item.trade_status === '1'" class="list-bottom">
+							<button class="button">去付款</button>
+						</div>
+						<!-- 已发货 -->
+						<div v-if="item.trade_status === '3'" class="list-bottom">
+							<button class="button">确认收货</button>
+						</div>
+						<!-- 已发货 -->
+						<div v-if="item.trade_status === '4'" class="list-bottom">
+							<button class="button">去评价</button>
+						</div>
+						<div v-if="item.trade_status === '12'" class="list-bottom">
+							<!-- <button class="button">去评价</button> -->
+						</div>
 					</div>
+					<div class="delete-button">删除</div>
+				</li>
+				<div class="empty-box" v-if="!listData.length">
+					<img src="./empty_logo.png">
+					<p class="text">暂无内容</p>
 				</div>
-				<!-- 底部按钮 -->
-				<div class="list-bottom">
-					<button v-if="item.complete" class="button logistics">查看物流</button>
-					<button v-if="item.buttonText" class="button">{{ item.buttonText }}</button>
-				</div>
-			</div>
-			<div class="delete-button">删除</div>
-		</li>
-		<div class="empty-box" v-if="!listData.length">
-			<img src="./empty_logo.png">
-			<p class="text">暂无内容</p>
-		</div>
-	</ul>
+			</ul>
+		</section>
+	</section>
 </template>
 
 <script>
 	import { hasClass } from '@/common/js/common.js'
+	import BScroll from 'better-scroll'
 	export default {
 		name: 'mine-order-list',
 		props: {
-			listData: {
-				type: Array
+			// 订单状态
+			tradeStatus: {
+				type: String
 			}
 		},
 		data () {
 			return {
 				startX: 0,
-				deleteIndex: -1
+				deleteIndex: -1,
+				scroller: '',
+				// 滚动高度
+				scrollTop: 0,
+				// 页码
+				pageNum: 1,
+				// 总页数
+				pages: 0,
+				// 每页数量
+				pageSize: 20,
+				listData: [],
+				// 种类
+				cls: this.$route.query.cls || '2',
+				// 是否可加载
+				canLoadMore: false,
+				// 滚动容器高度
+				scrollWrapHeight: window.innerHeight - 44 - 44 + 'px'
 			}
 		},
-		mounted () {
-			console.log(this.$refs.list)
-			this.$nextTick(() => {
-				if (this.listData.length) {
-					this.listenTouchEvent()
-				}
-			})
+		computed: {
+			// 传参
+			params () {
+				let params = {}
+				params.pageNum = this.pageNum
+				params.pageSize = this.pageSize
+				params.cls = this.cls
+				params.tradeStatus = this.tradeStatus
+				return params
+			}
 		},
 		watch: {
+			scrollTop (newVal, oldVal) {
+				// 加载临界dian
+				let loadTop = this.$refs.content.offsetHeight - window.innerHeight - 50
+				if (newVal > loadTop && this.canLoadMore && this.pageNum < this.pages) {
+					// 加载更多
+					this.loadMore()
+				}
+			}
+		},
+		created () {
+			// 加载数据
+			this.loadData()
+		},
+		mounted () {
 		},
 		methods: {
+			// 加载数据
+			loadData () {
+				this.Toast.loading({
+					title: '加载中...'
+				})
+				this.$ajax.tradeList(this.params).then(res => {
+					let list = res.data.pageView.list
+					this.pages = res.data.pageView.pages
+					this.listData = this.listData.concat(list)
+					// 刷新 scroll
+					this.$nextTick(() => {
+						if (this.listData.length) {
+							setTimeout(() => {
+								this.initBetterScroll()
+							}, 200)
+						}
+					})
+				}, err => {
+					console.log(err)
+				})
+			},
+			// 初始化 scroll
+			initBetterScroll () {
+				if (!this.scroller) {
+					this.scroller = new BScroll(this.$refs.wrapper, {
+						protoType: 3,
+						click: true,
+						scrollX: true,
+						pullDownRefresh: {
+							threshold: 50,
+							stop: 20
+						}
+					})
+					// this.listenTouchEvent()
+					// 监听滚动条
+					this.listenScroll()
+				} else {
+					this.scroller.refresh()
+				}
+			},
+			// 监听滚动
+			listenScroll () {
+				this.scroller.on('scroll', pos => {
+					console.log(pos.y)
+					this.scrollTop = -pos.y
+					if (pos.y > 0) {
+						// this.initBetterScroll()
+					}
+				})
+				this.scroller.on('pullingDown', () => {
+					alert(2)
+					this.loadData()
+				})
+			},
 			// 监听滑动事件
 			listenTouchEvent () {
 				this.$refs.listItem.forEach((item, index) => {
@@ -86,13 +217,27 @@
 				})
 			},
 			// 打开详情页
-			openDetail () {
+			openDetail (id) {
 				this.$router.push({
 					path: '/mine/order/detail',
 					query: {
-						cls: this.$route.query.cls
+						cls: this.$route.query.cls,
+						id: id
 					}
 				})
+			},
+			// 重新加载
+			reload () {
+				// 清空数据
+				this.listData = []
+				this.pageNum = 1
+				this.loadData()
+			},
+			// 加载更多
+			loadMore () {
+				this.canLoadMore = false
+				this.pageNum += 1
+				this.loadData()
 			}
 		}
 	}

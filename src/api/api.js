@@ -127,6 +127,8 @@ export default {
 				obj.$router.push({
 					path: '/login',
 					query: {
+						backRoute: obj.$route.path,
+						backQuery: JSON.stringify(obj.$route.query),
 						href: window.location.href
 					}
 				})
@@ -239,10 +241,13 @@ export default {
 		return fetch('/user/register', params)
 	},
 	/*
-		添加购物车
+		添加购物车 -- 旧
 	*/
 	shopcatSave (params) {
 		return fetch(`${serverHost}/api/shop_cart/save`, params)
+	},
+	saveShopcat (params) {
+		return fetch('/shop_cart/save', params, 'post', 'json')
 	},
 	/*
 		修改购物车
@@ -409,5 +414,46 @@ export default {
 	*/
 	childUpdate (params) {
 		return fetch(`${serverHost}/api/child/update`, params)
+	},
+	/*
+		我的订单列表
+	*/
+	tradeList (params) {
+		let uid = localStorage.getItem('userId')
+		let query = qs.stringify(params)
+		return fetch(`/trade/uid/${uid}?${query}`, {}, 'get', 'json')
+	},
+	/*
+		订单详情
+	*/
+	tradeDetail (params) {
+		let query = qs.stringify(params)
+		return fetch(`/trade/detail?${query}`, {}, 'get', 'json')
+	},
+	/*
+		订单评价
+	*/
+	tradeComment (params) {
+		return fetch('/trade/comment', params, 'post', 'json')
+	},
+	/*
+		领券中心列表
+	*/
+	couponList (params) {
+		let query = qs.stringify(params)
+		return fetch(`/coupon?${query}`, {}, 'get', 'json')
+	},
+	/*
+		领取优惠券
+	*/
+	couponReceive (id) {
+		let userId = localStorage.getItem('userId')
+		return fetch(`/coupon/${id}/receive?_uid=${userId}`, {}, 'get', 'json')
+	},
+	/*
+		我的可用优惠券
+	*/
+	mineCouponOrder (params) {
+		return fetch('/user/coupon/order', params, 'post', 'json')
 	}
 }

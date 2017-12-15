@@ -139,6 +139,13 @@
 			'v-top': top,
 			'v-recommend': recommend
 		},
+		beforeRouteEnter (to, from, next) {
+			if (from.path === '/book/search') {
+				to.meta.isBack = true
+				from.meta.keepAlive = false
+			}
+			next()
+		},
 		created () {
 			// 加载数据
 			this.loadData()
@@ -210,14 +217,12 @@
 				})
 			},
 			openSearch (id) {
-				if (id) {
-					this.$router.push({
-						path: 'book/search',
-						query: {
-							id: id
-						}
-					})
-				}
+				this.$router.push({
+					path: 'book/search',
+					query: {
+						id: id || ''
+					}
+				})
 			},
 			// 选择 banner
 			chooseItem (index) {

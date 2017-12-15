@@ -1,107 +1,106 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from '@/pages/login/login'
-import recovery from '@/pages/login/recovery'
-import register from '@/pages/login/register'
-import reset from '@/pages/login/reset'
-import loginHome from '@/pages/login/home'
-import detail from '@/components/detail/detail'
-import info from '@/components/detail/info/info'
-import address from '@/components/detail/address/address'
-import periodicalDetail from '@/components/periodical/periodical_detail'
-import activityDetail from '@/components/activity/detail/detail'
-import trainDetail from '@/components/train/detail/detail'
-import choose from '@/components/apply/choose/choose'
-import contracts from '@/components/apply/contracts/contracts'
-import pay from '@/components/apply/pay/pay'
-import result from '@/components/apply/result/result'
-import realname from '@/components/apply/contracts/realname'
-import apply from '@/components/apply/apply'
-import view from '@/components/common/view/view'
-import index from '@/pages/index/index'
+// 登录注册
+const login = resolve => require(['@/pages/login/login.vue'], resolve)
+const recovery = resolve => require(['@/pages/login/recovery.vue'], resolve)
+const register = resolve => require(['@/pages/login/register.vue'], resolve)
+const reset = resolve => require(['@/pages/login/reset.vue'], resolve)
+const loginHome = resolve => require(['@/pages/login/home.vue'], resolve)
+// 分享详情
+const detail = resolve => require(['@/components/detail/detail.vue'], resolve)
+const info = resolve => require(['@/components/detail/info/info.vue'], resolve)
+const address = resolve => require(['@/components/detail/address/address.vue'], resolve)
+const periodicalDetail = resolve => require(['@/components/periodical/periodical_detail.vue'], resolve)
+const activityDetail = resolve => require(['@/components/activity/detail/detail.vue'], resolve)
+const trainDetail = resolve => require(['@/components/train/detail/detail.vue'], resolve)
+const choose = resolve => require(['@/components/apply/choose/choose.vue'], resolve)
+const contracts = resolve => require(['@/components/apply/contracts/contracts.vue'], resolve)
+const pay = resolve => require(['@/components/apply/pay/pay.vue'], resolve)
+const result = resolve => require(['@/components/apply/result/result.vue'], resolve)
+const realname = resolve => require(['@/components/apply/contracts/realname.vue'], resolve)
+const apply = resolve => require(['@/components/apply/apply.vue'], resolve)
+const view = resolve => require(['@/components/common/view/view.vue'], resolve)
+const index = resolve => require(['@/pages/index/index.vue'], resolve)
 // 刊物征订
-import periodicalOrding from '@/components/periodical-ording/index'
-import periodicalOrdingOther from '@/components/periodical-ording/other'
-// import periodicalOrdingDoubleEleven from '@/components/periodical-ording/doubleEleven'
-import periodicalOrdingDoubleTwelve from '@/components/periodical-ording/doubleTwelve'
-import periodicalOrdingHome from '@/components/periodical-ording/home/home'
-import periodicalOrdingTwelveHome from '@/components/periodical-ording/double-twelve/home/home'
-import periodicalOrdingTwelveDetail from '@/components/periodical-ording/double-twelve/detail/detail'
-import periodicalOrdingOrder from '@/components/periodical-ording/order/order'
-import periodicalOrdingMain from '@/components/periodical-ording/order/main'
-import periodicalOrdingLeave from '@/components/periodical-ording/leave/leave'
-import periodicalOrdingAddress from '@/components/periodical-ording/address/address'
-import periodicalOrdingDetail from '@/components/periodical-ording/detail/detail'
+const periodicalOrding = resolve => require(['@/components/periodical-ording/index.vue'], resolve)
+const periodicalOrdingOther = resolve => require(['@/components/periodical-ording/other.vue'], resolve)
+const periodicalOrdingHome = resolve => require(['@/components/periodical-ording/home/home.vue'], resolve)
+const periodicalOrdingOrder = resolve => require(['@/components/periodical-ording/order/order.vue'], resolve)
+const periodicalOrdingMain = resolve => require(['@/components/periodical-ording/order/main.vue'], resolve)
+const periodicalOrdingLeave = resolve => require(['@/components/periodical-ording/leave/leave.vue'], resolve)
+const periodicalOrdingAddress = resolve => require(['@/components/periodical-ording/address/address.vue'], resolve)
+const periodicalOrdingDetail = resolve => require(['@/components/periodical-ording/detail/detail.vue'], resolve)
 // 广东深圳
-import periodicalOrdingOther1 from '@/components/periodical-ording/other1'
+const periodicalOrdingOther1 = resolve => require(['@/components/periodical-ording/other1.vue'], resolve)
 // 搜索
-import search from '@/pages/search/search'
-import searchIndex from '@/pages/search/index'
-import searchResult from '@/pages/search/result/result'
+const search = resolve => require(['@/pages/search/search.vue'], resolve)
+const searchIndex = resolve => require(['@/pages/search/index.vue'], resolve)
+const searchResult = resolve => require(['@/pages/search/result/result.vue'], resolve)
 // 微书城
-import book from '@/pages/book/book' // 路由控制页面
-import bookIndex from '@/pages/book/index' // 微书城首页
-import bookSearch from '@/pages/book/search/search'
-import bookSingle from '@/pages/book/single/single'
-import bookDetail from '@/pages/book/detail/index'
+const book = resolve => require(['@/pages/book/book.vue'], resolve) // 路由控制页面
+const bookIndex = resolve => require(['@/pages/book/index.vue'], resolve) // 微书城首页
+const bookSearch = resolve => require(['@/pages/book/search/search.vue'], resolve)
+const bookSingle = resolve => require(['@/pages/book/single/single.vue'], resolve)
+const bookDetail = resolve => require(['@/pages/book/detail/index.vue'], resolve)
 // 圈子
 // import circle from '@/pages/circle/circle'
 // import circleIndex from '@/pages/circle/index'
 
 // 我的
-import mineOrder from '@/pages/mine/order/periodical/periodical' // 订单列表
-import mineOrderDetail from '@/pages/mine/order/detail/detail' // 订单详情
-import mineOrderEvaluate from '@/pages/mine/order/evaluate/evaluate' // 订单评价
-import mineOrderEvaluateSingle from '@/pages/mine/order/evaluate/single' // 订单单条评价
-import mineOrderEvaluateResult from '@/pages/mine/order/evaluate/result' // 订单评价结果
-import mineOrderRefund from '@/pages/mine/order/refund/refund' // 订单申请退款
-import mineOrderRefundSingle from '@/pages/mine/order/refund/single' // 订单申请退款
-import mineOrderActivitySingle from '@/pages/mine/order/refund/activity' // 订单申请退款
-import minePrivate from '@/pages/mine/private/private' // 我的私信
-import mineFocus from '@/pages/mine/private/focus' // 我的私信
-import mineCoupon from '@/pages/mine/private/coupon' // 我的领券中心
-import mineChildren from '@/pages/mine/children/children' // 我的孩子管理
-import mineChildrenEdit from '@/pages/mine/children/edit/edit' // 我的孩子编辑
-import mineAddress from '@/pages/mine/address/index' // 我的地址管理
-import mineAddressEdit from '@/pages/mine/address/address' // 我的地址编辑
-import mineCollect from '@/pages/mine/content/collect/collect' // 我的收藏
-import mineIntegral from '@/pages/mine/content/integral/integral' // 我的收藏
-import mineActivity from '@/pages/mine/content/activity/activity' // 我的活动
-import mineActivityEvaluate from '@/pages/mine/content/activity/evaluate' // 我的活动评价
-import mineTrain from '@/pages/mine/content/train/train' // 我的活动
-import mineTrainEvaluate from '@/pages/mine/content/train/evaluate' // 我的活动评价
-import mineGroup from '@/pages/mine/content/group/group' // 我的团购
-import mineDiscount from '@/pages/mine/content/discount/discount' // 我的优惠券
-import mineCircle from '@/pages/mine/content/circle/circle' // 我的帖子
-import mineSetting from '@/pages/mine/setting/index' // 我的页面-设置
-import mineSettingUsername from '@/pages/mine/setting/username/username' // 我的页面-设置
-import mineSettingFeedback from '@/pages/mine/setting/feedback/feedback' // 我的页面-反馈
-import mineSettingAbout from '@/pages/mine/setting/about/about' // 我的页面-关于我们
-import mineSettingHelp from '@/pages/mine/setting/help/help' // 我的页面-使用帮助
-import mineSettingHelpDetail from '@/pages/mine/setting/help/detail' // 我的页面-使用帮助
-import mineMessage from '@/pages/mine/message/index' // 我的页面-消息中心
-import mineMessageSystem from '@/pages/mine/message/system/system' // 我的页面-消息中心
-import mineMessageOrder from '@/pages/mine/message/order/order' // 我的页面-订单中心
-import mineMessageFunction from '@/pages/mine/message/function/function' // 我的页面-功能中心
+const mineOrder = resolve => require(['@/pages/mine/order/periodical/periodical.vue'], resolve) // 订单列表
+const mineOrderDetail = resolve => require(['@/pages/mine/order/detail/detail.vue'], resolve) // 订单详情
+const mineOrderEvaluate = resolve => require(['@/pages/mine/order/evaluate/evaluate.vue'], resolve) // 订单评价
+const mineOrderEvaluateSingle = resolve => require(['@/pages/mine/order/evaluate/single.vue'], resolve) // 订单单条评价
+const mineOrderEvaluateResult = resolve => require(['@/pages/mine/order/evaluate/result.vue'], resolve) // 订单评价结果
+const mineOrderRefund = resolve => require(['@/pages/mine/order/refund/refund.vue'], resolve) // 订单申请退款
+const mineOrderRefundSingle = resolve => require(['@/pages/mine/order/refund/single.vue'], resolve) // 订单申请退款
+const mineOrderActivitySingle = resolve => require(['@/pages/mine/order/refund/activity.vue'], resolve) // 订单申请退款
+const minePrivate = resolve => require(['@/pages/mine/private/private.vue'], resolve) // 我的私信
+const mineFocus = resolve => require(['@/pages/mine/private/focus.vue'], resolve) // 我的私信
+const mineCoupon = resolve => require(['@/pages/mine/private/coupon.vue'], resolve) // 我的领券中心
+const mineChildren = resolve => require(['@/pages/mine/children/children.vue'], resolve) // 我的孩子管理
+const mineChildrenEdit = resolve => require(['@/pages/mine/children/edit/edit.vue'], resolve) // 我的孩子编辑
+const mineAddress = resolve => require(['@/pages/mine/address/index.vue'], resolve) // 我的地址管理
+const mineAddressEdit = resolve => require(['@/pages/mine/address/address.vue'], resolve) // 我的地址编辑
+const mineCollect = resolve => require(['@/pages/mine/content/collect/collect.vue'], resolve) // 我的收藏
+const mineIntegral = resolve => require(['@/pages/mine/content/integral/integral.vue'], resolve) // 我的收藏
+const mineActivity = resolve => require(['@/pages/mine/content/activity/activity.vue'], resolve) // 我的活动
+const mineActivityEvaluate = resolve => require(['@/pages/mine/content/activity/evaluate.vue'], resolve) // 我的活动评价
+const mineTrain = resolve => require(['@/pages/mine/content/train/train.vue'], resolve) // 我的活动
+const mineTrainEvaluate = resolve => require(['@/pages/mine/content/train/evaluate.vue'], resolve) // 我的活动评价
+const mineGroup = resolve => require(['@/pages/mine/content/group/group.vue'], resolve) // 我的团购
+const mineDiscount = resolve => require(['@/pages/mine/content/discount/discount.vue'], resolve) // 我的优惠券
+const mineCircle = resolve => require(['@/pages/mine/content/circle/circle.vue'], resolve) // 我的帖子
+const mineSetting = resolve => require(['@/pages/mine/setting/index.vue'], resolve) // 我的页面-设置
+const mineSettingUsername = resolve => require(['@/pages/mine/setting/username/username.vue'], resolve) // 我的页面-设置
+const mineSettingFeedback = resolve => require(['@/pages/mine/setting/feedback/feedback.vue'], resolve) // 我的页面-反馈
+const mineSettingAbout = resolve => require(['@/pages/mine/setting/about/about.vue'], resolve) // 我的页面-关于我们
+const mineSettingHelp = resolve => require(['@/pages/mine/setting/help/help.vue'], resolve) // 我的页面-使用帮助
+const mineSettingHelpDetail = resolve => require(['@/pages/mine/setting/help/detail.vue'], resolve) // 我的页面-使用帮助
+const mineMessage = resolve => require(['@/pages/mine/message/index.vue'], resolve) // 我的页面-消息中心
+const mineMessageSystem = resolve => require(['@/pages/mine/message/system/system.vue'], resolve) // 我的页面-消息中心
+const mineMessageOrder = resolve => require(['@/pages/mine/message/order/order.vue'], resolve) // 我的页面-订单中心
+const mineMessageFunction = resolve => require(['@/pages/mine/message/function/function.vue'], resolve) // 我的页面-功能中心
 
 // 购物车
-import shopcatIndex from '@/pages/shopcat/home' // 购物车首页
-import shopcatOrder from '@/pages/shopcat/order/order' // 购物车首页
-import shopcatOrderMain from '@/pages/shopcat/order/main' // 购物车首页
-import shopcatCoupon from '@/pages/shopcat/coupon/coupon' // 购物车优惠券
-import shopcatAddress from '@/pages/shopcat/address/index' // 购物车地址列表
-import shopcatAddressEdit from '@/pages/shopcat/address/address' // 购物车地址添加
-import shopcatOrderLeave from '@/pages/shopcat/leave/leave' // 购物车留言
+const shopcatIndex = resolve => require(['@/pages/shopcat/home.vue'], resolve) // 购物车首页
+const shopcatOrder = resolve => require(['@/pages/shopcat/order/order.vue'], resolve) // 购物车首页
+const shopcatOrderMain = resolve => require(['@/pages/shopcat/order/main.vue'], resolve) // 购物车首页
+const shopcatCoupon = resolve => require(['@/pages/shopcat/coupon/coupon.vue'], resolve) // 购物车优惠券
+const shopcatAddress = resolve => require(['@/pages/shopcat/address/index.vue'], resolve) // 购物车地址列表
+const shopcatAddressEdit = resolve => require(['@/pages/shopcat/address/address.vue'], resolve) // 购物车地址添加
+const shopcatOrderLeave = resolve => require(['@/pages/shopcat/leave/leave.vue'], resolve) // 购物车留言
 
-// 双十一活动页面
+// 活动页面
 // import doubleEleven from '@/components/periodical-ording/double-eleven/index'
-import doubleTwelve from '@/components/periodical-ording/double-twelve/index'
+const doubleTwelve = resolve => require(['@/components/periodical-ording/double-twelve/index.vue'], resolve)
+const newYear = resolve => require(['@/components/periodical-ording/newyear/index.vue'], resolve)
 
 // 页面间切换动画
-import pageTransition from '@/pages/pageTransition'
+const pageTransition = resolve => require(['@/pages/pageTransition.vue'], resolve)
 
 // match
-import match from '@/pages/match/index'
+const match = resolve => require(['@/pages/match/index.vue'], resolve)
 
 Router.prototype.goBack = function () {
 	this.isBack = true
@@ -109,6 +108,7 @@ Router.prototype.goBack = function () {
 	this.go(-1)
 }
 
+// 初始化为 false
 Router.isBack = false
 
 Vue.use(Router)
@@ -241,22 +241,6 @@ export default new Router({
 					keepAlive: false // 需要缓存
 				}
 			}]
-		}, { // 刊物征订双十二
-			path: '/periodical/double-twelve',
-			component: periodicalOrdingDoubleTwelve,
-			children: [{
-				path: '/',
-				component: periodicalOrdingTwelveHome,
-				meta: {
-					keepAlive: true // 需要缓存
-				}
-			}, {
-				path: 'detail',
-				component: periodicalOrdingTwelveDetail,
-				meta: {
-					keepAlive: false // 需要缓存
-				}
-			}]
 		}, { // 刊物下单
 			path: '/periodical/order',
 			component: periodicalOrdingOrder,
@@ -300,19 +284,36 @@ export default new Router({
 			component: book,
 			children: [{
 				path: '/',
-				component: bookIndex
+				component: bookIndex,
+				meta: {
+					keepAlive: true,
+					isBack: false,
+					index: 0
+				}
 			}, {
 				path: 'search',
 				component: bookSearch,
 				meta: {
-					keepAlive: false
+					keepAlive: true,
+					isBack: false,
+					index: 1
 				}
 			}, {
 				path: 'single',
-				component: bookSingle
+				component: bookSingle,
+				meta: {
+					keepAlive: false,
+					isBack: false,
+					index: 2
+				}
 			}, {
 				path: 'detail',
-				component: bookDetail
+				component: bookDetail,
+				meta: {
+					keepAlive: false,
+					isBack: false,
+					index: 3
+				}
 			}]
 		}, {
 			path: '/mine/order',
@@ -389,6 +390,9 @@ export default new Router({
 		}, {
 			path: '/double-twelve',
 			component: doubleTwelve
+		}, {
+			path: '/newyear',
+			component: newYear
 		}, {
 			path: '/mine/setting',
 			component: mineSetting

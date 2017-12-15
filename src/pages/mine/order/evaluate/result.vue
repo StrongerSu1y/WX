@@ -30,16 +30,32 @@
 					</div>
 			</transition>
 		</section>
+		<!-- 猜您喜欢 -->
+		<v-recommend :recommendList="recommendList"></v-recommend>
 	</div>
 </template>
 
 <script>
+	import recommend from '@/pages/book/recommend/recommend'
 	export default {
 		data () {
 			return {
 				maskShow: false,
-				giftContentShow: false
+				giftContentShow: false,
+				recommendList: []
 			}
+		},
+		computed: {
+			params () {
+				let params = {}
+				params.id = this.$route.query.id
+				params.cls = this.$route.query.cls
+				return params
+			}
+		},
+		created () {
+			// 加载数据
+			this.loadData()
 		},
 		mounted () {
 			this.$nextTick(() => {
@@ -54,6 +70,15 @@
 			})
 		},
 		methods: {
+			// 加载数据
+			loadData () {
+				this.$ajax.tradeDetail(this.params).then(res => {
+					console.log(res)
+					this.recommendList = res.data.recommendList
+				}, err => {
+					console.log(err)
+				})
+			},
 			// 返回上一页
 			goBack () {
 				this.$router.go(-2)
@@ -62,6 +87,9 @@
 			hideMask () {
 				this.maskShow = false
 			}
+		},
+		components: {
+			'v-recommend': recommend
 		}
 	}
 </script>

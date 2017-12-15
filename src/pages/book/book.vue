@@ -1,10 +1,12 @@
 <template>
 	<div class="book-home-page" style="min-height: 100%">
-		<!-- <keep-alive>
-			<router-view v-if="$route.meta.keepAlive"></router-view>
-		</keep-alive> -->
 		<transition :name="transitionName">
-	    <router-view class="child-view"></router-view>
+			<keep-alive>
+				<router-view v-if="$route.meta.keepAlive" class="child-view"></router-view>
+			</keep-alive>
+	  </transition>
+		<transition :name="transitionName">
+	    <router-view v-if="!$route.meta.keepAlive" class="child-view"></router-view>
 	  </transition>
 	</div>
 </template>
@@ -14,18 +16,35 @@
 		name: 'book-home-page',
 		data () {
 			return {
-				transitionName: 'slide-left'
+				isBack: false
+			}
+		},
+		computed: {
+			transitionName () {
+				return this.isBack ? 'slide-right' : 'slide-left'
 			}
 		},
 		beforeRouteUpdate (to, from, next) {
-			// let isBack = this.$router.isBack
-			if (to.path === '/book/search') {
-				this.transitionName = 'slide-right'
+			// console.log(this.$router.isBack)
+			if (to.meta.index > from.meta.index) {
+				// this.transitionName = 'slide-left'
+				this.isBack = false
+				setTimeout(() => {
+					// this.transitionName = 'slide-right'
+					this.isBack = true
+				}, 100)
+				// from.meta.keepAlive = true
 			} else {
-				this.transitionName = 'slide-left'
+				// this.transitionName = 'slide-right'
+				this.isBack = true
+				setTimeout(() => {
+					// this.transitionName = 'slide-left'
+					this.isBack = false
+				}, 100)
+				// from.meta.keepAlive = false
 			}
-			// 重置
-			this.$router.isBack = false
+			// // 重置
+			// this.$router.isBack = false
 			next()
 		}
 	}

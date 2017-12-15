@@ -1,5 +1,6 @@
 <template>
 	<div class="double_twelve_page" :style="{ width: wrapWidth + 'px', transform: topTransLate }">
+		<!-- <v-link></v-link> -->
 		<!-- 头部 -->
 		<section class="twelve_page_top" :style="topStyleObj">
 			<!-- 标题 -->
@@ -84,6 +85,7 @@
 
 <script>
 	import { weiXinConfig } from '@/common/js/common'
+	import link from '@/components/common/link/link'
 	// 幼儿园数组
 	let kinderList = [{
 		logo: require('../../../../static/imgs/double-twelve/kindergarten_1.jpg'),
@@ -167,7 +169,11 @@
 				// 右侧列表
 				navRightList: navRightList,
 				// 导航中间线
-				navCenterLineSrc: require('../../../../static/imgs/double-twelve/nav_center_line.png')
+				navCenterLineSrc: require('../../../../static/imgs/double-twelve/nav_center_line.png'),
+				// 打开app链接定位
+				linkPosition: {
+					bottom: 0
+				}
 			}
 		},
 		computed: {
@@ -205,6 +211,9 @@
 			},
 			// 打开图书列表
 			openBookList (itemTypeId) {
+				if (!this.configLogin('itemTypeId', itemTypeId)) {
+					return false
+				}
 				this.$router.push({
 					path: '/book/search',
 					query: {
@@ -214,6 +223,9 @@
 			},
 			// 打开单本图书
 			openItem (itemIds) {
+				if (!this.configLogin('itemIds', itemIds)) {
+					return false
+				}
 				this.$router.push({
 					path: '/book/search',
 					query: {
@@ -227,7 +239,31 @@
 					desc: '这是微校网双十一活动',
 					imgUrl: 'https://m.51weixiao.com/static/imgs/share_logo.png'
 				})
+			},
+			// 判断登陆
+			configLogin (type, val) {
+				if (!localStorage.getItem('userId')) {
+					if (this.isWeixin) {
+						this.weixinLogin(type, val)
+						return false
+					}
+				}
+				return true
+			},
+			// 微信登陆
+			weixinLogin (type, val) {
+				let protocol = location.protocol
+				let host = location.host
+				let _href = encodeURIComponent(`${protocol}//${host}/book/search?${type}=${val}`)
+				let apiUrl = 'https://www.51weixiao.com/app-api/api/user/wxLogin'
+				let redirectUrl = encodeURIComponent(`${apiUrl}?finalUrl=${_href}`)
+				let appId = 'wx701b0e6e6faac47c'
+				let _url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=` + redirectUrl + `&response_type=code&scope=snsapi_base&state=1#wechat_redirect`
+				window.location.href = _url
 			}
+		},
+		components: {
+			'v-link': link
 		}
 	}
 </script>

@@ -114,6 +114,11 @@
 					localStorage.setItem('historyLength', 0)
 					window.history.go(historyBack)
 					return
+				} else {
+					// 没有则返回首页
+					this.$router.push({
+						path: localStorage.getItem('activityPage') || '/'
+					})
 				}
 				localStorage.setItem('historyLength', 0)
 			},

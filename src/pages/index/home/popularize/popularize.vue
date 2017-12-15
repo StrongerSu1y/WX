@@ -2,7 +2,9 @@
 	<section class="home-popularize" @click="showToast()">
 		<ul v-if="themes && themes.hasOwnProperty('book')" class="list">
 			<!-- 图书 -->
-			<li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/book')">
+			<!-- <li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/book')"> -->
+			<!-- 双十二 -->
+			<li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/double-twelve')">
 				<p class="title">{{ themes.book.title }}</p>
 				<p class="sub-title">{{ themes.book.subtitle }}</p>
 				<div class="media">

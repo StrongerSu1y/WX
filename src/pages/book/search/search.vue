@@ -38,7 +38,9 @@
 				id: this.$route.query.id,
 				// itemTypeId
 				itemTypeId: this.$route.query.itemTypeId || '',
-				itemIds: this.$route.query.itemIds || ''
+				itemIds: this.$route.query.itemIds || '',
+				// 是否为第一次进入
+				isFirstEnter: false
 			}
 		},
 		computed: {
@@ -75,18 +77,44 @@
 			}
 		},
 		created () {
+			// 判断浏览器
+			if (this.isWeixin) {
+				// 判断微信登陆返回 status
+				if (this.$route.query.hasOwnProperty('status')) {
+					if (parseInt(this.$route.query.status) === 0) {
+						localStorage.setItem('userId', this.$route.query.uid)
+						localStorage.setItem('wxOpenId', this.$route.query.openid)
+					}
+				}
+			}
 			setTimeout(() => {
 				window.scrollTo(0, 0)
 			}, 200)
-			this.loadData()
+			// 第一次进入
+			this.isFirstEnter = true
 		},
 		mounted () {
+		},
+		beforeRouteEnter (to, from, next) {
+			if (from.path === '/book/detail') {
+				to.meta.isBack = true
+				to.meta.keepAlive = true
+			}
+			next()
+		},
+		activated () {
+			// 如果不是返回的，或者为第一次进入
+			if (!this.$route.meta.isBack || this.isFirstEnter) {
+				// 加载数据
+				this.loadData()
+			}
+			// 重置
+			this.isFirstEnter = false
+			this.$route.meta.isBack = false
 		},
 		methods: {
 			// 加载
 			loadData () {
-				console.log('loadData')
-				console.log('bookList length: ' + this.bookList.length)
 				this.Toast.loading({
 					title: '加载中...'
 				})

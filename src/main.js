@@ -50,6 +50,21 @@ Vue.prototype.$ajax = api
 
 Vue.config.productionTip = false
 
+// 操作router
+let routerList = []
+router.beforeEach((to, from, next) => {
+	if (routerList.length && routerList.indexOf(to.name) === routerList.length - 1) {
+		// 后退
+		routerList.splice(routerList.length - 1, 1)
+		to.meta.isBack = true
+	} else {
+		// 前进
+		routerList.push(from.name || '/')
+		to.meta.isBack = false
+	}
+	next()
+})
+
 // 暂时将用户id 设为 100095
 // localStorage.setItem('userId', '100095')
 /* eslint-disable no-new */

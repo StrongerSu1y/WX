@@ -8,29 +8,30 @@
 			<p class="title">订单详情</p>
 		</section>
 		<!-- 提醒 -->
-		<div class="remind-line">
+		<div v-if="cls === '1'" class="remind-line">
 			<img src="./remind_icon.png">
 			<span class="text">此次杂志征订为7月~9月杂志（下学期发放）</span>
 		</div>
 		<!-- 杂志 -->
 		<section v-if="cls === '1'" class="main-info">
-			<span class="status">待付款</span>
+			<span v-if="info.trade_status === '1'" class="status">待付款</span>
+			<span v-if="info.trade_status === '12'" class="status">订单失效</span>
 			<p class="time">
 				<span class="label-name">日<span class="visi-hidden">隐</span>期:</span>
-				<span class="time-text">2017年8月1日</span>
-				<span class="time-text">10:16:26</span>
+				<span class="time-text">{{ info.created_at }}</span>
+				<!-- <span class="time-text">10:16:26</span> -->
 			</p>
 			<p class="order-id">
 				<span class="label-name">订单号:</span>
-				<span class="text">20170889685632</span>
+				<span class="text">{{ info.no }}</span>
 			</p>
 			<p class="postage">
 				<span class="label-name">邮<span class="visi-hidden">隐</span>费:</span>
-				<span class="text">+¥10</span>
+				<span class="text">+¥{{ info.delivery_fee }}</span>
 			</p>
 			<p class="pay">
 				<span class="label-name">实付款:</span>
-				<span class="text">¥300.00</span>
+				<span class="text">¥{{ info.total_fee }}</span>
 			</p>
 			<div class="bottom-btns">
 				<span class="button cancel">取消订单</span>
@@ -40,52 +41,62 @@
 		</section>
 		<!-- 图书 -->
 		<section v-if="cls === '2'" class="main-info">
-			<span class="status">待付款</span>
+			<span v-if="info.trade_status === '1'" class="status">待付款</span>
+			<span v-if="info.trade_status === '3'" class="status">发货中</span>
+			<span v-if="info.trade_status === '12'" class="status">订单失效</span>
 			<p class="time">
 				<span class="label-name">日<span class="visi-hidden">隐</span>期:</span>
-				<span class="time-text">2017年8月1日</span>
-				<span class="time-text">10:16:26</span>
+				<span class="time-text">{{ info.created_at }}</span>
+				<!-- <span class="time-text">10:16:26</span> -->
 			</p>
 			<p class="order-id">
 				<span class="label-name">订单号:</span>
-				<span class="text">20170889685632</span>
+				<span class="text">{{ info.no }}</span>
 			</p>
 			<p class="price">
 				<span class="label-name">总金额:</span>
-				<span class="text">¥800.00</span>
+				<span class="text">¥{{ parseFloat(info.total_fee) + parseFloat(info.delivery_fee) }}</span>
 			</p>
 			<p class="postage">
 				<span class="label-name">邮<span class="visi-hidden">隐</span>费:</span>
-				<span class="text">+¥10</span>
+				<span class="text">+¥{{ info.delivery_fee }}</span>
 			</p>
 			<p class="postage">
 				<span class="label-name">满<span class="visi-hidden">隐</span>减:</span>
-				<span class="text">-¥100.00</span>
+				<span class="text">-¥0.00</span>
 			</p>
 			<p class="price">
 				<span class="label-name">优惠券:</span>
-				<span class="text">-¥100.00</span>
+				<span class="text">-¥0.00</span>
 			</p>
 			<p class="price">
 				<span class="label-name">全单减:</span>
-				<span class="text">-¥100.00</span>
+				<span class="text">-¥0.00</span>
 			</p>
 			<p class="price">
 				<span class="label-name">全单折:</span>
-				<span class="text">-¥100.00</span>
+				<span class="text">-¥0.00</span>
 			</p>
 			<p class="postage">
 				<span class="label-name">积<span class="visi-hidden">隐</span>分:</span>
-				<span class="text">-¥100.00</span>
+				<span class="text">-¥0.00</span>
 			</p>
 			<p class="pay">
 				<span class="label-name">实付款:</span>
-				<span class="text">¥310.00</span>
+				<span class="text">¥{{ info.total_fee }}</span>
 			</p>
-			<div class="bottom-btns">
+			<!-- 待付款 -->
+			<div v-if="info.trade_status === '1'" class="bottom-btns">
 				<span class="button cancel">取消订单</span>
+				<span class="button pay" @click="goPay()">去付款</span>
+			</div>
+			<!-- 已付款 -->
+			<div v-if="info.trade_status === '2'" class="bottom-btns">
 				<span class="button refund" @click.prevent.stop="goRefund()">申请退款</span>
-				<span class="button pay" @click="goEvaluate()">去评价</span>
+			</div>
+			<!-- 已发货 -->
+			<div v-if="info.trade_status === '3'" class="bottom-btns">
+				<span class="button refund" @click.prevent.stop="goRefund()">确认收货</span>
 			</div>
 		</section>
 		<!-- 活动 -->
@@ -137,18 +148,18 @@
 			</div>
 			<div class="right-text">
 				<p v-if="cls === '1' || cls === '2'" class="name-mobile">
-					<span class="name">张三</span>
-					<span class="mobile">18768188566</span>
+					<span class="name">{{ info.user_nick_name }}</span>
+					<span class="mobile">{{ info.address_mobile }}</span>
 				</p>
 				<p class="address">
-					浙江省杭州市西湖区翠苑第一小学（翠苑校区）1年级1班
+					{{ info.address_province_name }}{{ info.address_city_name }}{{ info.address_region_name }}{{ info.address_address }}
 				</p>
 			</div>
 		</section>
 		<!-- 留言内容 -->
-		<section class="message-board">留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容留言内容</section>
+		<section v-if="info.user_remark" class="message-board">{{ info.user_remark }}</section>
 		<!-- 列表 -->
-		<v-list v-if="listData.length" :listData="listData" :cls="cls" @showActivityView="showActivityView"></v-list>
+		<v-list :listData="info.itemList" :cls="cls" @showActivityView="showActivityView"></v-list>
 		<!-- 联系方式(活动) -->
 		<section v-if="cls === '13'" class="activity-service">
 			<p class="tel">
@@ -181,35 +192,19 @@
 			</transition>
 		</section>
 		<transition enter-active-class="animated fadeInRight" leave-active-class="animated fadeOutRight">
-			<v-view v-if="showView" :listData="listData" :viewIndex="viewIndex" @hideView="hideView"></v-view>
+			<v-view v-if="showView" :listData="info.itemList" :viewIndex="viewIndex" @hideView="hideView"></v-view>
 		</transition>
 	</div>
 </template>
 
 <script>
 	import view from './view/view'
-	let listData = [{
-		name: '刊物名称刊物名称刊物名称刊物名称刊...',
-		count: 2,
-		price: '100.00',
-		logo: require('./back_icon.png')
-	}, {
-		name: '刊物名称刊物名称刊物名称刊物名称刊...',
-		count: 2,
-		price: '100.00',
-		logo: require('./back_icon.png')
-	}, {
-		name: '刊物名称刊物名称刊物名称刊物名称刊...',
-		count: 2,
-		price: '100.00',
-		logo: require('./back_icon.png')
-	}]
 	import list from './list/list'
 	import recommend from '@/pages/book/recommend/recommend'
 	export default {
 		data () {
 			return {
-				listData: listData,
+				// 猜您喜欢
 				recommendList: [],
 				// 类型
 				cls: this.$route.query.cls || '1',
@@ -218,12 +213,36 @@
 				maskShow: false,
 				showServiceBox: false,
 				showView: false,
-				viewIndex: 0
+				viewIndex: 0,
+				// 信息
+				info: {}
 			}
+		},
+		computed: {
+			params () {
+				let params = {}
+				params.id = this.$route.query.id
+				params.cls = this.$route.query.cls
+				return params
+			}
+		},
+		created () {
+			// 加载数据
+			this.loadData()
 		},
 		mounted () {
 		},
 		methods: {
+			// 加载数据
+			loadData () {
+				this.$ajax.tradeDetail(this.params).then(res => {
+					console.log(res)
+					this.info = res.data.bookMagazineView
+					this.recommendList = res.data.recommendList
+				}, err => {
+					console.log(err)
+				})
+			},
 			// 返回上一页
 			goBack () {
 				this.$router.goBack()
@@ -231,7 +250,8 @@
 			// 去评价
 			goEvaluate () {
 				this.$router.push({
-					path: 'evaluate'
+					path: 'evaluate',
+					query: this.$route.query
 				})
 			},
 			// 申请退款
@@ -266,6 +286,17 @@
 			// 隐藏活动二维码
 			hideView () {
 				this.showView = false
+			},
+			// 去付款
+			goPay () {
+				this.$router.push({
+					path: '/pay',
+					query: {
+						outtradeno: this.info.no,
+						fee: this.info.total_fee,
+						cls: this.info.cls
+					}
+				})
 			}
 		},
 		components: {

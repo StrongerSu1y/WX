@@ -61,9 +61,9 @@
 			<div class="right-part">
 				<p class="title">优惠券</p>
 				<div class="info" @click="openItem('order/coupon')">
-					<span v-if="!couponPrice" class="desc red">{{ couponNum }}张优惠券可使用</span>
+					<span v-if="!couponPrice" class="desc red">{{ couponList.length }}张优惠券可使用</span>
 					<span v-if="couponPrice" class="desc">已使用优惠券</span>
-					<span v-if="!couponNum" class="desc">暂无可使用优惠券</span>
+					<span v-if="!couponList.length" class="desc">暂无可使用优惠券</span>
 					<span v-if="!couponPrice" class="select-text">未选中</span>
 					<span v-if="couponPrice" class="select-text">{{ couponPrice }}</span>
 					<div class="img">
@@ -155,12 +155,13 @@
 				defaultAddressChange: false,
 				couponPrice: '',
 				couponId: '',
-				couponNum: 3,
 				address: {},
 				// 积分暂时没有
 				hasIntegral: false,
 				// 优惠券暂时不用
-				hasDiscount: false
+				hasDiscount: true,
+				// 优惠券
+				couponList: []
 			}
 		},
 		computed: {
@@ -183,6 +184,32 @@
 			},
 			totalSum () {
 				return (parseFloat(this.nowSum) + parseFloat(this.carriage) - parseFloat(this.discount)).toFixed(1)
+			},
+			// 最后需要的商品数组
+			items () {
+				return this.listData.map(item => {
+					if (item.sid) {
+						// 来源：购物车
+						return {
+							item_id: item.sid, // sid为商品id
+							quantity: item.number.toString()
+						}
+					} else {
+						// 来源：立即下单
+						return {
+							item_id: item.id, // sid为商品id
+							quantity: item.number.toString()
+						}
+					}
+				})
+			},
+			// 优惠券传参
+			couponParams () {
+				let params = {}
+				params.cls = this.$route.query.cls
+				params.items = this.items
+				params.uid = localStorage.getItem('userId')
+				return params
 			}
 		},
 		created () {
@@ -217,6 +244,7 @@
 		methods: {
 			// 加载数据
 			loadData () {
+				// 地址
 				this.$ajax.addressList({
 					_uid: localStorage.getItem('userId')
 				}).then(res => {
@@ -227,6 +255,14 @@
 				}, err => {
 					console.log(err)
 				})
+				// 优惠券
+				this.$ajax.mineCouponOrder(this.couponParams).then(res => {
+					console.log(res)
+					let list = res.data.list
+					this.couponList = list
+				}, err => {
+					console.log(err)
+				})
 			},
 			// 打开页面
 			openItem (path) {
@@ -234,7 +270,9 @@
 					path: path,
 					query: {
 						couponPrice: this.couponPrice,
-						couponId: this.couponId
+						couponId: this.couponId,
+						cls: this.$route.query.cls,
+						items: JSON.stringify(this.items)
 					}
 				})
 			},
@@ -325,63 +363,12 @@
 			submitTrade () {
 				// 双十二
 				this.submitTwelve()
-				// let params = {}
-				// params.uid = localStorage.getItem('userId')
-				// params.items = this.listData.map(item => {
-				// 	let param = {
-				// 		item_id: item.id,
-				// 		quantity: item.number.toString()
-				// 	}
-				// 	// return JSON.stringify(param)
-				// 	return param
-				// })
-				// params.addressId = this.address.id
-				// params.remark = this.leaveText
-				// setTimeout(() => {
-				// 	if (this.$route.query.cls === '1') {
-				// 		this.$ajax.tradeConfirmMagazine(params).then(res => {
-				// 			console.log(res)
-				// 		}, err => {
-				// 			console.log(err)
-				// 		})
-				// 	} else {
-				// 		this.$ajax.tradeConfirmBook(params).then(res => {
-				// 			console.log(res)
-				// 		}, err => {
-				// 			console.log(err)
-				// 		})
-				// 	}
-					// 调用提交订单接口
-					// this.$ajax.doubleEleven(params).then(res => {
-					// 	let data = res.data
-					// 	// 下一个页面需要的数据
-					// 	let fee = parseFloat(data.total_fee).toFixed(1)
-					// 	let outtradeno = data.no
-					// 	let cls = '2'
-					// 	let protocol = window.location.protocol
-					// 	let host = window.location.host
-					// 	let href = ''
-					// 	if (this.isDoubleEleven) {
-					// 		href = `${protocol}//${host}/shopcat/double-eleven`
-					// 	} else {
-					// 		href = `${protocol}//${host}/shopcat/ording`
-					// 	}
-					// 	window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
-					// }, err => {
-					// 	console.log(err)
-					// })
-				// }, 300)
 			},
 			// 双十二提交
 			submitTwelve () {
 				let params = {}
 				params.uid = localStorage.getItem('userId')
-				params.items = this.listData.map(item => {
-					return {
-						item_id: item.sid, // sid为商品id
-						quantity: item.number.toString()
-					}
-				})
+				params.items = this.items
 				params.addressId = this.address.id
 				params.remark = this.leaveText
 				console.log(params)
@@ -392,6 +379,7 @@
 						// 下一个页面需要的数据
 						let fee = parseFloat(data.total_fee).toFixed(1)
 						let outtradeno = data.no
+						// 图书
 						let cls = '2'
 						let protocol = window.location.protocol
 						let host = window.location.host
@@ -401,6 +389,23 @@
 						console.log(err)
 					})
 				}, 300)
+			},
+			// 不是双十一活动的话，通过购物车提交
+			submitByShopcat () {
+				// 暂不用
+				let firstPromiseArr = []
+				let numbers = 20
+				for (let i = 0; i < numbers; i++) {
+					firstPromiseArr.push(this.$ajax.saveShopcat({
+						uid: '52089',
+						item_id: '1942',
+						region_id: '',
+						force: '1'
+					}))
+				}
+				Promise.all(firstPromiseArr).then(values => {
+					console.log(values)
+				})
 			}
 		}
 	}

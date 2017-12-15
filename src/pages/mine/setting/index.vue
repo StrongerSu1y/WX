@@ -131,7 +131,7 @@
 				</div>
 			</li>
 		</ul>
-		<div class="exit-login">
+		<div class="exit-login" @click="loginOut()">
 			退出登录
 		</div>
 	</div>
@@ -175,6 +175,18 @@
 			openItem (path) {
 				this.$router.push({
 					path: path
+				})
+			},
+			// 退出登录
+			loginOut () {
+				this.Dialog.alert({
+					title: '温馨提示',
+					msg: '您确定要退出吗'
+				}, res => {
+					if (res.buttonIndex === 2) {
+						localStorage.clear()
+						this.goBack()
+					}
 				})
 			}
 		}

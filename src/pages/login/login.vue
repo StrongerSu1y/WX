@@ -91,8 +91,28 @@
 			}
 		},
 		created () {
-			// 修改传递给qq登录的url
-			// this.baseUrl = location.protocol + '//' + location.host
+			// 判断浏览器
+			if (this.isWeixin) {
+				// 判断微信登陆返回 status
+				if (this.$route.query.hasOwnProperty('status')) {
+					if (parseInt(this.$route.query.status) === 0) {
+						localStorage.setItem('userId', this.$route.query.uid)
+						localStorage.setItem('wxOpenId', this.$route.query.openid)
+						// 如果有上一页
+						if (this.$route.query.backRoute) {
+							this.$router.push({
+								path: this.$route.query.backRoute,
+								query: JSON.parse(this.$route.query.backQuery)
+							})
+						} else {
+							// 没有则返回首页
+							this.$router.push({
+								path: localStorage.getItem('activityPage') || '/'
+							})
+						}
+					}
+				}
+			}
 		},
 		mounted () {
 			// 判断qq是否登录
@@ -168,11 +188,13 @@
 			},
 			// 微信登录
 			loginWeixin () {
-				let _href = encodeURIComponent(window.location.href)
+				// 微信登陆返回到当前页面
+				let href = window.location.href
+				let _href = encodeURIComponent(`${href}`)
 				let apiUrl = 'https://www.51weixiao.com/app-api/api/user/wxLogin'
 				let redirectUrl = encodeURIComponent(`${apiUrl}?finalUrl=${_href}`)
 				let appId = 'wx701b0e6e6faac47c'
-				var _url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=` + redirectUrl + `&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`
+				let _url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=` + redirectUrl + `&response_type=code&scope=snsapi_base&state=1#wechat_redirect`
 				window.location.href = _url
 			},
 			// QQ登录后的操作
