@@ -58,8 +58,8 @@
 </template>
 
 <script>
-	import header from '../../header/header'
-	import { checkInput, checkMobile } from '../../../common/js/common'
+	import header from '@/components/header/header'
+	import { checkInput, checkMobile } from '@/common/js/common'
 	import Picker from 'better-picker'
 	let data1 = [{
 		text: '爸爸',

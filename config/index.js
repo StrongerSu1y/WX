@@ -5,6 +5,7 @@ module.exports = {
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
+    // 打包端口
     port: 8080,
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: './static',
@@ -24,6 +25,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
+    // 测试端口
     port: 8080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',

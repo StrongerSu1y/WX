@@ -26,8 +26,10 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
+      // 产出页面
       filename: 'index.html',
-      template: 'index.html',
+      // 模板页面
+      template: 'index.dev.html',
       inject: true
     }),
     new FriendlyErrorsPlugin()

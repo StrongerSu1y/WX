@@ -22,8 +22,8 @@
 </template>
 
 <script>
-	import header from '../../header/header'
-	import { addScript } from '../../../common/js/common'
+	import header from '@/components/header/header'
+	import { addScript } from '@/common/js/common.js'
 	// const payList = [{
 	// 	cls: 'alipay',
 	// 	text: '支付宝支付'
@@ -230,6 +230,7 @@
 				}
 				document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false)
 			},
+			// 调起微信 bridge
 			onBridgeReady (data) {
 				// alert('ready: ' + JSON.stringify(data))
 				var _sendObj = {
@@ -244,7 +245,6 @@
 					// 微信签名
 					'paySign': data.sign
 				}
-				// alert(JSON.stringify(_sendObj))
 				window.WeixinJSBridge.invoke(
 					'getBrandWCPayRequest', _sendObj,
 					(res) => {

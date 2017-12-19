@@ -19,8 +19,8 @@
 </template>
 
 <script>
-	import header from '../../header/header'
-	import { checkInput, checkMobile } from '../../../common/js/common'
+	import header from '@/components/header/header'
+	import { checkInput, checkMobile } from '@/common/js/common.js'
 	export default {
 		name: 'contracts',
 		data () {

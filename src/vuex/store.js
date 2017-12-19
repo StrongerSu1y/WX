@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+// 开发环境用
+// if (process.env.NODE_ENV === 'development') {
 Vue.use(Vuex)
+// }
 
 const store = new Vuex.Store({
 	// 定义状态

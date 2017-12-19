@@ -53,8 +53,8 @@
 </template>
 
 <script>
-	import header from '../../header/header'
-	import {getUpdateDay} from '../../../common/js/date.js'
+	import header from '@/components/header/header'
+	import {getUpdateDay} from '@/common/js/date.js'
 	export default {
 		name: 'choose',
 		data () {

@@ -17,6 +17,7 @@ Object.keys(custom).forEach(key => {
 	Vue.filter(key, custom[key])
 })
 
+// 懒加载
 Vue.use(VueLazyload, {
 	preload: 1.3,
 	loading: require('../static/imgs/loading.png'),

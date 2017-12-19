@@ -23,6 +23,7 @@
 			return {}
 		},
 		methods: {
+			// 查看详情
 			openDetail (id) {
 				this.$router.push({
 					path: '/activity/detail',

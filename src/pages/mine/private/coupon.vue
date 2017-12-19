@@ -13,10 +13,10 @@
 				<div class="item-body">
 					<div class="left-part">
 						<p class="price">
-							<span class="big">{{ item.amount }}</span>
+							<span class="big">{{ item.amount || 0 }}</span>
 							<span class="desc">元</span>
 						</p>
-						<p class="condition">满{{ item.reachamount }}元可用</p>
+						<p class="condition">满{{ item.reachamount || 0 }}元可用</p>
 					</div>
 					<div class="center-part">
 						<p class="type">{{ item.name }}</p>
@@ -31,11 +31,13 @@
 				<div class="item-footer">{{ item.description }}</div>
 			</li>
 		</ul>
+		<empty v-if="!listData.length" :text="'暂无可领优惠券'"></empty>
 	</div>
 </template>
 
 <script>
 	import loading from '@/components/common/loading/loading'
+	import empty from '@/components/common/empty/empty'
 	export default {
 		data () {
 			return {
@@ -100,6 +102,8 @@
 								title: '领取成功！'
 							})
 							this.listData[index].loadingShow = false
+							// 重新加载数据
+							this.reload()
 						}, 1000)
 					} else {
 						this.Toast.warning({
@@ -114,15 +118,16 @@
 					})
 					this.listData[index].loadingShow = false
 				})
-				// this.$nextTick(() => {
-				// 	setTimeout(() => {
-				// 		this.listData[index].loadingShow = false
-				// 	}, 5000)
-				// })
+			},
+			// 重新加载
+			reload () {
+				this.pageNum = 1
+				this.loadData()
 			}
 		},
 		components: {
-			'v-loading': loading
+			'v-loading': loading,
+			empty
 		}
 	}
 </script>
