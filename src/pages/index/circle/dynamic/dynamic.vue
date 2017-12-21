@@ -61,11 +61,13 @@
 			}
 		},
 		created () {
+			// 加载数据
 			this.loadData()
 		},
 		mounted () {
 		},
 		methods: {
+			// 加载数据
 			loadData () {
 				this.$ajax.getCircleList({
 					page_number: this.pageNo
@@ -104,6 +106,7 @@
 					this.scroller.refresh()
 				}
 			},
+			// 监听
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y

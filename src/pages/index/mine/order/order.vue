@@ -40,6 +40,7 @@
 			}
 		},
 		methods: {
+			// 打开单项订单
 			openUrl (path, title, cls) {
 				if (!path) {
 					this.showToast()
@@ -53,6 +54,7 @@
 					}
 				})
 			},
+			// 提示
 			showToast () {
 				this.Toast.warning({
 					title: '<p>该功能正在开发中</p><p>敬请期待...</p>'

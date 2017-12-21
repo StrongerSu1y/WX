@@ -210,15 +210,20 @@
 				cls: this.$route.query.cls || '1',
 				// 显示按钮
 				showFixedIcon: true,
+				// 遮罩
 				maskShow: false,
+				// 显示服务内容
 				showServiceBox: false,
+				// 显示视图
 				showView: false,
+				// 序号
 				viewIndex: 0,
 				// 信息
 				info: {}
 			}
 		},
 		computed: {
+			// 请求参数
 			params () {
 				let params = {}
 				params.id = this.$route.query.id

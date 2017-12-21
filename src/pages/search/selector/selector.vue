@@ -22,6 +22,7 @@
 			}
 		},
 		methods: {
+			// 切换类型
 			changeTypeIndex (index) {
 				this.typeIndex = index
 				this.$emit('changeTypeIndex', index)

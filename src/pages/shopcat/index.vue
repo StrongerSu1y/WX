@@ -230,27 +230,22 @@
 			},
 			// 优惠总价
 			totalDiscountPrice () {
-				// if (this.totalOriginPrice > 200) {
-				// 	return 50
-				// } else {
-				// 	return 0
-				// }
 				let sum = 0
 				this.periodicalList.forEach(item => {
 					if (item.active) {
-						sum += (parseFloat(item.original_fee) - parseFloat(item.last_fee)) * item.number
+						sum += (parseFloat(item.original_fee).toFixed(2) - parseFloat(item.last_fee)) * item.number.toFixed(2)
 					}
 				})
 				this.goodsList.forEach(item => {
 					if (item.active) {
-						sum += (parseFloat(item.original_fee) - parseFloat(item.last_fee)) * item.number
+						sum += (parseFloat(item.original_fee).toFixed(2) - parseFloat(item.last_fee)) * item.number.toFixed(2)
 					}
 				})
 				return sum
 			},
 			// 总价
 			totalResultPrice () {
-				return parseFloat(this.totalOriginPrice) - parseFloat(this.totalDiscountPrice)
+				return parseFloat(this.totalOriginPrice).toFixed(2) - parseFloat(this.totalDiscountPrice).toFixed(2)
 			},
 			// 底部文字
 			footBtnText () {
@@ -597,6 +592,7 @@
 				this.Toast.loading({
 					title: '正在删除...'
 				})
+				// 杂志
 				this.periodicalList.forEach((item, index) => {
 					if (item.active) {
 						// 请求服务器
@@ -604,12 +600,13 @@
 							this.Toast.success({
 								title: '移除成功！'
 							})
-							this.periodicalList.splice(index, 1)
+							this.deleteOnePeriodical(item.id)
 						}, err => {
 							console.log(err)
 						})
 					}
 				})
+				// 图书
 				this.goodsList.forEach((item, index) => {
 					if (item.active) {
 						// 请求服务器
@@ -617,10 +614,26 @@
 							this.Toast.success({
 								title: '移除成功！'
 							})
-							this.goodsList.splice(index, 1)
+							this.deleteOnePeriodical(item.id)
 						}, err => {
 							console.log(err)
 						})
+					}
+				})
+			},
+			// 删除一条杂志商品
+			deleteOnePeriodical (id) {
+				this.periodicalList.forEach((item, index) => {
+					if (item.id === id) {
+						this.periodicalList.splice(index, 1)
+					}
+				})
+			},
+			// 删除一条图书商品
+			deleteOneGood (id) {
+				this.goodsList.forEach((item, index) => {
+					if (item.id === id) {
+						this.goodsList.splice(index, 1)
 					}
 				})
 			},

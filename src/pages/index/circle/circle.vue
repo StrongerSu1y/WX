@@ -28,6 +28,7 @@
 			}
 		},
 		computed: {
+			// 图片数组
 			listImg () {
 				let list = []
 				if (this.adverts.length) {
@@ -39,6 +40,7 @@
 				}
 				return list
 			},
+			// 显示内容
 			circleContentView () {
 				return this.contentList[this.navIndex]
 			}
@@ -56,9 +58,11 @@
 		mounted () {
 		},
 		methods: {
+			// 选中
 			chooseItem (index) {
 				alert(`选择了第${index + 1}张图`)
 			},
+			// 切换导航
 			changeNavIndex (index) {
 				this.$root.Bus.$emit('circleScroll', 0)
 				this.navIndex = index

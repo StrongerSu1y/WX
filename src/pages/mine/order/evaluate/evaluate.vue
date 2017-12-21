@@ -21,6 +21,7 @@
 			}
 		},
 		computed: {
+			// 请求传参
 			params () {
 				let params = {}
 				params.id = this.$route.query.id

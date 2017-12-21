@@ -23,6 +23,7 @@
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
+				// 标题
 				title: this.$route.query.title,
 				detail: detail
 			}

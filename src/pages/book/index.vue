@@ -107,15 +107,22 @@
 				winHeight: window.innerHeight - 50 + 'px',
 				scroller: '',
 				scrollTop: 0,
+				// 图书类型数组
 				bookTypeList: [],
+				// 今日优惠
 				promotions: [],
+				// 最新
 				newests: [],
+				// 动态栏目
 				columns: [],
+				// 猜您喜欢
 				recommendList: [],
+				// 广告
 				adverts: []
 			}
 		},
 		computed: {
+			// 广告图片
 			listImg () {
 				let list = []
 				if (this.adverts.length) {
@@ -127,6 +134,7 @@
 				}
 				return list
 			},
+			// 图片样式
 			imgStyleObj () {
 				let resize = (window.innerWidth - 16 * 2 - 5 * 4) / 4
 				return {
@@ -140,6 +148,7 @@
 			'v-recommend': recommend
 		},
 		beforeRouteEnter (to, from, next) {
+			// 判断上一页是否为搜索列表页
 			if (from.path === '/book/search') {
 				to.meta.isBack = true
 				from.meta.keepAlive = false
@@ -153,6 +162,7 @@
 		mounted () {
 		},
 		methods: {
+			// 加载数据
 			loadData () {
 				// 图书种类列表
 				this.$ajax.bookConstant().then(res => {
@@ -181,6 +191,7 @@
 					console.log(err)
 				})
 			},
+			// 初始化滚动
 			initBetterScroll () {
 				console.log(this.$refs.content.offsetHeight)
 				if (!this.scroller) {
@@ -194,15 +205,10 @@
 					this.scroller.refresh()
 				}
 			},
+			// 监听滚动
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y
-				})
-				this.scroller.on('touchend', (pos) => {
-					if (pos.y > 50) {
-						// 刷新
-						// this.loadData()
-					}
 				})
 			},
 			// 打开单项列表
@@ -216,6 +222,7 @@
 					}
 				})
 			},
+			// 到搜索列表页
 			openSearch (id) {
 				this.$router.push({
 					path: 'book/search',

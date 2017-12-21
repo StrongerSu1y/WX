@@ -18,6 +18,7 @@
 				let historyBack = -parseInt(localStorage.getItem('historyLength'))
 				this.$router.go(historyBack)
 			})
+			// 监听提示
 			this.$root.Bus.$on('showToast', (val) => {
 				this.showToast(val)
 			})

@@ -31,16 +31,20 @@
 					keyword: '',
 					cls: '2'
 				},
+				// 数据
 				listData: []
 			}
 		},
 		computed: {
 		},
 		mounted () {
+			// 传参
 			this.params = JSON.parse(this.$route.params.data)
+			// 加载数据
 			this.loadData()
 		},
 		methods: {
+			// 加载数据
 			loadData () {
 				this.$ajax.doSearch(this.params).then(res => {
 					let list = res.data.pageInfo.list

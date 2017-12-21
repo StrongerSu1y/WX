@@ -33,6 +33,7 @@
 			return {}
 		},
 		methods: {
+			// 隐藏提示
 			hideReminder () {
 				this.$emit('hideReminder')
 			},

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+	// 图书订单状态数组
 	let bookOrderList = [{
 		text: '全部',
 		tradeStatus: ''
@@ -24,6 +25,7 @@
 		text: '退款',
 		tradeStatus: '7'
 	}]
+	// 活动订单状态数组
 	let activityOrderList = [{
 		text: '全部',
 		tradeStatus: ''
@@ -56,9 +58,9 @@
 			return {}
 		},
 		computed: {
+			// 导航数据
 			navList () {
 				let cls = this.cls
-				console.log(cls)
 				if (cls === '1' || cls === '2') {
 					return bookOrderList
 				} else {

@@ -33,15 +33,20 @@
 		name: 'book-detail-page',
 		data () {
 			return {
+				// 导航
 				topTabIndex: 0,
+				// 视图
 				showContentList: ['v-product', 'v-detail', 'v-comment'],
+				// 标题
 				showItems: ['商品', '详情', '评价'],
+				// 数据
 				item: {},
 				// 购物车
 				shopcatList: []
 			}
 		},
 		computed: {
+			// 当前视图
 			showContent () {
 				return this.showContentList[this.topTabIndex]
 			}
@@ -53,6 +58,7 @@
 			'v-comment': comment
 		},
 		created () {
+			// 加载数据
 			this.loadData()
 			// 获取购物车
 			this.getShopcat()

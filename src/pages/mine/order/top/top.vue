@@ -15,6 +15,7 @@
 			}
 		},
 		created () {
+			// 标题
 			this.title = this.$route.query.title || '刊物'
 		},
 		methods: {

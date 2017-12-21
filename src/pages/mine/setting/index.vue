@@ -143,11 +143,15 @@
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				rightArrowSrc: require('@/common/icons/right_arrow.png'),
+				// 默认头像
 				defaultAvatar: require('@/common/icons/avatar.jpg'),
+				// 数据
 				item: {
 					gendle: 1
 				},
+				// 已选中
 				isSelected: false,
+				// 手机号
 				mobile: '13777818859'
 			}
 		},

@@ -26,6 +26,7 @@
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
+				// 用户名
 				username: ''
 			}
 		},

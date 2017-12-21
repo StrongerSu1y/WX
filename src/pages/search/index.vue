@@ -71,13 +71,21 @@
 		name: 'search-index-page',
 		data () {
 			return {
+				// 显示提示
 				reminderShow: true,
+				// 热搜
 				hotSearchList: [],
+				// 搜索历史
 				historySearchList: [],
+				// 热搜轮播
 				hotSwiper: '',
+				// 历史搜索轮播
 				historySwiper: false,
+				// 显示选择器
 				selectorShow: false,
+				// 类型数组
 				typeList: [],
+				// 类型序号
 				typeIndex: 0,
 				// 关键词
 				keyword: ''
@@ -104,6 +112,7 @@
 			}
 		},
 		created () {
+			// 是否不再提示
 			if (localStorage.getItem('noReminder')) {
 				this.reminderShow = false
 			}
@@ -117,6 +126,7 @@
 			})
 		},
 		methods: {
+			// 加载数据
 			loadData () {
 				// 搜索类型字典表
 				this.$ajax.searchType().then(res => {

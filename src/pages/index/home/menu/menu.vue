@@ -35,10 +35,12 @@
 		name: 'index-menu',
 		data () {
 			return {
+				// 按钮数组
 				menuList: menuList
 			}
 		},
 		methods: {
+			// 打开单项内容
 			openUrl (path) {
 				if (!path) {
 					this.showToast()
@@ -48,6 +50,7 @@
 					path: path
 				})
 			},
+			// 提示
 			showToast () {
 				this.Toast.warning({
 					title: '<p>该功能正在开发中</p><p>敬请期待...</p>'

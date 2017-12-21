@@ -26,6 +26,7 @@
 		methods: {
 			// 编辑
 			goEdit () {
+				// 跳转到购物车内部首页
 				this.$router.push({
 					path: '/shopcat/index'
 				})

@@ -34,7 +34,6 @@
 							<span v-if="info.role">({{ info.role }})</span>
 						</p>
 						<!-- 孩子们 -->
-						<!-- <div class="swiper-container"> -->
 						<div v-if="childrenList.length" class="swiper-container">
 							<div class="swiper-wrapper">
 								<div class="swiper-slide" v-for="(item, index) in childrenList" :style="{ left: slidePosLeft, height: slideHeight }" @click="openChildDetail(item.id)">
@@ -119,13 +118,11 @@
 			}
 		},
 		computed: {
+			// 头像的样式
 			avatarStyleObj () {
 				let top = 44 - this.scrollTop
 				if (this.scrollTop <= 0) {
 					return {}
-					// return {
-					// 	top: `${top}px`
-					// }
 				}
 				if (this.scrollTop <= 44) {
 					this.$refs.avatarImg.style.border = `2px solid rgba(255, 255, 255, 0.9)`
@@ -142,8 +139,6 @@
 				let marginLeft = (originWidth - speed) / 2
 				let progress = speed / (originWidth - endWidth)
 				let posTop = progress * (endTop - 0)
-				// let borderWidth = 2 - progress
-				// console.log('borderWidth: ' + borderWidth)
 				this.$refs.avatarImg.style.border = `1.5px solid rgba(255, 255, 255, 0.9)`
 				if (width <= endWidth) {
 					this.$refs.avatarImg.style.border = `1px solid rgba(255, 255, 255, 0.9)`
@@ -161,18 +156,19 @@
 					height: `${width}px`
 				}
 			},
+			// 顶部的样式
 			topStyleObj () {
 				if (this.scrollerTop < 44) {
 					return
 				}
 				let opacity = (this.scrollTop) / 100
-				// let opacity = 0
 				return {
 					backgroundColor: `rgba(248, 189, 72, ${opacity})`
 				}
 			}
 		},
 		created () {
+			// 加载数据
 			this.loadData()
 			// 获取孩子列表
 			this.getChildrenList()
@@ -191,7 +187,6 @@
 			},
 			// 孩子轮播
 			updateSwiper () {
-				console.log(this.childrenSwiper)
 				if (this.childrenSwiper) {
 					this.childrenSwiper.update()
 				} else {
@@ -229,17 +224,12 @@
 					this.scroller.refresh()
 				}
 			},
+			// 监听滚动条
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y
 					if (this.scrollTop < 0) {
 						this.initBetterScroll()
-					}
-				})
-				this.scroller.on('touchend', (pos) => {
-					if (pos.y > 50) {
-						// 刷新
-						// this.loadData()
 					}
 				})
 			},
@@ -262,7 +252,7 @@
 					}
 				})
 			},
-			// scrollToTop
+			// 滑动到顶部
 			scrollToTop () {
 				window.scrollTo(0, 0)
 			},

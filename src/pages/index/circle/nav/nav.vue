@@ -28,11 +28,14 @@
 		},
 		data () {
 			return {
+				// 导航数组
 				navList: navList,
+				// 滚动条高度
 				scrollTop: 0
 			}
 		},
 		computed: {
+			// 样式
 			navStyleObj () {
 				if (this.scrollTop <= 0) {
 					return
@@ -48,11 +51,13 @@
 			}
 		},
 		created () {
+			// 广播滚动事件
 			this.$root.Bus.$on('circleScroll', (val) => {
 				this.scrollTop = val
 			})
 		},
 		methods: {
+			// 切换导航
 			changeNavIndex (index) {
 				this.$emit('changeNavIndex', index)
 			}

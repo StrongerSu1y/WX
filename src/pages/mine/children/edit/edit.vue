@@ -128,7 +128,7 @@
 				<div class="left-part">
 					<span class="text">关系</span>
 				</div>
-				<div class="center-part">
+				<div class="center-part" @click="showPicker('relationPicker')">
 					<input type="text" v-model="item.relation" placeholder="请输入家长与孩子关系" readonly>
 				</div>
 				<div class="right-part">
@@ -164,6 +164,29 @@
 			value: i
 		})
 	}
+	// 关系
+	let relationList = [{
+		text: '爸爸',
+		value: 1
+	}, {
+		text: '妈妈',
+		value: 2
+	}, {
+		text: '爷爷',
+		value: 3
+	}, {
+		text: '奶奶',
+		value: 4
+	}, {
+		text: '外公',
+		value: 5
+	}, {
+		text: '外婆',
+		value: 6
+	}, {
+		text: '其他',
+		value: 7
+	}]
 	export default {
 		data () {
 			return {
@@ -177,6 +200,7 @@
 				notSelectedSrc: require('../reset/select_btn.png'),
 				// 地区数据
 				addressData: area.result,
+				// 已选信息
 				tempIndex: [0, 0, 0],
 				addressPicker: null,
 				// 入学时间
@@ -184,6 +208,12 @@
 					data: [beginYearList],
 					selectedIndex: [0],
 					title: '入学年份'
+				}),
+				// 关系
+				relationPicker: new Picker({
+					data: [relationList],
+					selectedIndex: [0],
+					title: '关系'
 				})
 			}
 		},
@@ -231,8 +261,6 @@
 			if (this.$route.query.id) {
 				this.loadData()
 			}
-			// 监听更改
-			this.listenSelectChange()
 			if (this.$route.query.item && JSON.parse(this.$route.query.item).hasOwnProperty('sex')) {
 				this.item = JSON.parse(this.$route.query.item)
 			}
@@ -241,25 +269,24 @@
 			if (this.$route.query.item) {
 				this.item = JSON.parse(this.$route.query.item)
 			}
+			this.addressPicker = new Picker({
+				data: this.linkageData,
+				selectedIndex: [0, 0, 0],
+				title: '请选择地区'
+			})
 			this.$nextTick(() => {
-				this.addressPicker = new Picker({
-					data: this.linkageData,
-					selectedIndex: [0, 0, 0],
-					title: '请选择地区'
-				})
+				// 监听更改
+				this.listenSelectChange()
 			})
 		},
 		methods: {
 			// 加载数据
 			loadData () {
 				this.$ajax.childList().then(res => {
-					console.log(res)
 					this.item = res.data.data.filter(item => {
 						return item.id === this.$route.query.id
 					})[0]
 					this.item.is_default = parseInt(this.item.is_default)
-					console.log(this.item)
-					console.log(this.item.sex)
 				}, err => {
 					console.log(err)
 				})
@@ -274,7 +301,6 @@
 			},
 			// 孩子性别
 			changeSex (index) {
-				console.log(this.item.sex)
 				this.item.sex = index
 			},
 			// 返回
@@ -284,7 +310,6 @@
 			// 保存
 			doSave () {
 				this.$ajax.childUpdate(this.item).then(res => {
-					console.log(res)
 					if (res.data.status === '0') {
 						this.Toast.success({
 							title: '保存成功！'
@@ -320,6 +345,7 @@
 					this.item.city_name = this.linkageData[1][selectedIndex[1]].text
 					this.item.region_name = this.linkageData[2][selectedIndex[2]].text
 				})
+				// 地区更新
 				this.addressPicker.on('picker.change', (index, selectedIndex) => {
 					this.tempIndex[index] = selectedIndex
 					if (index > 1) {
@@ -330,6 +356,10 @@
 					} else {
 						this.tempIndex = [this.tempIndex[0], selectedIndex, this.tempIndex[2]]
 					}
+				})
+				// 关系选择
+				this.relationPicker.on('picker.select', (index, selectedIndex) => {
+					this.item.relation = relationList[selectedIndex[0]].text
 				})
 			}
 		},

@@ -25,14 +25,20 @@
 				winHeight: window.innerHeight - 50 + 'px',
 				scroller: '',
 				scrollTop: 0,
+				// 标题
 				title: this.$route.query.title,
+				// 请求参数
 				id: this.$route.query.id,
+				// 类型
 				type: this.$route.query.type,
+				// 图书数据
 				bookList: [],
+				// 推荐数据
 				recommendList: []
 			}
 		},
 		computed: {
+			// 服务器请求路径
 			ajaxUrl () {
 				let id = this.id
 				return this.type === '1' ? `/book/fixedColumn/${id}/open` : `/book/dynamicColumn/${id}/open`
@@ -44,14 +50,15 @@
 			'v-recommend': recommend
 		},
 		created () {
-		},
-		mounted () {
+			// 加载数据
 			this.loadData()
 		},
+		mounted () {
+		},
 		methods: {
+			// 加载数据
 			loadData () {
 				this.$ajax.getAjax(this.ajaxUrl).then(res => {
-					console.log(res)
 					this.bookList = this.bookList.concat(res.data.pageInfo.list)
 					this.recommendList = res.data.recommendList
 				}, err => {

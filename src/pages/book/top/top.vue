@@ -29,6 +29,7 @@
 			return {}
 		},
 		computed: {
+			// 头部样式
 			headerStyle () {
 				if (this.scrollTop < 10) {
 					return {
@@ -56,6 +57,7 @@
 					}
 				}
 			},
+			// 搜索框样式
 			searchStyle () {
 				if (this.scrollTop < 10) {
 					return {

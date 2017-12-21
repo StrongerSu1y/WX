@@ -100,6 +100,13 @@
 			// 回到初始页面
 			backToRoot () {
 				clearInterval(this.interval)
+				// 如果有活动页
+				if (localStorage.getItem('activityPage')) {
+					this.$router.push({
+						path: localStorage.getItem('activityPage') || '/'
+					})
+				}
+				// 如果有上一页
 				if (this.isIosQQ || this.isAndroidQQ && this.$route.query.href) {
 					window.location.href = this.$route.query.href
 					return

@@ -24,6 +24,7 @@
 			}
 		},
 		computed: {
+			// 顶部文字
 			topText () {
 				if (!this.canClear) {
 					return '编辑'

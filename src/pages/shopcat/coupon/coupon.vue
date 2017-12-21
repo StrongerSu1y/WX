@@ -59,9 +59,13 @@
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				checkActiveSrc: require('@/common/icons/check_active.png'),
 				checkSrc: require('@/common/icons/check.png'),
+				// 数据
 				listData: [],
+				// 显示外链
 				linkShow: true,
+				// 优惠金额
 				couponPrice: '',
+				// 优惠 id
 				couponId: '',
 				// 页码
 				pageNum: 1,
@@ -69,6 +73,7 @@
 			}
 		},
 		computed: {
+			// 传参
 			params () {
 				let params = {}
 				params.cls = this.$route.query.cls
@@ -82,12 +87,11 @@
 			this.loadData()
 		},
 		mounted () {
+			// 判断是否有已经选中的优惠券
 			if (this.$route.query.couponPrice) {
 				this.couponPrice = this.$route.query.couponPrice
 				this.couponId = this.$route.query.couponId
 			}
-			this.$nextTick(() => {
-			})
 		},
 		methods: {
 			// 加载数据

@@ -41,16 +41,19 @@
 		name: 'mine-content',
 		data () {
 			return {
+				// 类型数组
 				itemList: itemList
 			}
 		},
 		computed: {
+			// 计算过的数组用于展示
 			computedList () {
 				let remainder = this.itemList.length % 4
 				if (remainder === 0) {
 					return this.itemList
 				}
 				let list = this.itemList
+				// 少于4则补全
 				for (let i = 4; i > remainder; i--) {
 					list.push({})
 				}
@@ -58,11 +61,8 @@
 			}
 		},
 		methods: {
+			// 打开单项目录
 			openUrl (path) {
-				if (!path) {
-					this.showToast()
-					return
-				}
 				this.$router.push({
 					path: path
 				})

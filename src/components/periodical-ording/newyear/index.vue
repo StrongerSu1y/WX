@@ -5,7 +5,7 @@
 			<div class="top_image" :style="{ width: topImageWidth }">
 				<img :src="topImageSrc">
 			</div>
-			<div class="top_title" :style="topTitleStyle">
+			<div class="top_title" :style="topTitleStyle" @click="openBookList('49')">
 				<img :src="topGoSrc" :style="topGoStyle">
 			</div>
 			<div class="top_time" :style="topTimeStyle"></div>
@@ -68,7 +68,7 @@
 	// 缩放比率
 	let resize = window.innerWidth / 750
 	// 所有导航
-	let navList = ['49', '51', '46', '29', '28', '34', '35', '14', '24', '21', '赠品', '']
+	let navList = ['49', '51', '46', '29', '28', '34', '35', '14', '24', '21', '50', '']
 	// 导航左侧列表
 	let navLeftList = []
 	// 导航右侧列表

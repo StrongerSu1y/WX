@@ -25,26 +25,17 @@
 			}
 		},
 		beforeRouteUpdate (to, from, next) {
-			// console.log(this.$router.isBack)
 			if (to.meta.index > from.meta.index) {
-				// this.transitionName = 'slide-left'
 				this.isBack = false
 				setTimeout(() => {
-					// this.transitionName = 'slide-right'
 					this.isBack = true
 				}, 100)
-				// from.meta.keepAlive = true
 			} else {
-				// this.transitionName = 'slide-right'
 				this.isBack = true
 				setTimeout(() => {
-					// this.transitionName = 'slide-left'
 					this.isBack = false
 				}, 100)
-				// from.meta.keepAlive = false
 			}
-			// // 重置
-			// this.$router.isBack = false
 			next()
 		}
 	}

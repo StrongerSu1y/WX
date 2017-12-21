@@ -44,18 +44,6 @@
 </template>
 
 <script>
-	let listData = [{
-		avatar: require('../avatar.jpg'),
-		name: '李梦佳琪',
-		address: '浙江省杭州市西湖区杭州市翠苑第一小学(翠苑校区)一年级1班',
-		gendle: 2
-	}, {
-		avatar: require('../avatar.jpg'),
-		name: '流川枫',
-		address: '浙江省杭州市西湖区杭州市翠',
-		gendle: 1,
-		active: true
-	}]
 	import { hasClass } from '@/common/js/common.js'
 	import reset from './reset/reset'
 	import empty from '@/components/common/empty/empty'
@@ -64,7 +52,7 @@
 			return {
 				// 默认头像
 				defaultAvatar: require('@/common/icons/avatar.jpg'),
-				listData: listData,
+				listData: [],
 				startX: 0,
 				deleteIndex: -1,
 				resetShow: false

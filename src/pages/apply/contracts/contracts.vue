@@ -39,7 +39,6 @@
 			document.title = this.title
 			// 设置 history
 			localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
-			// console.log(JSON.parse(this.$route.query.comboList))
 		},
 		methods: {
 			// 提交
@@ -55,6 +54,7 @@
 					_uid: localStorage.getItem('userId'),
 					cls: this.$route.query.cls
 				}
+				// 讲id 取出
 				JSON.parse(this.$route.query.comboList).forEach((item, index) => {
 					if (item.num > 0) {
 						_data['ticket_' + item.id + ''] = item.num
@@ -86,6 +86,7 @@
 												// this.$root.Bus.$emit('backToRoot', '')
 												let historyBack = -parseInt(localStorage.getItem('historyLength'))
 												localStorage.setItem('historyLength', 0)
+												// 返回
 												this.$router.go(historyBack)
 												// window.location.href = this.$route.query.href
 											})

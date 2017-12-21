@@ -55,8 +55,6 @@
 					}
 					arr.push(single)
 				}
-				console.log(333)
-				console.log(arr)
 				return arr
 			}
 		},
@@ -65,6 +63,7 @@
 		methods: {
 			// 打开链接
 			openLink (link, id) {
+				// 判断有没有外部链接
 				if (!link) {
 					this.$router.push({
 						path: '/book/detail',

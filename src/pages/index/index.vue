@@ -38,16 +38,20 @@
 		name: 'index',
 		data () {
 			return {
+				// 根据状态显示那个视图
 				tabIndex: this.$store.state.homePageTabIndex,
+				// 四个视图
 				tabList: ['home', 'v-circle', 'shopcat', 'mine']
 			}
 		},
 		created () {
+			// 监听去逛逛
 			this.$root.Bus.$on('goHangout', (value, event) => {
 				this.changeTabIndex(0)
 			})
 		},
 		computed: {
+			// 显示内容
 			tabView () {
 				return this.tabList[this.tabIndex]
 			}
@@ -55,7 +59,9 @@
 		mounted () {
 		},
 		methods: {
+			// 切换tab栏
 			changeTabIndex (index) {
+				// 广播切换状态
 				this.$store.commit('setHomePageIndex', index)
 				this.tabIndex = index
 			}

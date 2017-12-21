@@ -31,10 +31,12 @@
 		data () {
 			return {
 				viewSwiper: '',
+				// 轮播高度
 				swiperHeight: window.innerWidth - 50 + 'px'
 			}
 		},
 		computed: {
+			// 名字
 			name () {
 				return this.listData[this.viewIndex].name
 			}
@@ -51,10 +53,12 @@
 		},
 		mounted () {
 			this.$nextTick(() => {
+				// 初始化
 				this.initSwiper()
 			})
 		},
 		methods: {
+			// 初始化
 			initSwiper () {
 				if (this.viewSwiper) {
 					this.viewSwiper.update()

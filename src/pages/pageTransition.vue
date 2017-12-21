@@ -15,7 +15,9 @@
 			}
 		},
 		beforeRouteUpdate (to, from, next) {
+			// 是否为返回
 			let isBack = this.$router.isBack
+			// 修改动画方向
 			if (isBack) {
 				this.transitionName = 'slide-right'
 			} else {

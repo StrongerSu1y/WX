@@ -148,18 +148,22 @@
 				integralIconSrc: require('@/common/icons/integral_icon.png'),
 				couponIconSrc: require('@/common/icons/coupon_icon.png'),
 				checkActiveSrc: require('@/common/icons/check_active.png'),
-				hasDefaultAddress: false,
+				// 数组
 				listData: [],
+				// 总价
 				nowSum: 0,
+				// 留言
 				leaveText: '',
-				defaultAddressChange: false,
+				// 优惠价格
 				couponPrice: '',
+				// 优惠 id
 				couponId: '',
+				// 地址对象
 				address: {},
 				// 积分暂时没有
 				hasIntegral: false,
 				// 优惠券暂时不用
-				hasDiscount: true,
+				hasDiscount: false,
 				// 优惠券
 				couponList: []
 			}
@@ -167,11 +171,9 @@
 		computed: {
 			// 优惠金额
 			discount () {
-				// 测试用
-				let start = new Date('2017-11-08 00:00:00.000').getTime()
-				// 正式用
-				// let start = new Date('2017-12-08 00:00:00.000').getTime()
-				let end = new Date('2017-12-13 00:00:00.000').getTime()
+				// 双十二活动用
+				let start = new Date('2017-12-21 00:00:00.000').getTime()
+				let end = new Date('2018-01-02 00:00:00.000').getTime()
 				let nowTime = new Date().getTime()
 				if (nowTime >= end || nowTime < start) {
 					return 0
@@ -377,7 +379,7 @@
 					this.$ajax.doubleEleven(params).then(res => {
 						let data = res.data
 						// 下一个页面需要的数据
-						let fee = parseFloat(data.total_fee).toFixed(1)
+						let fee = parseFloat(data.total_fee).toFixed(2)
 						let outtradeno = data.no
 						// 图书
 						let cls = '2'

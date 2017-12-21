@@ -37,6 +37,7 @@
 			}
 		},
 		computed: {
+			// 提示文字
 			remindText () {
 				if (this.activeIndex < 0) {
 					return '移除前您需要重新设置一位孩子为“当前孩子”。'

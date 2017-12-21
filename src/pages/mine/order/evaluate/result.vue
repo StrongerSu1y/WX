@@ -40,12 +40,16 @@
 	export default {
 		data () {
 			return {
+				// 遮罩
 				maskShow: false,
+				// 显示礼物
 				giftContentShow: false,
+				// 猜您喜欢
 				recommendList: []
 			}
 		},
 		computed: {
+			// 请求传参
 			params () {
 				let params = {}
 				params.id = this.$route.query.id
@@ -59,6 +63,7 @@
 		},
 		mounted () {
 			this.$nextTick(() => {
+				// 判断总分是否为 5，显示遮罩后弹出礼物
 				if (this.$route.query.score === 5) {
 					setTimeout(() => {
 						this.maskShow = true

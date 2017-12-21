@@ -91,6 +91,7 @@
 		data () {
 			return {
 				startX: 0,
+				// 删除元素序号
 				deleteIndex: -1,
 				scroller: '',
 				// 滚动高度
@@ -122,6 +123,7 @@
 			}
 		},
 		watch: {
+			// 监听滚动
 			scrollTop (newVal, oldVal) {
 				// 加载临界dian
 				let loadTop = this.$refs.content.offsetHeight - window.innerHeight - 50

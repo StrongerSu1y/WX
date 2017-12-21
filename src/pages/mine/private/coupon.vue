@@ -41,6 +41,7 @@
 	export default {
 		data () {
 			return {
+				// 数据
 				listData: [],
 				// 页码
 				pageNum: 1,
@@ -48,6 +49,7 @@
 			}
 		},
 		computed: {
+			// 传参
 			params () {
 				let params = {}
 				params._uid = localStorage.getItem('userId')

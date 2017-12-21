@@ -2,9 +2,9 @@
 	<section class="home-popularize" @click="showToast()">
 		<ul v-if="themes && themes.hasOwnProperty('book')" class="list">
 			<!-- 图书 -->
-			<!-- <li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/book')"> -->
+			<li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/book')">
 			<!-- 双十二 -->
-			<li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/double-twelve')">
+			<!-- <li v-if="themes && themes.hasOwnProperty('book')" class="list-item" @click.prevent.stop="openItem('/double-twelve')"> -->
 				<p class="title">{{ themes.book.title }}</p>
 				<p class="sub-title">{{ themes.book.subtitle }}</p>
 				<div class="media">
@@ -40,6 +40,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- 其他的活动(单数) -->
 		<div v-if="otherActivity && otherActivity % 2 !== 0" class="center">
 			<p class="title">{{ otherActivity[0].title }}</p>
 			<p class="sub-title">{{ otherActivity[0].subTitle }}</p>
@@ -55,6 +56,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- 其他活动(双数) -->
 		<ul v-if="otherActivity && otherActivity % 2 === 0" class="list">
 			<li v-for="item in otherActivity" class="list-item">
 				<p class="title">{{ item.title }}</p>
@@ -86,20 +88,19 @@
 		},
 		data () {
 			return {
-				// topList: topList,
-				// center: center,
-				// bottomList: bottomList,
 				winWidth: (window.innerWidth - (window.innerWidth / 375 * 20)) * 0.6 + 'px',
 				halfWinWidth: (window.innerWidth / 2 - (window.innerWidth / 375 * 20)) * 0.6 + 'px'
 			}
 		},
 		computed: {
+			// 第一张活动
 			firstActivity () {
 				if (!this.themes || !this.themes.hasOwnProperty('activities') || !this.themes.activities.length) {
 					return false
 				}
 				return this.themes.activities[0]
 			},
+			// 其他的活动
 			otherActivity () {
 				if (!this.themes || !this.themes.hasOwnProperty('activities') || this.themes.activities.length <= 1) {
 					return false
@@ -108,6 +109,7 @@
 			}
 		},
 		methods: {
+			// 提示
 			showToast () {
 				this.Toast.warning({
 					title: '<p>该功能正在开发中</p><p>敬请期待...</p>'

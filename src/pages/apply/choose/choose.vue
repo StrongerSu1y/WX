@@ -98,6 +98,7 @@
 			this.Toast.loading({
 				title: '加载中...'
 			})
+			// 获取数据
 			this.$ajax.listActivityTicket({
 				sid: this.$route.query.id
 			})
@@ -114,15 +115,18 @@
 			})
 		},
 		methods: {
+			// 切换确定按钮状态
 			toggleCheckFlag () {
 				this.checkFlag = !this.checkFlag
 			},
+			// 添加
 			addOne (index) {
 				if (this.comboList[index].num === this.comboList[index].total) {
 					return
 				}
 				this.comboList[index].num += 1
 			},
+			// 减少
 			reduceOne (index) {
 				if (this.comboList[index].num < 1) {
 					return
@@ -143,7 +147,6 @@
 					})
 					return
 				}
-				// alert(localStorage.getItem('historyLength'))
 				this.$router.push({
 					path: `/apply/contracts`,
 					query: {
@@ -161,6 +164,7 @@
 			destroySelf () {
 				// this.$destroy()
 			},
+			// 获取格式化时间
 			getUpdateDay (time) {
 				return getUpdateDay(time)
 			}

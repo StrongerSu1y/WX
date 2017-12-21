@@ -46,15 +46,19 @@
 		},
 		data () {
 			return {
+				// 评价星星数组
 				stars: [0, 1, 2, 3, 4],
+				// 等级
 				levels: [],
+				// 第几条
 				levelIndex: 0,
+				// 所有评价
 				allCommentList: []
 			}
 		},
 		computed: {
+			// 在商品中只需要显示三条
 			showList () {
-				// 在商品中只需要显示三条
 				if (!this.levelShow) {
 					return this.commentList
 				}
@@ -64,14 +68,17 @@
 		components: {
 		},
 		created () {
+			// 加载数据
 			this.loadData()
 		},
 		mounted () {
 		},
 		methods: {
+			// 星星选中与否
 			getImgSrc (index, score) {
 				return index < parseInt(score) ? require('./star_active.png') : require('./star.png')
 			},
+			// 加载数据
 			loadData () {
 				this.$ajax.bookComment(this.$route.query.id).then(res => {
 					console.log(res)
@@ -82,9 +89,9 @@
 					console.error(err)
 				})
 			},
+			// 单条评价
 			getSingleLevelData (level) {
 				this.$ajax.bookComment(this.$route.query.id, level).then(res => {
-					console.log(res)
 					this.allCommentList = res.data.pageInfo.list
 				}, err => {
 					console.error(err)

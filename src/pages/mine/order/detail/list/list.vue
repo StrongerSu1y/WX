@@ -77,6 +77,7 @@
 			}
 		},
 		watch: {
+			// 重新计算
 			listData (newVal, oldVal) {
 				if (!newVal.length) {
 					return

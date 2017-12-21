@@ -16,7 +16,9 @@
 		data () {
 			return {
 				title: '刊物',
+				// 当前序号
 				navIndex: 0,
+				// 视图数组
 				contentList: ['v-list', 'v-list', 'v-list', 'v-list', 'v-list'],
 				// 种类
 				cls: this.$route.query.cls || '2',
@@ -25,6 +27,7 @@
 			}
 		},
 		computed: {
+			// 当前视图
 			nowContent () {
 				return this.contentList[this.navIndex]
 			}

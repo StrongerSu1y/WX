@@ -139,7 +139,9 @@
 				detailTabIndex: 0,
 				// 屏幕高度
 				winHeight: window.innerHeight - 50 - 55 + 'px',
+				// 视图数组
 				detailShowContentList: ['v-product', 'v-detail', 'v-comment'],
+				// 标题
 				detailShowItems: ['商品详情', '内容目录', '出版信息']
 			}
 		},

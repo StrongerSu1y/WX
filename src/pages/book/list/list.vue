@@ -143,17 +143,21 @@
 		},
 		data () {
 			return {
+				// 单条宽度
 				itemWidth: (window.innerWidth - 10 * 2 - 5) / 2 + 'px',
+				// 分几列
 				sides: 2,
+				// 数据
 				itemList: [],
 				// 需要计算瀑布流高度
 				needCompute: true
 			}
 		},
 		watch: {
+			// 图片数组
 			bookList (newVal, oldVal) {
 				if (this.type !== '2') {
-					console.log('bookList change: ' + newVal.length)
+					// 计算瀑布流高度
 					this.needCompute = true
 					this.$nextTick(() => {
 						this.getWaterfallList()
@@ -165,6 +169,7 @@
 		mounted () {
 			this.$nextTick(() => {
 				if (this.type !== '2') {
+					// 获取瀑布流
 					this.getWaterfallList()
 				}
 			})
@@ -185,6 +190,7 @@
 					this.itemList[needIndex].push(this.bookList[index])
 					heights[needIndex] += item.offsetHeight
 				})
+				// 重置
 				this.needCompute = false
 				// 通知父组件 DOM 元素更新完毕
 				this.$nextTick(() => {

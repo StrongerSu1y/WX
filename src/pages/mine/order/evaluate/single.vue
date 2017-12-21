@@ -57,22 +57,29 @@
 	export default {
 		data () {
 			return {
+				// 评分
 				score: 0,
 				// 评价内容
 				content: '',
+				// 评价星星数组
 				starList: [0, 1, 2, 3, 4],
+				// 上传图片数组
 				picList: [],
 				// 图片文件
 				imgFile: {},
+				// 数据
 				item: JSON.parse(this.$route.query.item)
 			}
 		},
 		computed: {
+			// 提交数据
 			formData () {
 				let formData = {}
 				formData.content = this.content
 				// 如果是追加评价
-				// formData.id = this.item.id
+				if (this.item.id) {
+					formData.id = this.item.id
+				}
 				formData.score = this.score
 				formData.uid = localStorage.getItem('userId')
 				formData.tradeDetailId = this.item.item_id

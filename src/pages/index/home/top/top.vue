@@ -30,6 +30,7 @@
 			return {}
 		},
 		computed: {
+			// 顶部样式
 			headerStyle () {
 				if (this.scrollTop < 10) {
 					this.$nextTick(() => {
@@ -68,6 +69,7 @@
 					}
 				}
 			},
+			// 搜索框样式
 			searchStyle () {
 				if (this.scrollTop < 10) {
 					return {

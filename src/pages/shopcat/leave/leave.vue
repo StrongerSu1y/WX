@@ -20,11 +20,13 @@
 			document.title = '留言'
 		},
 		mounted () {
+			// 判断是否已有留言
 			if (this.$route.query.leaveText) {
 				this.leaveText = this.$route.query.leaveText
 			}
 		},
 		methods: {
+			// 提交
 			doSubmit () {
 				if (!this.leaveText.length) {
 					this.Toast.warning({

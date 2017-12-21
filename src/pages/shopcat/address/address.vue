@@ -34,22 +34,27 @@
 </template>
 
 <script>
-	import Picker from 'better-picker'
-	import area from '../../../../static/data/area.json'
-	import { checkInput, checkMobile } from '@/common/js/common.js'
+	import Picker from 'better-picker' // 选择器
+	import area from '../../../../static/data/area.json' // 城市数组
+	import { checkInput, checkMobile } from '@/common/js/common.js' // 判断输入
 	export default {
 		name: 'address',
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				rightArrowSrc: require('@/common/icons/right_arrow.png'),
+				// 选择器
 				picker: '',
+				// 城市数据
 				data: area.result,
+				// 选中内容
 				tempIndex: [0, 0, 0],
+				// 地址对象
 				address: {}
 			}
 		},
 		computed: {
+			// 动态数据
 			linkageData () {
 				let provinces = []
 				let cities = []
@@ -74,6 +79,7 @@
 				})
 				return [provinces, cities, areas]
 			},
+			// 全程
 			cityArea () {
 				if (!this.address.province_name) {
 					return ''
@@ -83,10 +89,12 @@
 		},
 		watch: {
 			linkageData () {
+				// 填充数据
 				this.picker.refill(this.linkageData)
 			}
 		},
 		mounted () {
+			// 当前地址
 			this.address = this.$route.query.address ? JSON.parse(this.$route.query.address) : {
 				_uid: localStorage.getItem('userId'),
 				name: '',
@@ -140,30 +148,11 @@
 				// 测试
 				params = this.address
 				params._uid = localStorage.getItem('userId')
-				// params._uid = localStorage.getItem('userId')
-				// params.name = this.address.name
-				// params.mobile = this.address.mobile
-				// params.province_id = this.address.areaValList[0]
-				// params.city_id = this.address.areaValList[1]
-				// params.region_id = this.address.areaValList[2]
-				// params.address = this.address.address
-				// let addressList = localStorage.getItem('addressList') ? JSON.parse(localStorage.getItem('addressList')) : []
-				// // 如果存在 id 则更新，不存在则添加
-				// if (addressList.length && addressList[0].hasOwnProperty('id')) {
-				// 	params.id = addressList[0].id
-				// }
 				this.$ajax.addressUpdate(params).then(res => {
 					if (res.status === 200) {
 						this.$ajax.addressList({
 							_uid: localStorage.getItem('userId')
 						}).then(res => {
-							// this.address.id = res.data.data.filter(item => {
-							// 	return item.address === this.address.address
-							// })[0].id
-							// 目前只能存在一个地址，先将地址列表清空
-							// addressList = []
-							// addressList.push(this.address)
-							// localStorage.setItem('addressList', JSON.stringify(addressList))
 							this.$root.Bus.$emit('updateAddress', JSON.stringify(this.address))
 							this.$router.goBack()
 						}, err => {

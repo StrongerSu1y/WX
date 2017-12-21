@@ -31,17 +31,21 @@
 		name: 'home',
 		data () {
 			return {
+				// 广告高度
 				bannerHeight: window.innerWidth * 0.6 + 'px',
 				// 屏幕高度
 				winHeight: window.innerHeight - 52 + 'px',
 				scroller: '',
+				// 滚动条高度
 				scrollTop: 0,
+				// 数据对象
 				data: {},
 				// 可加载更多
 				loadMore: false
 			}
 		},
 		computed: {
+			// 切换滚动到顶部按钮显示隐藏
 			showToTopBtn () {
 				return this.scrollTop > window.innerHeight
 			},
@@ -59,10 +63,13 @@
 			}
 		},
 		created () {
+			// 加载数据
 			this.loadData()
 		},
 		watch: {
+			// 监听滚动条高度
 			scrollTop (newVal, oldVal) {
+				// 加载临界值
 				let loadTop = this.$refs.content.offsetHeight - window.innerHeight - 50
 				if (newVal > loadTop && this.loadMore) {
 					// 获取圈子数据
@@ -72,6 +79,7 @@
 			}
 		},
 		methods: {
+			// 加载数据
 			loadData () {
 				this.$ajax.getHomePage().then(res => {
 					// 获取圈子数据
@@ -130,6 +138,7 @@
 			chooseItem (index) {
 				let cls = this.data.adverts[index].cls
 				let id = this.data.adverts[index].srcid
+				// 根据 cls 跳转到不同详情
 				switch (cls) {
 				case '14':
 					this.$router.push({

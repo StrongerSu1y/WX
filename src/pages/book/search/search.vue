@@ -34,10 +34,13 @@
 				pageNum: 1,
 				// 总页数
 				pages: 0,
+				// 选择的类型
 				bookTypeIds: null,
+				// 查询参数
 				id: this.$route.query.id,
-				// itemTypeId
+				// itemTypeId 上一活动页传入的查询参数
 				itemTypeId: this.$route.query.itemTypeId || '',
+				// itemTypeId 上一活动页传入的查询参数
 				itemIds: this.$route.query.itemIds || '',
 				// 是否为第一次进入
 				isFirstEnter: false
@@ -63,6 +66,7 @@
 			}
 		},
 		watch: {
+			// 监听滚动
 			scrollTop (newVal, oldVal) {
 				let loadTop = this.$refs.content.offsetHeight - window.innerHeight - 50
 				// 关闭 loadMore
@@ -77,7 +81,7 @@
 			}
 		},
 		created () {
-			// 判断浏览器
+			// 判断浏览器，当入口为活动页时，自动登录
 			if (this.isWeixin) {
 				// 判断微信登陆返回 status
 				if (this.$route.query.hasOwnProperty('status')) {
@@ -87,6 +91,7 @@
 					}
 				}
 			}
+			// 滑动到顶部
 			setTimeout(() => {
 				window.scrollTo(0, 0)
 			}, 200)
@@ -96,6 +101,7 @@
 		mounted () {
 		},
 		beforeRouteEnter (to, from, next) {
+			// 如果是从图书详情，则缓存列表页
 			if (from.path === '/book/detail') {
 				to.meta.isBack = true
 				to.meta.keepAlive = true
@@ -160,12 +166,6 @@
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y
-				})
-				this.scroller.on('touchend', (pos) => {
-					if (pos.y > 50) {
-						// 刷新
-						// this.loadData()
-					}
 				})
 			},
 			// 滑动到上次位置

@@ -47,6 +47,7 @@
 		computed: {
 		},
 		created () {
+			// 加载数据
 			this.loadData()
 		},
 		mounted () {

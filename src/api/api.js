@@ -5,11 +5,10 @@ import Vue from 'vue'
 let Obj = new Vue()
 
 // 判断全局变量 NODE_ENV
-let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
-// let environment = 'product'
+// let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
+let environment = 'product'
 let productHost = location.protocol + '//app.51weixiao.com'
 let devHost = location.protocol + '//192.168.0.231:8080'
-// let productHost = location.protocol + '//192.168.0.200:8080'
 
 let serverHost = environment === 'dev' ? devHost : productHost
 
@@ -24,13 +23,9 @@ axios.defaults.baseURL = environment === 'dev' ? location.protocol + '//192.168.
 // POST 传参序列化
 axios.interceptors.request.use((config) => {
 	// 光 post
-	// if (config.method === 'post' && config.headers['Content-Type'] !== 'application/json') {
-	// 	config.data = qs.stringify(config.data)
-	// }
 	if (config.headers['Content-Type'] !== 'application/json') {
 		config.data = qs.stringify(config.data)
 	}
-	// config.data = qs.stringify(config.data)
 	return config
 }, (error) => {
 	Obj.Toast.hide()
@@ -122,7 +117,7 @@ export default {
 			obj.Toast.warning({
 				title: '请先登录'
 			})
-			// 将当前页存入登录页
+			// 将当前页传给登录页
 			setTimeout(() => {
 				obj.$router.push({
 					path: '/login',

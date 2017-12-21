@@ -57,7 +57,9 @@
 		data () {
 			return {
 				startX: 0,
+				// 数据
 				listData: listData,
+				// 删除序号
 				deleteIndex: -1
 			}
 		},
@@ -92,7 +94,6 @@
 						} else {
 							this.deleteIndex = -1
 						}
-						console.log(event.target)
 						if (this.startX - endX > 30) {
 							event.stopPropagation()
 							this.deleteIndex = index
@@ -100,12 +101,15 @@
 					})
 				})
 			},
+			// 判断有没有 class
 			hasClass (element, name) {
 				return element.className.match(RegExp('(\\s|^)' + name + '(\\s|$)'))
 			},
+			// 添加 class
 			addClass (element, name) {
 				element.className += ' ' + name
 			},
+			// 删除 class
 			deleteClass (element, name) {
 				if (this.hasClass(element, name)) {
 					element.className.replace(RegExp('(\\s|^)' + name + '(\\s|$)'), ' ')

@@ -35,6 +35,7 @@
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
 				rightArrowSrc: require('@/common/icons/right_arrow.png'),
+				// 数据
 				helpList: helpList
 			}
 		},

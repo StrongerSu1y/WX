@@ -25,6 +25,7 @@
 			}
 		},
 		computed: {
+			// 顶部样式
 			topStyleObj () {
 				if (this.scrollTop <= 0) {
 					return {
@@ -42,6 +43,7 @@
 			}
 		},
 		created () {
+			// 监听滚动
 			this.$root.Bus.$on('circleScroll', (val) => {
 				this.scrollTop = val
 			})

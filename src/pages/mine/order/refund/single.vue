@@ -52,13 +52,7 @@
 </template>
 
 <script>
-	let reminderList = [{
-		text: '积分商品退款，积分不予退还。'
-	}, {
-		text: '积分商品退款，积分不予退还。'
-	}, {
-		text: '积分商品退款，积分不予退还。'
-	}]
+	// 退款原因
 	let data1 = [{
 		text: '未收到货',
 		value: 1
@@ -82,10 +76,21 @@
 	export default {
 		data () {
 			return {
-				reminderList: reminderList,
+				// 提示数组
+				reminderList: [{
+					text: '积分商品退款，积分不予退还。'
+				}, {
+					text: '积分商品退款，积分不予退还。'
+				}, {
+					text: '积分商品退款，积分不予退还。'
+				}],
+				// 上传图片数组
 				picList: [],
+				// 理由
 				reason: '',
+				// 关系数组
 				relationList: data1,
+				// 选择器
 				picker: new Picker({
 					data: [data1],
 					selectedIndex: [0, 0, 0],
@@ -96,6 +101,7 @@
 		computed: {
 		},
 		mounted () {
+			// 选择
 			this.picker.on('picker.select', (index, selectedIndex) => {
 				this.reason = this.relationList[index].text
 			})
@@ -115,7 +121,6 @@
 			},
 			// 监听 input 改变
 			handleInputChange (event) {
-				console.log(event)
 				let file = event.target.files[0]
 				const imgMaxSize = 1024 * 1024 * 10 // 10MB
 				// 检查文件类型

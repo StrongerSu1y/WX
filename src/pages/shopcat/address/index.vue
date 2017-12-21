@@ -84,12 +84,6 @@
 			openAddressItem (address) {
 				this.$root.Bus.$emit('chooseAddress', address)
 				this.$router.goBack()
-				// this.$router.push({
-				// 	path: '/mine/address/edit',
-				// 	query: {
-				// 		address: JSON.stringify(address)
-				// 	}
-				// })
 			}
 		},
 		components: {

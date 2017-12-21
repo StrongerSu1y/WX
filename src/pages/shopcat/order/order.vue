@@ -23,6 +23,7 @@
 				next(true)
 				return
 			}
+			// 弹窗提示
 			this.Dialog.alert({
 				title: '温馨提示',
 				msg: '小主，确定要放弃当前购物吗',

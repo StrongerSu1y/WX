@@ -21,6 +21,7 @@
 		computed: {
 		},
 		methods: {
+			// 加载数据
 			getData () {
 				this.$ajax.getCircleList({
 					page_number: this.pageNo

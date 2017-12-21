@@ -123,9 +123,11 @@
 		},
 		data () {
 			return {
+				// 广告高度
 				bannerHeight: window.innerWidth + 'px',
 				// 屏幕高度
 				winHeight: window.innerHeight - 50 - 45 + 'px',
+				// 合计评价
 				commentTruthTotal: 0,
 				scroller: '',
 				scrollTop: 0,
@@ -134,6 +136,7 @@
 			}
 		},
 		computed: {
+			// 广告图
 			listImg () {
 				if (!this.item.detail_img) {
 					return []
@@ -146,6 +149,7 @@
 				})
 				return arr
 			},
+			// 总评价
 			commentTotal () {
 				if (this.item && this.item.commentList && this.item.commentList.length) {
 					if (this.commentTruthTotal) {
@@ -156,6 +160,7 @@
 			}
 		},
 		watch: {
+			// 监听滚动高度
 			scrollTop (newVal, oldVal) {
 				let nowHeight = newVal + parseInt(window.innerHeight, 10) - 50
 				let goLine = parseInt(this.$refs.content.offsetHeight, 10) + 20
@@ -176,6 +181,7 @@
 					}
 				}
 			},
+			// 监听数据更新
 			item (newVal, oldVal) {
 				this.$nextTick(() => {
 					setTimeout(() => {
@@ -185,6 +191,7 @@
 			}
 		},
 		created () {
+			// 滚回顶部
 			setTimeout(() => {
 				window.scrollTo(0, 0, 200)
 			}, 20)
@@ -192,6 +199,7 @@
 		mounted () {
 			this.$nextTick(() => {
 				setTimeout(() => {
+					// 初始化
 					this.initBetterScroll()
 				}, 20)
 			})
@@ -227,6 +235,7 @@
 					this.scroller.refresh()
 				}
 			},
+			// 监听滚动
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y

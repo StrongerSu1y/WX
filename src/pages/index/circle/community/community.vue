@@ -43,6 +43,7 @@
 			}
 		},
 		created () {
+			// 加载数据
 			this.loadData()
 		},
 		mounted () {
@@ -88,6 +89,7 @@
 					this.scroller.refresh()
 				}
 			},
+			// 监听
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y

@@ -32,7 +32,7 @@
 								</div>
 							</div>
 						</li>
-						<li class="parent-name underline">
+						<li class="parent-name underlzine">
 							<span class="desc">家长姓名</span>
 							<input v-model="item.name" required="" type="text" name="parentName" placeholder="请在此输入家长姓名">
 						</li>
@@ -60,7 +60,9 @@
 <script>
 	import header from '@/components/header/header'
 	import { checkInput, checkMobile } from '@/common/js/common'
+	// 选择器组件
 	import Picker from 'better-picker'
+	// 选择数据
 	let data1 = [{
 		text: '爸爸',
 		value: 1
@@ -105,6 +107,7 @@
 				}),
 				// 第几个人
 				personIndex: 0,
+				// 关系数组
 				relationList: data1,
 				picker: new Picker({
 					data: [data1],
@@ -120,6 +123,7 @@
 			// 设置 history
 			localStorage.setItem('historyLength', parseInt(localStorage.getItem('historyLength')) + 1)
 			let _that = this
+			// 选中
 			this.picker.on('picker.select', (index, selectedIndex) => {
 				_that.list[_that.personIndex].relation = _that.relationList[index - 1].text
 			})
@@ -150,11 +154,11 @@
 					let obj = {}
 					obj.uid = _uid
 					obj.cls = item.cls
-					// 活动id
+					// 活动 id
 					obj.sid = this.$route.query.active_id
-					// 订单id
+					// 订单 id
 					obj.trade_detail_id = item.id
-					// piaowu id
+					// 票务 id
 					obj.trade_id = item.trade_id
 					obj.ticket_id = item.ticket_id
 					obj.kid_name = item.kid_name
@@ -204,6 +208,7 @@
 							let isRealname = true
 							let protocol = window.location.protocol
 							let host = window.location.host
+							// 切换页面
 							window.location.href = `${protocol}//${host}/pay?isRealname=${isRealname}&cls=${cls}&fee=${fee}&id=${id}&outtradeno=${outtradeno}&href=${href}`
 							// this.$router.push({
 							// 	path: '/pay',
