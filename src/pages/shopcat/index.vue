@@ -353,6 +353,7 @@
 				})
 			},
 			// 监听滑动事件
+			// 期刊
 			listenperiodicalTouchEvent () {
 				this.$refs.periodicalItem.forEach((item, index) => {
 					item.addEventListener('touchstart', event => {

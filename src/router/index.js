@@ -16,6 +16,7 @@ import bookRouter from './book.js'
 // 搜索
 import searchRouter from './search.js'
 
+// 活动 activityRouter
 // 分享详情 (部分后期被替代)
 const detail = resolve => require(['@/components/detail/detail.vue'], resolve) // 详情
 const info = resolve => require(['@/components/detail/info/info.vue'], resolve) // 信息
@@ -109,6 +110,7 @@ export default new Router({
 			shareDetailRouter.activity, // 活动分享
 			shareDetailRouter.train, // 培训分享
 			bookRouter, // 微书城
+			// 活动activityRouter
 			searchRouter, // 搜索
 			{ // 支付
 				path: '/pay',

@@ -110,6 +110,7 @@ export function fetch (url, params, type, dataType) {
 	})
 }
 
+// 接口列表
 export default {
 	// 判断登录
 	configLogin (obj) {
@@ -451,4 +452,13 @@ export default {
 	mineCouponOrder (params) {
 		return fetch('/user/coupon/order', params, 'post', 'json')
 	}
+	/*
+		活动页面首页
+	*/
+	// activityHomepage () {
+	// 	return fatch('', {} ,'')
+	// }
+	/*
+		活动页二级搜索页
+	*/
 }
