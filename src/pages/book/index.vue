@@ -177,7 +177,7 @@
 				})
 				// 首页数据
 				this.$ajax.bookHomepage().then(res => {
-					console.log(res)
+					// console.log(res)
 					this.promotions = res.data.promotions
 					this.columns = res.data.columns
 					this.newests = res.data.newests
@@ -227,7 +227,7 @@
 				this.$router.push({
 					path: 'book/search',
 					query: {
-						id: id || ''
+						id: id
 					}
 				})
 			},

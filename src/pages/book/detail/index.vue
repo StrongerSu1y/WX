@@ -7,12 +7,12 @@
 		<!-- 底部 -->
 		<footer class="detail-footer">
 			<div class="icons">
-				<div class="collect">
+				<div class="collect" @click="goCollect()">
 					<img src="./collect_icon.png">
 					<p class="text">收藏</p>
 				</div>
 				<div class="shopcat" @click="goShopcat()">
-					<span class="dot">{{ shopcatList.length }}</span>
+					<span class="dot">{{ shopNum }}</span>
 					<img src="./shopcat_icon.png">
 					<p class="text">购物车</p>
 				</div>
@@ -42,7 +42,8 @@
 				// 数据
 				item: {},
 				// 购物车
-				shopcatList: []
+				shopcatList: [],
+				shopNum:0
 			}
 		},
 		computed: {
@@ -64,6 +65,7 @@
 			this.getShopcat()
 		},
 		mounted () {
+
 		},
 		methods: {
 			// 获取数据
@@ -92,6 +94,12 @@
 			getShopcat () {
 				this.$ajax.shopcatList().then(res => {
 					this.shopcatList = res.data.data.item_list
+					console.log(this.shopcatList)
+					let shopNum = 0
+					this.shopcatList.forEach(item => {
+						this.shopNum += Number(item.quantity)
+					})
+					console.log(shopNum)
 				}, err => {
 					console.log(err)
 				})
@@ -144,6 +152,12 @@
 						selectedData: JSON.stringify(selectedData),
 						nowSum: data.last_fee
 					}
+				})
+			},
+			// 加入收藏
+			goCollect () {
+				this.$router.push({
+					path:''
 				})
 			}
 		}

@@ -173,7 +173,7 @@
 				periodicalDeleteIndex: -1,
 				goodsDeleteIndex: -1,
 				scrollTop: 0,
-				scroller: ''
+				scroller: '',
 			}
 		},
 		computed: {
@@ -309,6 +309,9 @@
 			this.loadData()
 		},
 		mounted () {
+			// eventBus.$on('changeNum',function(num) {
+			// 	this.shopnum += num
+			// }.bind(this))
 		},
 		methods: {
 			// 去逛逛
@@ -439,6 +442,8 @@
 					// 商品
 					this.goodsList = list.filter((item) => {
 						item.number = parseInt(item.quantity, 10)
+						console.log(item.number)
+						console.log()
 						return item.cls === '2'
 					})
 					this.$nextTick(() => {
@@ -481,10 +486,12 @@
 				}
 				// 请求服务器
 				this.$ajax.updateShopcat(params).then(res => {
-					console.log(res)
+					// console.log(res)
 				}, err => {
 					console.log(err)
 				})
+
+				// eventBus.$emit('changeNum')
 			},
 			// 全选
 			selectAllItems () {

@@ -14,7 +14,7 @@
 	    			<span v-if="item.hardcover === '0'" class="package">平装</span>
 	    		</p>
 	    		<p class="age">
-	    			适读年龄({{ item.age_id }}儿童)
+	    			适读年龄({{ item.age_id }})
 	    		</p>
 	    		<p class="price">
 	    			<span class="num">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getDecimal }}</span>
