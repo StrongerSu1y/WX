@@ -11,7 +11,7 @@
 				<img ref="searchIcon" src="./search_icon_black.png">
 			</div>
 		</div>
-		<div class="message">
+		<div class="message" @click="openShopcat()">
 			<img ref="messageIcon" src="./shopcat_icon.png">
 		</div>
 	</header>
@@ -86,6 +86,12 @@
 			openSearch () {
 				this.$router.push({
 					path: '/search'
+				})
+			},
+			// 跳转购物车
+			openShopcat () {
+				this.$router.push({
+					path: '/shopcat/index'
 				})
 			},
 			// 返回

@@ -6,7 +6,7 @@
 		<div ref="searchArea" class="title">
 			{{ title }}
 		</div>
-		<div class="message">
+		<div class="message" @click="openShopcat()">
 			<img ref="messageIcon" src="./shopcat_icon.png">
 		</div>
 	</header>
@@ -34,6 +34,11 @@
 			// 打开搜索页
 			goBack () {
 				this.$router.goBack()
+			},
+			openShopcat() {
+				this.$router.push({
+					path:'/shopcat/index'
+				})
 			}
 		}
 	}
