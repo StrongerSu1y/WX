@@ -85,7 +85,7 @@
 			// 打开搜索页
 			openSearch () {
 				this.$router.push({
-					path: '/book/search'
+					path: '/search'
 				})
 			},
 			// 返回
