@@ -105,6 +105,7 @@
 				bannerHeight: window.innerWidth / 3 + 'px',
 				// 屏幕高度
 				winHeight: window.innerHeight - 50 + 'px',
+				// winHeight: window.innerHeight + 'px',
 				scroller: '',
 				scrollTop: 0,
 				// 图书类型数组
