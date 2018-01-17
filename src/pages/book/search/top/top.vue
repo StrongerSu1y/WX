@@ -131,8 +131,9 @@
 				list.push(this.getSelectedStr(this.selectedBookType) || '类别')
 				list.push(this.getSelectedStr(this.selectedAge) || '年龄')
 				let priceSre = '价格'
-				if (this.maxPrice && this.minPrice && parseInt(this.maxPrice) >= parseInt(this.minPrice)) {
+				if (this.maxPrice && this.minPrice && parseInt(this.maxPrice) && parseInt(this.minPrice) >= parseInt(this.minPrice)) {
 					priceSre = `${this.minPrice}~${this.maxPrice}元`
+					console.log(priceSre)
 				}
 				list.push(priceSre)
 				return list
@@ -185,12 +186,13 @@
 			loadData () {
 				// 图书种类列表
 				this.$ajax.bookConstant().then(res => {
-					console.log('typelist loadData')
+					// console.log('typelist loadData')
 					let bookTypeList = res.data.bookTypeList
 					bookTypeList.forEach(item => {
 						item.active = false
 					})
 					let itemAgeList = res.data.itemAgeList
+					// console.log(itemAgeList)
 					itemAgeList.forEach(item => {
 						item.active = false
 					})
@@ -263,9 +265,11 @@
 				}
 				if (type === 'age') {
 					this.params.itemAgeIds = getWithCommaString(this.selectedAge, 'id')
+					// console.log(this.params.itemAgeIds)
 				}
 				if (type === 'price') {
 					this.params.minPrice = this.minPrice
+					// console.log(this.params)
 					this.params.maxPrice = this.maxPrice
 					if (this.maxPrice && this.minPrice > this.maxPrice) {
 						this.Toast.warning({
@@ -299,7 +303,7 @@
 				if (!this.bookTypeList.length) {
 					return false
 				}
-				console.log(this.bookTypeList)
+				// console.log(this.bookTypeList)
 				this.bookTypeList.forEach((item, index) => {
 					if (item.id === this.id) {
 						this.bookTypeList[index].active = true

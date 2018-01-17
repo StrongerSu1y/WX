@@ -43,27 +43,30 @@
 				// itemTypeId 上一活动页传入的查询参数
 				itemIds: this.$route.query.itemIds || '',
 				// 是否为第一次进入
-				isFirstEnter: false
+				isFirstEnter: false,
+				// params: { pageNum : 1}
+				params: {}
 			}
 		},
 		computed: {
 			// 传参
-			params () {
-				let params = {}
-				// 类型id，选择了则不再过滤双十二的ids
-				if (this.bookTypeIds) {
-					params.bookTypeIds = this.bookTypeIds
-				} else {
-					if (this.itemTypeId) {
-						params.itemTypes = [this.itemTypeId]
-					}
-					if (this.itemIds) {
-						params.itemIds = this.itemIds
-					}
-				}
-				params.pageNum = this.pageNum
-				return params
-			}
+			// params () {
+			// 	let params = {}
+			// 	// 类型id，选择了则不再过滤双十二的ids
+			// 	if (this.bookTypeIds) {
+			// 		params.bookTypeIds = this.bookTypeIds
+			// 	} else {
+			// 		if (this.itemTypeId) {
+			// 			params.itemTypes = [this.itemTypeId]
+			// 		}
+			// 		if (this.itemIds) {
+			// 			params.itemIds = this.itemIds
+			// 		}
+			// 	}
+			// 	params.pageNum = this.pageNum
+			// 	console.log(params)
+			// 	return params
+			// }
 		},
 		watch: {
 			// 监听滚动
@@ -142,9 +145,23 @@
 			},
 			// 更新数据
 			refreshData (params) {
+				this.params = params
 				this.bookList = []
-				this.pageNum = 1
-				this.bookTypeIds = params.bookTypeIds
+				// this.pageNum = 1
+				// this.bookTypeIds = params.bookTypeIds
+				if (this.bookTypeIds) {
+					// params.bookTypeIds = this.bookTypeIds
+					this.bookTypeIds = params.bookTypeIds
+					console.log(this.bookTypeIds)
+				} else {
+					if (this.itemTypeId) {
+						// params.itemTypes = [this.itemTypeId]
+						this.itemTypes = [this.itemTypeId]
+					}
+					if (this.itemIds) {
+						this.itemIds = this.itemIds
+					}
+				}
 				this.loadData()
 			},
 			// 刷新 scroll
