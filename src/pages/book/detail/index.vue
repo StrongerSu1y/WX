@@ -12,7 +12,7 @@
 					<p class="text">收藏</p>
 				</div>
 				<div class="shopcat" @click="goShopcat()">
-					<span class="dot">{{ shopNum }}</span>
+					<span class="dot" v-if="shopNum>0">{{ shopNum }}</span>
 					<img src="./shopcat_icon.png">
 					<p class="text">购物车</p>
 				</div>
@@ -43,7 +43,7 @@
 				item: {},
 				// 购物车
 				shopcatList: [],
-				shopNum:0
+				shopNum: 0
 			}
 		},
 		computed: {
@@ -72,7 +72,7 @@
 			loadData () {
 				// 获取图书详情数据
 				this.$ajax.bookDetail(this.$route.query.id).then(res => {
-					console.log(res)
+					// console.log(res)
 					this.item = res.data.book
 				}, err => {
 					console.error(err)
@@ -94,12 +94,12 @@
 			getShopcat () {
 				this.$ajax.shopcatList().then(res => {
 					this.shopcatList = res.data.data.item_list
-					console.log(this.shopcatList)
+					// console.log(this.shopcatList)
 					let shopNum = 0
 					this.shopcatList.forEach(item => {
 						this.shopNum += Number(item.quantity)
 					})
-					console.log(shopNum)
+					// console.log(shopNum)
 				}, err => {
 					console.log(err)
 				})
@@ -130,7 +130,8 @@
 				this.$ajax.shopcatSave(params).then(res => {
 					console.log(res)
 					// 更新购物车
-					this.getShopcat()
+					// this.getShopcat()
+					this.shopNum++
 				}, err => {
 					console.log(err)
 				})
@@ -157,7 +158,7 @@
 			// 加入收藏
 			goCollect () {
 				this.$router.push({
-					path:''
+					// path:''
 				})
 			}
 		}

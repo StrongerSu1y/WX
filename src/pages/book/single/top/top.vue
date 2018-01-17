@@ -35,9 +35,9 @@
 			goBack () {
 				this.$router.goBack()
 			},
-			openShopcat() {
+			openShopcat () {
 				this.$router.push({
-					path:'/shopcat/index'
+					path: '/shopcat/index'
 				})
 			}
 		}

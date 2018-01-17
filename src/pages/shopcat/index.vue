@@ -173,7 +173,7 @@
 				periodicalDeleteIndex: -1,
 				goodsDeleteIndex: -1,
 				scrollTop: 0,
-				scroller: '',
+				scroller: ''
 			}
 		},
 		computed: {
@@ -309,9 +309,6 @@
 			this.loadData()
 		},
 		mounted () {
-			// eventBus.$on('changeNum',function(num) {
-			// 	this.shopnum += num
-			// }.bind(this))
 		},
 		methods: {
 			// 去逛逛
@@ -490,8 +487,6 @@
 				}, err => {
 					console.log(err)
 				})
-
-				// eventBus.$emit('changeNum')
 			},
 			// 全选
 			selectAllItems () {
@@ -609,6 +604,7 @@
 								title: '移除成功！'
 							})
 							this.deleteOnePeriodical(item.id)
+							this.loadData()
 						}, err => {
 							console.log(err)
 						})
@@ -623,6 +619,7 @@
 								title: '移除成功！'
 							})
 							this.deleteOnePeriodical(item.id)
+							this.loadData()
 						}, err => {
 							console.log(err)
 						})

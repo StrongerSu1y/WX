@@ -227,7 +227,7 @@
 				this.$router.push({
 					path: 'book/search',
 					query: {
-						id: id
+						id: id || ''
 					}
 				})
 			},
