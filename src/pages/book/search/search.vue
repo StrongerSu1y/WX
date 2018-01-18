@@ -44,8 +44,8 @@
 				itemIds: this.$route.query.itemIds || '',
 				// 是否为第一次进入
 				isFirstEnter: false,
-				// params: { pageNum : 1}
-				params: {}
+				params: { pageNum : 1}
+				// params: {}
 			}
 		},
 		computed: {
@@ -130,6 +130,7 @@
 				this.$ajax.bookList(this.params).then(res => {
 					// 返回的数据
 					let list = res.data.pageInfo.list
+					console.log(list)
 					// 总页数
 					this.pages = res.data.pageInfo.pages
 					// 加载不重复的数据
@@ -152,7 +153,7 @@
 				if (this.bookTypeIds) {
 					// params.bookTypeIds = this.bookTypeIds
 					this.bookTypeIds = params.bookTypeIds
-					console.log(this.bookTypeIds)
+					// console.log(this.bookTypeIds)
 				} else {
 					if (this.itemTypeId) {
 						// params.itemTypes = [this.itemTypeId]

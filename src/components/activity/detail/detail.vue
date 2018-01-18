@@ -97,8 +97,10 @@
 					data.begin_time = getUpdateDay(data.begin_time)
 					data.end_time = getUpdateDay(data.end_time)
 					data.business_list = JSON.parse(data.business_list)
-					data.imgs = JSON.parse(data.imgs)
+					// data.imgs = data.imgs
 					this.info = data
+				}).catch((err) => {
+					console.log(err)
 				})
 			},
 			// 获得更新后的时间

@@ -194,7 +194,7 @@
 			},
 			// 初始化滚动
 			initBetterScroll () {
-				console.log(this.$refs.content.offsetHeight)
+				// console.log(this.$refs.content.offsetHeight)
 				if (!this.scroller) {
 					this.scroller = new BScroll(this.$refs.wrapper, {
 						probeType: 3,
@@ -215,7 +215,7 @@
 			// 打开单项列表
 			openSingle (type, id, title) {
 				this.$router.push({
-					path: 'book/single',
+					path: '/book/single',
 					query: {
 						type: type,
 						id: id,
@@ -227,9 +227,9 @@
 			openSearch (id) {
 				this.$router.push({
 					path: 'book/search',
-					query: {
-						id: id || ''
-					}
+						query: {
+							id: id || '32'
+						}
 				})
 			},
 			// 选择 banner

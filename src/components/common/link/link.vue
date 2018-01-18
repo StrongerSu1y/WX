@@ -17,8 +17,9 @@
 	export default {
 		props: {
 			position: {
-				type: Object,
-				default: {
+				// type: Object,
+				type: Array,
+				default: function () {
 					top: '40px'
 				}
 			}

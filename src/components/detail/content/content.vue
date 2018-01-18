@@ -7,6 +7,7 @@
 			</div>
 			<img :src="info.logo">
 			<!-- <v-banner :listImg="listImg"></v-banner> -->
+			<!-- <v-view :listImg="listImg"></v-view> -->
 		</div>
 		<!-- 商品名称 -->
 		<div class="detail">
@@ -107,6 +108,8 @@
 	import title from '../../common/split/title.vue'
 	import deadline from './deadline'
 	import banner from './banner'
+	import view from '../../common/view/view.vue'
+
 	export default {
 		name: 'content',
 		props: ['sales', 'activity', 'info', 'type'],
@@ -119,6 +122,7 @@
 			}
 		},
 		computed: {
+			
 		},
 		mounted () {
 		},
@@ -126,9 +130,11 @@
 			split,
 			'v-banner': banner,
 			'v-title': title,
-			'dead-line': deadline
+			'dead-line': deadline,
+			'v-view': view
 		},
 		methods: {
+			
 			showInfo (index) {
 				this.$router.push({
 					path: '/info',
