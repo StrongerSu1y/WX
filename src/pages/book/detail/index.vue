@@ -7,8 +7,9 @@
 		<!-- 底部 -->
 		<footer class="detail-footer">
 			<div class="icons">
-				<div class="collect" @click="goCollect()">
-					<img src="./collect_icon.png">
+				<div class="collect" @click="doCollect()">
+					<!-- <img src="./collect_icon.png"> -->
+					<div class="collectImg" :class="{active:isActive}"></div>
 					<p class="text">收藏</p>
 				</div>
 				<div class="shopcat" @click="goShopcat()">
@@ -43,7 +44,8 @@
 				item: {},
 				// 购物车
 				shopcatList: [],
-				shopNum: 0
+				shopNum: 0,
+				isActive: false
 			}
 		},
 		computed: {
@@ -74,6 +76,7 @@
 				this.$ajax.bookDetail(this.$route.query.id).then(res => {
 					this.item = res.data.book
 					console.log(this.item)
+					console.log(this.item.is_fav)
 				}, err => {
 					console.error(err)
 				})
@@ -100,6 +103,9 @@
 						this.shopNum += Number(item.quantity)
 					})
 					// console.log(shopNum)
+					if(this.item.is_fav == !true) {
+							console.log(111)
+					}
 				}, err => {
 					console.log(err)
 				})
@@ -156,10 +162,8 @@
 				})
 			},
 			// 加入收藏
-			goCollect () {
-				this.$router.push({
-					// path:''
-				})
+			doCollect () {
+				this.isActive = !isActive
 			}
 		}
 	}

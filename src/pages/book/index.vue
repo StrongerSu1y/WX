@@ -167,7 +167,7 @@
 			loadData () {
 				// 图书种类列表
 				this.$ajax.bookConstant().then(res => {
-					console.log(res)
+					// console.log(res)
 					let bookList = res.data.bookTypeList
 					if (bookList.length >= 16) {
 						bookList = bookList.slice(0, 15)

@@ -25,12 +25,16 @@
 				text-align center
 			.collect
 				margin-left 12.5%
-				> img
+				.collectImg
 					display inline-block
 					width 0.4rem
 					height 0.4rem
 					// margin-left 25%
 					margin-top 0.14rem
+					background-image url('./collect_icon.png')
+					background-size 0.4rem 0.4rem
+					&.active
+						background-image url('./collect_icon_active.png')
 				.text
 					font-size 0.2rem
 					line-height 0.2rem
