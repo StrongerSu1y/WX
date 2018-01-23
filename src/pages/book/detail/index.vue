@@ -72,8 +72,8 @@
 			loadData () {
 				// 获取图书详情数据
 				this.$ajax.bookDetail(this.$route.query.id).then(res => {
-					// console.log(res)
 					this.item = res.data.book
+					console.log(this.item)
 				}, err => {
 					console.error(err)
 				})

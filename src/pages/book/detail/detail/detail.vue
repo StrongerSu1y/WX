@@ -138,7 +138,8 @@
 			return {
 				detailTabIndex: 0,
 				// 屏幕高度
-				winHeight: window.innerHeight - 50 - 55 + 'px',
+				// winHeight: window.innerHeight - 50 - 55 + 'px',
+				winHeight: window.innerHeight - 50 - 55 - 35 + 'px',
 				// 视图数组
 				detailShowContentList: ['v-product', 'v-detail', 'v-comment'],
 				// 标题

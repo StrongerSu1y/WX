@@ -94,6 +94,7 @@
 				})
 				.then((res) => {
 					let data = res.data.data
+					console.log(data)
 					data.begin_time = getUpdateDay(data.begin_time)
 					data.end_time = getUpdateDay(data.end_time)
 					data.business_list = JSON.parse(data.business_list)

@@ -29,11 +29,14 @@
 					<p class="time">{{ item.created_at | getPastTimeText }}前</p>
 				</div>
 			</li>
+			<empty v-if="!allCommentList.length"></empty>
 		</ul>
 	</div>
 </template>
 
 <script>
+	import empty from '@/components/common/empty/empty'
+
 	export default {
 		name: 'book-detail-page',
 		props: {
@@ -66,6 +69,7 @@
 			}
 		},
 		components: {
+			empty
 		},
 		created () {
 			// 加载数据

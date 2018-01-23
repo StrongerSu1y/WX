@@ -30,7 +30,7 @@ export default { // 微书城
 		path: 'single',
 		component: bookSingle,
 		meta: {
-			keepAlive: false,
+			keepAlive: true,
 			isBack: false,
 			index: 2
 		}

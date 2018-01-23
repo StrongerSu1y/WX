@@ -176,7 +176,7 @@
 					if (this.canGoComment) {
 						// 查看评价
 						setTimeout(() => {
-							this.changeTopTabIndex(2)
+							this.changeTopTabIndex(1)
 						}, 300)
 					}
 				}

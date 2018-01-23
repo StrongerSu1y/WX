@@ -7,9 +7,8 @@
 			</div>
 			<img :src="info.logo">
 			<!-- <v-banner :listImg="listImg"></v-banner> -->
-			<!-- <v-view :listImg="listImg"></v-view> -->
-		</div>
 		<!-- 商品名称 -->
+	</div>
 		<div class="detail">
 			<div class="name">
 				{{ info.title }}
@@ -107,8 +106,9 @@
 	import split from '../../common/split/split.vue'
 	import title from '../../common/split/title.vue'
 	import deadline from './deadline'
-	import banner from './banner'
-	import view from '../../common/view/view.vue'
+	// import banner from './banner'
+	import Swiper from 'swiper'
+	// import 'swiper/dist/css/swiper.min.css'
 
 	export default {
 		name: 'content',
@@ -128,13 +128,11 @@
 		},
 		components: {
 			split,
-			'v-banner': banner,
+			// 'v-banner': banner,
 			'v-title': title,
 			'dead-line': deadline,
-			'v-view': view
 		},
 		methods: {
-			
 			showInfo (index) {
 				this.$router.push({
 					path: '/info',
@@ -162,4 +160,22 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
 	@import 'content.styl'
+	.swiper-container 
+		width: 100%
+		height: 100%
+		.swiper-wrapper 
+			width: 100%
+			height: 100%
+			.swiper-slide
+				background-position: center
+				width: 100%
+				height: 100%
+				background-size contain
+				// background-attachment: fixed
+				background-repeat no-repeat
+		.swiper-pagination-bullet 
+			width: 0.12rem
+			height: 0.12rem
+			display: inline-block
+			background: #7c5e53
 </style>
