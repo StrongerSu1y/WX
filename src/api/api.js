@@ -350,8 +350,12 @@ export default {
 	/*
 		图书详情
 	*/
-	bookDetail (id) {
-		return fetch(`/book/${id}/open`, {}, 'get')
+	// bookDetail (id) {
+	// 	return fetch(`/book/${id}/open`, {}, 'get')
+	// },
+	bookDetail (id, params) {
+		let query = qs.stringify(params)
+		return fetch(`/book/${id}/open?${query}`, {}, 'get')
 	},
 	/*
 		图片评论列表
@@ -365,6 +369,27 @@ export default {
 	circleChannelList (params) {
 		return fetch('/circle/channelList', params)
 	},
+	/*
+		加入收藏
+	*/
+	addCollect (params) {
+		let query = qs.stringify(params)
+		return fetch(`//app.51weixiao.com/api/fav/save?${query}`, {} ,'get')
+	},
+	/*
+		取消收藏
+	*/
+	delCollect (params) {
+		let query = qs.stringify(params)
+		return fetch(`//app.51weixiao.com/api/fav/del?${query}`, {} , 'get')
+	},
+	/*
+		获取收藏列表
+	*/
+	// gtCollect () {
+	// 	let query = qs.stringify(params)
+	// 	return fetch(`/fav/list?${query}`, {} , 'get')
+	// },
 	/*
 		我的首页
 	*/

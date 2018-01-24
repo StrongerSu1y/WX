@@ -72,14 +72,24 @@
 		methods: {
 			// 获取数据
 			loadData () {
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					cls: '2'
+				}
 				// 获取图书详情数据
-				this.$ajax.bookDetail(this.$route.query.id).then(res => {
+				this.$ajax.bookDetail(this.$route.query.id,params).then(res => {
 					this.item = res.data.book
-					console.log(this.item)
 					console.log(this.item.is_fav)
+					// let isActive = this.isActive
+					if(this.item.is_fav === '1') {
+						this.isActive = true 
+					} else {
+						this.isActive = false 
+					}
 				}, err => {
 					console.error(err)
 				})
+
 			},
 			// 切换导航条
 			changeTopTabIndex (index, secondIndex) {
@@ -103,7 +113,7 @@
 						this.shopNum += Number(item.quantity)
 					})
 					// console.log(shopNum)
-					if(this.item.is_fav == !true) {
+					if(this.item.is_fav == true) {
 							console.log(111)
 					}
 				}, err => {
@@ -134,6 +144,7 @@
 				})
 				// 请求服务器
 				this.$ajax.shopcatSave(params).then(res => {
+					console.log(params)
 					console.log(res)
 					// 更新购物车
 					// this.getShopcat()
@@ -163,7 +174,26 @@
 			},
 			// 加入收藏
 			doCollect () {
-				this.isActive = !isActive
+				let isActive = this.isActive
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					id: this.$route.query.id,
+					cls: '2'
+				}
+				if(isActive == true) {
+					this.$ajax.delCollect(params).then(res => {
+						this.isActive = !isActive
+						console.log(this.item.is_fav)
+					}, err => {
+						console.log(err)
+					})
+				} else {
+					this.$ajax.addCollect(params).then(res => {
+						this.isActive = !isActive
+					}, err => {
+						console.log(err)
+					})
+				}
 			}
 		}
 	}

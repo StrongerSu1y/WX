@@ -33,8 +33,8 @@
     	</ul>
     	<!-- 实际瀑布流 -->
     	<ul v-for="(list, i) in itemList" :class="i" class="side-list">
-    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }" @click="showDetail(item.id)">
-	    		<div class="img">
+    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }" >
+	    		<div class="img" @click="showDetail(item.id)">
 	    			<img v-lazy="item.logo">
 	    			<span>{{ item.discount }}折</span>
 	    		</div>
@@ -55,7 +55,7 @@
 	    			<span class="old">￥{{ item.original_fee | getInteger }}{{ item.original_fee | getDecimal }}</span>
 	    		</div>
 					<div class="cart">
-						<span>收藏</span>
+						<span @click="doCollect()">收藏</span>
 						<span>加入购物车</span>
 					</div>
 	    	</li>
@@ -222,6 +222,41 @@
 				})
 			}
 		},
+		// 获取数据
+		// doCollect () {
+		// 	let params = {
+		// 		_uid: localStorage.getItem('userId'),
+		// 		cls: '2'
+		// 	}
+		// 	// 获取图书详情数据
+		// 	this.$ajax.bookDetail(this.$route.query.id,params).then(res => {
+		// 		this.item = res.data.book
+		// 		console.log(this.item.is_fav)
+		// 		// let isActive = this.isActive
+		// 		if(this.item.is_fav === '1') {
+		// 			let params = {
+		// 				_uid: localStorage.getItem('userId'),
+		// 				id: this.$route.query.id,
+		// 				cls: '2'
+		// 			}
+		// 			this.$ajax.delCollect(params).then(res => {
+		// 				// 提示
+		// 				this.Toast.loading({
+		// 					title: '收藏成功'
+		// 				})
+		// 			}, err => {
+		// 				console.log(err)
+		// 			})
+		// 		} else {
+		// 			// 提示
+		// 			this.Toast.loading({
+		// 				title: '已收藏'
+		// 			})
+		// 		}
+		// 	}, err => {
+		// 		console.error(err)
+		// 	})
+		// },
 		filters: {
 			// 类型文字
 			getTypeText (arr) {

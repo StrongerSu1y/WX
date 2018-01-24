@@ -79,7 +79,18 @@
 					return false
 				}
 				this.navIndex = index
-			}
+			},
+			// getCollect () {
+			// 	// let params = {
+			// 	// 		_uid: localStorage.getItem('userId'),
+			// 	// 		cls: '2'
+			// 	// 	}
+			// 	this.$ajax.getCollect().then(res => {
+					
+			// 	}, err => {
+			// 		console.log(err)
+			// 	})
+			// }
 		},
 		components: {
 			'v-top': top,
