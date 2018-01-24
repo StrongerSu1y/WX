@@ -150,7 +150,7 @@
 				// 数据
 				itemList: [],
 				// 需要计算瀑布流高度
-				needCompute: true
+				needCompute: true,
 			}
 		},
 		watch: {
@@ -190,6 +190,7 @@
 					this.itemList[needIndex].push(this.bookList[index])
 					heights[needIndex] += item.offsetHeight
 				})
+				// console.log(this.bookList)
 				// 重置
 				this.needCompute = false
 				// 通知父组件 DOM 元素更新完毕
@@ -220,43 +221,49 @@
 						id: id
 					}
 				})
-			}
+			},
+			// 获取数据
+			doCollect () {
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					cls: '2'
+				}
+				this.itemList.forEach((item,index) => {
+					console.log(item[index].id)
+				})
+				// console.log(this.bookList[i].id)
+				// 获取图书详情数据
+				// this.$ajax.bookDetail(this.bookList.id,params).then(res => {
+				// 	console.log(res)
+					// console.log(this.item.is_fav)
+				// 	if(this.item.is_fav === '1') {
+				// 		let params = {
+				// 			_uid: localStorage.getItem('userId'),
+				// 			id: this.$route.query.id,
+				// 			cls: '2'
+				// 		}
+				// 		this.$ajax.delCollect(params).then(res => {
+				// 			// 提示
+				// 			this.Toast.loading({
+				// 				title: '收藏成功'
+				// 			})
+				// 		}, err => {
+				// 			console.log(err)
+				// 		})
+				// 	} else {
+				// 		// 提示
+				// 		this.Toast.loading({
+				// 			title: '已收藏'
+				// 		})
+				// 	}
+
+
+				// }, err => {
+				// 	console.error(err)
+				// })
+			},
 		},
-		// 获取数据
-		// doCollect () {
-		// 	let params = {
-		// 		_uid: localStorage.getItem('userId'),
-		// 		cls: '2'
-		// 	}
-		// 	// 获取图书详情数据
-		// 	this.$ajax.bookDetail(this.$route.query.id,params).then(res => {
-		// 		this.item = res.data.book
-		// 		console.log(this.item.is_fav)
-		// 		// let isActive = this.isActive
-		// 		if(this.item.is_fav === '1') {
-		// 			let params = {
-		// 				_uid: localStorage.getItem('userId'),
-		// 				id: this.$route.query.id,
-		// 				cls: '2'
-		// 			}
-		// 			this.$ajax.delCollect(params).then(res => {
-		// 				// 提示
-		// 				this.Toast.loading({
-		// 					title: '收藏成功'
-		// 				})
-		// 			}, err => {
-		// 				console.log(err)
-		// 			})
-		// 		} else {
-		// 			// 提示
-		// 			this.Toast.loading({
-		// 				title: '已收藏'
-		// 			})
-		// 		}
-		// 	}, err => {
-		// 		console.error(err)
-		// 	})
-		// },
+		
 		filters: {
 			// 类型文字
 			getTypeText (arr) {
