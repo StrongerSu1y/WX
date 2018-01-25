@@ -8,7 +8,6 @@
 		<footer class="detail-footer">
 			<div class="icons">
 				<div class="collect" @click="doCollect()">
-					<!-- <img src="./collect_icon.png"> -->
 					<div class="collectImg" :class="{active:isActive}"></div>
 					<p class="text">收藏</p>
 				</div>

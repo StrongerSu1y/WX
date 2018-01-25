@@ -27,8 +27,8 @@
     	</ul>
     	<!-- 瀑布流 -->
     	<ul v-for="(list, i) in itemList" :class="i" class="side-list">
-    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }" @click="openDetail(item.id)">
-	    		<div class="img">
+    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }"  :item="item">
+	    		<div class="img" @click="openDetail(item.id)">
 	    			<img :src="item.logo">
 	    		</div>
 	  			<p class="name">
@@ -39,7 +39,7 @@
 	    			<span class="old">￥{{ item.original_fee | getInteger }}{{ item.original_fee | getDecimal }}</span>
 	    		</div>
 					<div class="cart">
-						<span>收藏</span>
+						<span @click.prevent.stop="doCollect(item)">收藏</span>
 						<span @click.prevent.stop="addToShopcat(item.id)">加入购物车</span>
 					</div>
 	    	</li>
@@ -154,6 +154,44 @@
 					})
 				}, err => {
 					console.log(err)
+				})
+			},
+			doCollect (item) {
+				// 判断登录
+				this.$ajax.configLogin(this)
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					cls: '2'
+				}
+				this.$ajax.bookDetail(item.id,params).then(res => {
+					console.log(item.id)
+					let isFav = res.data.book.is_fav
+					let params = {
+						_uid: localStorage.getItem('userId'),
+						id: item.id,
+						cls: '2'
+					}
+					if (isFav === "0") {
+						this.$ajax.addCollect(params).then(res => {
+							// 提示
+							this.Toast.success({
+								title: '收藏成功'
+							})
+							setTimeout(() => {
+								this.Toast.hide()
+							}, 300)
+						}, err => {
+							console.log(err)
+						})
+					} else {
+						// 提示
+						this.Toast.success({
+							title: '您已收藏'
+						})
+						setTimeout(() => {
+							this.Toast.hide()
+						}, 500)
+					}
 				})
 			}
 		}

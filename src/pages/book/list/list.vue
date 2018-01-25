@@ -4,7 +4,7 @@
     <section class="book-list" v-if="type === '1' && id === '1'">
     	<!-- 用于计算高度的虚拟 DOM -->
     	<ul class="side-list" v-if="needCompute">
-    		<li v-for="(item, index) in bookList" :style="{ width: itemWidth }" class="item" ref="listItem">
+    		<li v-for="(item, index) in bookList" :style="{ width: itemWidth }" class="item" ref="listItem" :item="item">
 	    		<div class="img">
 	    			<img v-lazy="item.logo">
 	    			<span>{{ item.discount }}折</span>
@@ -26,14 +26,14 @@
 	    			<span class="old">￥{{ item.original_fee | getInteger }}{{ item.original_fee | getDecimal }}</span>
 	    		</div>
 					<div class="cart">
-						<span>收藏</span>
-						<span>加入购物车</span>
+						<span @click="doCollect(item)">收藏</span>
+						<span @click="showDetail(item.id)">加入购物车</span>
 					</div>
 	    	</li>
     	</ul>
     	<!-- 实际瀑布流 -->
     	<ul v-for="(list, i) in itemList" :class="i" class="side-list">
-    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }" >
+    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }" :item="item">
 	    		<div class="img" @click="showDetail(item.id)">
 	    			<img v-lazy="item.logo">
 	    			<span>{{ item.discount }}折</span>
@@ -55,16 +55,16 @@
 	    			<span class="old">￥{{ item.original_fee | getInteger }}{{ item.original_fee | getDecimal }}</span>
 	    		</div>
 					<div class="cart">
-						<span @click="doCollect()">收藏</span>
-						<span>加入购物车</span>
+						<span @click="doCollect(item)">收藏</span>
+						<span @click="showDetail(item.id)">加入购物车</span>
 					</div>
 	    	</li>
     	</ul>
     </section>
     <!-- 最新上架 -->
   	<ul class="new-list" v-if="type === '1' && id === '2'">
-			<li v-for="(item, index) in bookList" class="list-item underline" @click="showDetail(item.id)">
-				<div class="left-media">
+			<li v-for="(item, index) in bookList" class="list-item underline">
+				<div class="left-media" @click="showDetail(item.id)">
 					<img v-lazy="item.logo">
 				</div>
 				<div class="right-part">
@@ -94,8 +94,8 @@
   	</ul>
   	<!-- 动态标题 -->
   	<ul class="new-list" v-if="type === '2'">
-			<li v-for="(item, index) in bookList" class="list-item underline" @click="showDetail(item.id)">
-				<div class="left-media">
+			<li v-for="(item, index) in bookList" class="list-item underline" >
+				<div class="left-media" @click="showDetail(item.id)">
 					<img v-lazy="item.logo">
 				</div>
 				<div class="right-part">
@@ -151,6 +151,7 @@
 				itemList: [],
 				// 需要计算瀑布流高度
 				needCompute: true,
+				// isActive: false
 			}
 		},
 		watch: {
@@ -190,7 +191,6 @@
 					this.itemList[needIndex].push(this.bookList[index])
 					heights[needIndex] += item.offsetHeight
 				})
-				// console.log(this.bookList)
 				// 重置
 				this.needCompute = false
 				// 通知父组件 DOM 元素更新完毕
@@ -200,6 +200,7 @@
 						this.$emit('freshBScroll')
 					}, 20)
 				})
+
 			},
 			// 获取数组中最小值的下标
 			getMinIndex (arr) {
@@ -222,48 +223,45 @@
 					}
 				})
 			},
-			// 获取数据
-			doCollect () {
+			doCollect (item) {
+				// 判断登录
+				this.$ajax.configLogin(this)
 				let params = {
 					_uid: localStorage.getItem('userId'),
 					cls: '2'
 				}
-				this.itemList.forEach((item,index) => {
-					console.log(item[index].id)
+				this.$ajax.bookDetail(item.id,params).then(res => {
+					console.log(item.id)
+					let isFav = res.data.book.is_fav
+					let params = {
+						_uid: localStorage.getItem('userId'),
+						id: item.id,
+						cls: '2'
+					}
+					if (isFav === "0") {
+						this.$ajax.addCollect(params).then(res => {
+							// 提示
+							this.Toast.success({
+								title: '收藏成功'
+							})
+							setTimeout(() => {
+								this.Toast.hide()
+							}, 300)
+						}, err => {
+							console.log(err)
+						})
+					} else {
+						// 提示
+						this.Toast.success({
+							title: '您已收藏'
+						})
+						setTimeout(() => {
+							this.Toast.hide()
+						}, 500)
+					}
 				})
-				// console.log(this.bookList[i].id)
-				// 获取图书详情数据
-				// this.$ajax.bookDetail(this.bookList.id,params).then(res => {
-				// 	console.log(res)
-					// console.log(this.item.is_fav)
-				// 	if(this.item.is_fav === '1') {
-				// 		let params = {
-				// 			_uid: localStorage.getItem('userId'),
-				// 			id: this.$route.query.id,
-				// 			cls: '2'
-				// 		}
-				// 		this.$ajax.delCollect(params).then(res => {
-				// 			// 提示
-				// 			this.Toast.loading({
-				// 				title: '收藏成功'
-				// 			})
-				// 		}, err => {
-				// 			console.log(err)
-				// 		})
-				// 	} else {
-				// 		// 提示
-				// 		this.Toast.loading({
-				// 			title: '已收藏'
-				// 		})
-				// 	}
-
-
-				// }, err => {
-				// 	console.error(err)
-				// })
-			},
+			}
 		},
-		
 		filters: {
 			// 类型文字
 			getTypeText (arr) {
