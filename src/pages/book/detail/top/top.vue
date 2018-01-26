@@ -8,17 +8,43 @@
 				<li v-for="(item, index) in showItems" class="tab-item" :class="{ active: topTabIndex === index }" @click="changeTopTabIndex(index)">{{ item }}</li>
 			</ul>
 		</div>
-		<!-- 分享和更多功能暂时不显示 -->
+		<!-- 分享 -->
 		<div class="share">
 			<img src="./share_icon.png">
 			<span style="width: 0.4rem;"></span>
 		</div>
-		<div class="more">
+		<!-- 更多 -->
+		<div class="more" @click="change()">
 			<img src="./more_icon.png">
 			<span style="width: 0.4rem;"></span>
 		</div>
-		<!-- 更多 -->
+		<div class="more-box" enter-active-class="animated slideInDown" leave-active-class="animated slideOutUp"  v-show="!fold">
+			<ul>
+				<li @click="goHome()">
+					<img src="./toHome.png">
+					<p>首页</p>
+				</li>
+				<li @click="goMessage()">
+					<img src="./toMessage.png">
+					<p>消息</p>
+				</li>
+				<li @click="goSearch()">
+					<img src="./toSearch.png">
+					<p>搜索</p>
+				</li>
+				<li @click="goMine()">
+					<img src="./toMine.png">
+					<p>我的微校网</p>
+				</li>
+			</ul>
+		</div>
+		<!-- 遮罩层 -->
+		<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+			<section v-show="!fold" @click="hideSelector()" class="mask">
+			</section>
+		</transition>
 	</header>
+
 </template>
 
 <script>
@@ -34,6 +60,8 @@
 		},
 		data () {
 			return {
+				// 收起
+				fold: true
 			}
 		},
 		computed: {
@@ -48,6 +76,38 @@
 			// 返回上一页
 			goBack () {
 				this.$router.goBack()
+			},
+			goHome () {
+				this.$router.push({
+					path: '/'
+				})
+			},
+			goMessage () {
+				this.$router.push({
+					path: '/mine/message/index'
+				})
+			},
+			goSearch () {
+				this.$router.push({
+					path: '/search'
+				})
+			},
+			goMine () {
+				this.$router.push({
+					path: '/mine'
+				})
+			},
+			// 隐藏选择器
+			hideSelector () {
+				this.fold = true
+			},
+			change () {
+				console.log(111)
+				if (this.fold === false) {
+					this.fold = true
+					return
+				}
+				this.fold = false
 			}
 		}
 	}

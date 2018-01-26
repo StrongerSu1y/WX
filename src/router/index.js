@@ -36,6 +36,7 @@ const index = resolve => require(['@/pages/index/index.vue'], resolve) // 首页
 // import circleIndex from '@/pages/circle/index'
 
 // 我的
+const mineIndex = resolve => require(['@/pages/index/mine/mine.vue'], resolve) 
 const mineOrder = resolve => require(['@/pages/mine/order/periodical/periodical.vue'], resolve) // 订单列表
 const mineOrderDetail = resolve => require(['@/pages/mine/order/detail/detail.vue'], resolve) // 订单详情
 const mineOrderEvaluate = resolve => require(['@/pages/mine/order/evaluate/evaluate.vue'], resolve) // 订单评价
@@ -141,7 +142,12 @@ export default new Router({
 				meta: {
 					before: true
 				}
-			}, {
+			}, 
+			{
+				path: '/mine',
+				component: mineIndex
+			},
+			{
 				path: '/mine/order',
 				component: mineOrder
 			}, {

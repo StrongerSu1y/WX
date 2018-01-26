@@ -1,6 +1,6 @@
 <template>
 	<header ref="top" class="book-header" :style="headerStyle">
-		<div class="back-icon" @click="goBack()">
+		<div class="back-icon" @click="goHome()">
 			<img ref="homeIcon" src="./home_icon.png">
 		</div>
 		<div ref="searchArea" class="search-area" :style="searchStyle" @click="openSearch()">
@@ -95,8 +95,10 @@
 				})
 			},
 			// 返回
-			goBack () {
-				this.$router.goBack()
+			goHome () {
+				this.$router.push({
+					path: '/'
+				})
 			}
 		}
 	}
