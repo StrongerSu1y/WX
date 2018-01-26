@@ -182,7 +182,6 @@
 				if(isActive == true) {
 					this.$ajax.delCollect(params).then(res => {
 						this.isActive = !isActive
-						console.log(this.item.is_fav)
 					}, err => {
 						console.log(err)
 					})

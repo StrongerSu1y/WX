@@ -10,13 +10,14 @@
 		</div>
 		<!-- 分享和更多功能暂时不显示 -->
 		<div class="share">
-			<!-- <img src="./share_icon.png"> -->
+			<img src="./share_icon.png">
 			<span style="width: 0.4rem;"></span>
 		</div>
 		<div class="more">
-			<!-- <img src="./more_icon.png"> -->
+			<img src="./more_icon.png">
 			<span style="width: 0.4rem;"></span>
 		</div>
+		<!-- 更多 -->
 	</header>
 </template>
 

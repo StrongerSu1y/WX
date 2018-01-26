@@ -150,7 +150,7 @@
 		},
 		beforeRouteEnter (to, from, next) {
 			// 判断上一页是否为搜索列表页
-			if (from.path === '/book/search') {
+			if (from.path === '/book/search' || '/book/single') {
 				to.meta.isBack = true
 				from.meta.keepAlive = false
 			}

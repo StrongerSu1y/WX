@@ -164,7 +164,6 @@
 					cls: '2'
 				}
 				this.$ajax.bookDetail(item.id,params).then(res => {
-					console.log(item.id)
 					let isFav = res.data.book.is_fav
 					let params = {
 						_uid: localStorage.getItem('userId'),

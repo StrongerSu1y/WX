@@ -4,8 +4,8 @@
     <section class="book-list" v-if="type === '1' && id === '1'">
     	<!-- 用于计算高度的虚拟 DOM -->
     	<ul class="side-list" v-if="needCompute">
-    		<li v-for="(item, index) in bookList" :style="{ width: itemWidth }" class="item" ref="listItem" :item="item">
-	    		<div class="img">
+    		<li v-for="(item, index) in bookList" :style="{ width: itemWidth }" class="item" ref="listItem">
+	    		<div class="img" @click="showDetail(item.id)">
 	    			<img v-lazy="item.logo">
 	    			<span>{{ item.discount }}折</span>
 	    		</div>
@@ -26,14 +26,14 @@
 	    			<span class="old">￥{{ item.original_fee | getInteger }}{{ item.original_fee | getDecimal }}</span>
 	    		</div>
 					<div class="cart">
-						<span @click="doCollect(item)">收藏</span>
-						<span @click="showDetail(item.id)">加入购物车</span>
+						<span>收藏</span>
+						<span>加入购物车</span>
 					</div>
 	    	</li>
     	</ul>
     	<!-- 实际瀑布流 -->
     	<ul v-for="(list, i) in itemList" :class="i" class="side-list">
-    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }" :item="item">
+    		<li v-for="(item, index) in list" class="item" :style="{ width: itemWidth }">
 	    		<div class="img" @click="showDetail(item.id)">
 	    			<img v-lazy="item.logo">
 	    			<span>{{ item.discount }}折</span>
@@ -94,8 +94,8 @@
   	</ul>
   	<!-- 动态标题 -->
   	<ul class="new-list" v-if="type === '2'">
-			<li v-for="(item, index) in bookList" class="list-item underline" >
-				<div class="left-media" @click="showDetail(item.id)">
+			<li v-for="(item, index) in bookList" class="list-item underline" @click="showDetail(item.id)">
+				<div class="left-media">
 					<img v-lazy="item.logo">
 				</div>
 				<div class="right-part">
@@ -150,8 +150,7 @@
 				// 数据
 				itemList: [],
 				// 需要计算瀑布流高度
-				needCompute: true,
-				// isActive: false
+				needCompute: true
 			}
 		},
 		watch: {
@@ -175,6 +174,18 @@
 				}
 			})
 		},
+		// beforeRouteEnter (to, from, next) {
+		// 	// 判断上一页是否为搜索列表页
+		// 	if (from.path === '/book/single') {
+		// 		to.meta.isBack = true
+		// 		from.meta.keepAlive = false
+		// 	}
+		// 	next()
+		// },
+		// created () {
+		// 	// 加载数据
+		// 	// this.getWaterfallList()
+		// },
 		methods: {
 			// 获取瀑布流列表
 			getWaterfallList () {
@@ -200,7 +211,6 @@
 						this.$emit('freshBScroll')
 					}, 20)
 				})
-
 			},
 			// 获取数组中最小值的下标
 			getMinIndex (arr) {
