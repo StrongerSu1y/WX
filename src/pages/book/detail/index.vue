@@ -282,6 +282,7 @@
 					})
 				}
 			},
+			// 控制参数
 			change () {
 				if (this.fold === false) {
 					this.fold = true
@@ -296,8 +297,12 @@
 				}
 				this.flag = false
 			},
+			// 控制遮罩层
 			hideSelectorNum () {
 				this.flag = true
+			},
+			hideSelector () {
+				this.fold = true
 			},
 			// 选择数量
 			changeNum (num) {
