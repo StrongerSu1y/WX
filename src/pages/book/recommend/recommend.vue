@@ -184,7 +184,7 @@
 						})
 					} else {
 						// 提示
-						this.Toast.success({
+						this.Toast.warning({
 							title: '您已收藏'
 						})
 						setTimeout(() => {

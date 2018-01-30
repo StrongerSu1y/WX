@@ -35,25 +35,25 @@
 						<img src="./shareImg/weixin.png">
 						<p>微信好友</p>
 					</li>
-					<li @click="shareFriend()">
+					<li @click="shareWeixin()">
 						<img src="./shareImg/friend.png">
 						<p>微信朋友圈</p>
 					</li>
-					<li @click="shareQQ()">
+					<li @click="shareWeixin()">
 						<img src="./shareImg/qq.png">
 						<p>手机QQ</p>
 					</li>
-					<li @click="shareQKong()">
+					<li @click="shareWeixin()">
 						<img src="./shareImg/kongjian.png">
 						<p>QQ空间</p>
 					</li>
 					<li>
 					</li>							
-					<li @click="shareWeibo()">
+					<li @click="shareWeixin()">
 						<img src="./shareImg/weibo.png">
 						<p>新浪微博</p>
 					</li>
-					<li @click="shareCircle()">
+					<li @click="shareWeixin()">
 						<img src="./shareImg/wxlogo.png">
 						<p>微校网圈子</p>
 					</li>
@@ -318,12 +318,19 @@
 					}
 					this.number += num
 				}
+			},
+			// 分享
+			shareWeixin () {
+				console.log(1111)
+				this.Toast.warning({
+					title: '开发中...'
+				})
+				setTimeout(() => {
+					this.Toast.hide()
+				}, 5000)
 			}
 		},
-		// 分享
-		// shareWeixin () {
-			
-		// }
+
 	}
 </script>
 
