@@ -75,3 +75,142 @@
 			background #f8bd48
 		.go-buy
 			background linear-gradient(to left, #fe7a56, #ff5050)
+	.share-box
+		width 100%
+		height 6.88rem
+		position fixed
+		left 0
+		bottom 0
+		background #fff
+		z-index 3
+		animation-duration 0.5s !important
+		> h3
+			line-height 1.5rem
+			font-size 0.3rem
+			color #9C9890
+			font-family PingFangSC
+			text-align center
+		.share-type
+			width 100%
+			height 4.4rem
+			background #fff
+			text-align center
+			display flex
+			flex-wrap: wrap
+			ul 
+				width 100%
+				display flex
+				flex-wrap: wrap
+				li 
+					flex 1
+					width 25%
+					max-width 25%
+					min-width 25%
+					height 2.2rem
+					img 
+						width 1rem
+						height 1rem
+					> p
+						margin-top 0.2rem
+						color #C7C7CC
+						font-size 0.2rem 
+						font-family PingFangSC
+		.cle 
+			background #F8F7F6
+			height 1.1rem
+			> p
+				font-size 0.34rem
+				color #52504C
+				line-height 1.1rem
+				text-align center
+	.orderNum-box
+		width 100%
+		height 4.4rem		
+		position fixed
+		z-index 3
+		left 0
+		bottom 0.98rem
+		border-bottom 0.01rem solid #D6D6D6
+		background #fff
+		.orderNum-top
+			width 100%
+			height 1.9rem
+			border-bottom 0.01rem solid #D6D6D6
+			.price
+				color #f8bd48
+				line-height 0.34rem
+				.num
+					font-size 0.3rem
+					vertical-align baseline
+					position absolute
+					top 0.4rem
+					left 2.24rem
+			.shopLogo
+				width 1.6rem
+				height 1.6rem
+				position absolute
+				left 0.32rem
+				top -0.6rem
+				background #fff
+				border-radius 0.15rem
+				border 0.01rem solid #D6D6D6
+				text-align center
+				> img
+					display inline-block
+					max-width 100%
+					max-height 100%
+					min-width 50%
+					min-height 50%
+					vertical-align middle
+		.orderNum-bot
+			width 100%
+			height 2.49rem
+			position relative
+			> p 
+				font-size 0.24rem
+				color #9C9890
+				font-family PingFangSC
+				position absolute
+				top 50%
+				left 0.32rem
+				-webkit-transform translateY(-50%) 
+			.cart-control
+				position absolute
+				top 50%
+				right 0.32rem
+				-webkit-transform translateY(-50%) 
+				display flex
+				.left-icon, .right-icon
+					padding 0 0.2rem
+					> img
+						display inline-block
+						width 0.48rem
+						height 0.48rem
+				> .num
+					font-size 0.34rem
+					line-height 0.48rem
+					color #523f1a
+					width 0.56rem
+					text-align center
+	.mask
+		position fixed
+		width 100%
+		height 100%
+		top 0.9rem
+		left 0
+		background rgba(0, 0, 0, 0.5)
+		opacity 1
+		z-index 2
+		visibility visible
+		transition-duration 300ms
+	.mask-num
+		position fixed
+		width 100%
+		height 100%
+		bottom 1rem
+		left 0
+		background rgba(0, 0, 0, 0.5)
+		opacity 1
+		z-index 2
+		visibility visible
+		transition-duration 300ms

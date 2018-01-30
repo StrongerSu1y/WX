@@ -215,11 +215,17 @@ export function weiXinConfig (share) {
 	}).then(res => {
 		let data = res.data
 		window.wx.config({
+			// 调试模式
 			debug: false,
+			// 公众号标识
 			appId: data.appId,
+			// 签名的时间戳
 			timestamp: data.timestamp,
+			// 生成签名的随机串
 			nonceStr: data.nonceStr,
+			// 签名
 			signature: data.signature,
+			// 使用的接口列表
 			jsApiList: [
 				'chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'
 			]
@@ -227,17 +233,28 @@ export function weiXinConfig (share) {
 		window.wx.ready(() => {
 			// 朋友圈
 			window.wx.onMenuShareTimeline({
+				// 分享标题
 				title: share.title,
+				// 分享链接
 				link: window.location.href,
+				// 分享图标
 				imgUrl: share.imgUrl,
-				success: (res) => {}
+				success: (res) => {
+					// 用户确认分享后执行的回调函数
+				},
+				cancel () {
+					// 用户取消分享后执行的回调函数
+				}
 			})
 			// 分享给朋友
 			window.wx.onMenuShareAppMessage({
+				// 分享标题
 				title: share.title,
+				// 分享描述
 				desc: share.desc,
 				link: window.location.href,
 				imgUrl: share.imgUrl,
+				// 分享类型 type dataUrl
 				success: (res) => {}
 			})
 			// 分享到QQ

@@ -259,7 +259,7 @@
 				})
 				// 优惠券
 				this.$ajax.mineCouponOrder(this.couponParams).then(res => {
-					console.log(res)
+					// console.log(res)
 					let list = res.data.list
 					this.couponList = list
 				}, err => {

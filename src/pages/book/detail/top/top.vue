@@ -9,7 +9,7 @@
 			</ul>
 		</div>
 		<!-- 分享 -->
-		<div class="share">
+		<div class="share" @click="shareChange()">
 			<img src="./share_icon.png">
 			<span style="width: 0.4rem;"></span>
 		</div>
@@ -38,6 +38,7 @@
 				</li>
 			</ul>
 		</div>
+
 		<!-- 遮罩层 -->
 		<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 			<section v-show="!fold" @click="hideSelector()" class="mask">
@@ -61,7 +62,7 @@
 		data () {
 			return {
 				// 收起
-				fold: true
+				fold: true,
 			}
 		},
 		computed: {
@@ -102,12 +103,14 @@
 				this.fold = true
 			},
 			change () {
-				console.log(111)
 				if (this.fold === false) {
 					this.fold = true
 					return
 				}
 				this.fold = false
+			},
+			shareChange () {
+				this.$parent.change()
 			}
 		}
 	}

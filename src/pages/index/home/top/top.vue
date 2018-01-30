@@ -12,7 +12,7 @@
 				<img ref="scanIcon" src="./scan_icon.png">
 			</div>
 		</div>
-		<div class="message">
+		<div class="message" @click="openMessage()">
 			<img ref="messageIcon" src="./message_icon.png">
 		</div>
 	</header>
@@ -99,7 +99,12 @@
 				this.$router.push({
 					path: '/search'
 				})
-			}
+			},
+			openMessage () {
+				this.$router.push({
+					path: '/mine/message/index'
+				})
+			} 
 		}
 	}
 </script>

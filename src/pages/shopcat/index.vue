@@ -439,8 +439,7 @@
 					// 商品
 					this.goodsList = list.filter((item) => {
 						item.number = parseInt(item.quantity, 10)
-						console.log(item.number)
-						console.log()
+						// console.log(item.number)
 						return item.cls === '2'
 					})
 					this.$nextTick(() => {
@@ -461,6 +460,7 @@
 			},
 			// 改变数量
 			changeNum (type, index, num) {
+				console.log(index)
 				// 如果数量为 0
 				if (this['' + type + ''][index].number <= 1 && num < 0) {
 					if (type === 'periodicalList') {

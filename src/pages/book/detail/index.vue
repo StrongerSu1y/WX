@@ -18,8 +18,92 @@
 				</div>
 			</div>
 			<div class="add-shopcat" @click="addToShopcat()">加入购物车</div>
-			<div class="go-buy" @click="goOrder()">立即购买</div>
+			<!-- <div class="go-buy" @click="goOrder()">立即购买</div> -->
+			<div class="go-buy" @click="NumShow()" v-if="flag">
+				<span>立即购买</span>
+			</div>
+			<div class="go-buy" v-else>
+				<span @click="goOrder()">去结算</span>
+			</div>
 		</footer>
+		<!-- 分享模块 -->
+		<div class="share-box" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown"  v-show="!fold" @shareChange="change">
+			<h3>分享到</h3>
+			<div class="share-type">
+				<ul>
+					<li @click="shareWeixin()">
+						<img src="./shareImg/weixin.png">
+						<p>微信好友</p>
+					</li>
+					<li @click="shareFriend()">
+						<img src="./shareImg/friend.png">
+						<p>微信朋友圈</p>
+					</li>
+					<li @click="shareQQ()">
+						<img src="./shareImg/qq.png">
+						<p>手机QQ</p>
+					</li>
+					<li @click="shareQKong()">
+						<img src="./shareImg/kongjian.png">
+						<p>QQ空间</p>
+					</li>
+					<li>
+					</li>							
+					<li @click="shareWeibo()">
+						<img src="./shareImg/weibo.png">
+						<p>新浪微博</p>
+					</li>
+					<li @click="shareCircle()">
+						<img src="./shareImg/wxlogo.png">
+						<p>微校网圈子</p>
+					</li>
+					<li>
+					</li>						
+				</ul>
+			</div>
+			<div class="cle" @click="change()">
+				<p>取消</p>
+			</div>
+		</div>
+		<!-- 选择商品数量 -->
+		<div class="orderNum-box" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown" v-show="!flag">
+			<div class="orderNum-top">
+				<!-- 商品logo -->
+				<div class="shopLogo">
+					<img :src="item.logo">
+				</div>
+				<!-- 价格 -->
+				<p class="price">
+    			<span class="num">￥<span class="big">{{ item.last_fee | getInteger }}</span><span>{{ item.last_fee | getDecimal }}</span></span>
+	    	</p>
+				<!-- 关闭 -->
+				<div class="close">
+					<img src="">
+				</div>
+			</div>
+			<div class="orderNum-bot">
+				<p>请选择数量</p>
+				<!-- 控制器 -->
+				<div class="cart-control">
+					<div class="left-icon" @click.prevent.stop="changeNum(-1)">
+						<img :src="reduceIconSrc">
+					</div>
+					<p class="num">{{ number }}</p>
+					<div class="right-icon" @click.prevent.stop="changeNum(1)">
+						<img :src="addIconSrc">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 遮罩层 -->
+		<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+			<section v-show="!fold" @click="hideSelector()" class="mask">
+			</section>
+		</transition>
+		<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+			<section v-show="!flag" @click="hideSelectorNum()" class="mask-num">
+			</section>
+		</transition>
 	</div>
 </template>
 
@@ -44,7 +128,12 @@
 				// 购物车
 				shopcatList: [],
 				shopNum: 0,
-				isActive: false
+				isActive: false,
+				fold: true,
+				flag: true,
+				reduceIconSrc: require('@/common/icons/reduce_icon.png'),
+				addIconSrc: require('@/common/icons/add_icon.png'),
+				number: 1
 			}
 		},
 		computed: {
@@ -78,8 +167,8 @@
 				// 获取图书详情数据
 				this.$ajax.bookDetail(this.$route.query.id,params).then(res => {
 					this.item = res.data.book
-					console.log(this.item.is_fav)
-					// let isActive = this.isActive
+					// console.log(this.item)
+					console.log(res)
 					if(this.item.is_fav === '1') {
 						this.isActive = true 
 					} else {
@@ -159,7 +248,7 @@
 					return false
 				}
 				let data = this.item
-				data.number = 1
+				data.number = this.number
 				let selectedData = [data]
 				selectedData = getNeedDataList(selectedData, ['name', 'last_fee', 'number', 'logo', 'id'])
 				// 去下单页
@@ -167,7 +256,7 @@
 					path: '/shopcat/order',
 					query: {
 						selectedData: JSON.stringify(selectedData),
-						nowSum: data.last_fee
+						nowSum: data.last_fee * this.number
 					}
 				})
 			},
@@ -192,8 +281,49 @@
 						console.log(err)
 					})
 				}
+			},
+			change () {
+				if (this.fold === false) {
+					this.fold = true
+					return
+				}
+				this.fold = false
+			},
+			NumShow () {
+				if (this.flag === false) {
+					this.flag = true
+					return
+				}
+				this.flag = false
+			},
+			hideSelectorNum () {
+				this.flag = true
+			},
+			// 选择数量
+			changeNum (num) {
+				// 如果数量为 0
+				if (num == 1) {
+					this.number += num
+				}
+				if (num == -1) {
+					if (this.number <= 1) {
+						this.Toast.fail({
+							title: '不能再少了'
+						})
+						setTimeout(() => {
+							this.Toast.hide()
+						}, 1000)
+						this.number = 1
+						return
+					}
+					this.number += num
+				}
 			}
-		}
+		},
+		// 分享
+		// shareWeixin () {
+			
+		// }
 	}
 </script>
 
