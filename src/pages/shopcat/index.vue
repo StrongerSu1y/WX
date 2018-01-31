@@ -429,7 +429,7 @@
 				})
 				// 购物车
 				this.$ajax.shopcatList().then(res => {
-					console.log(res)
+					// console.log(res)
 					let list = res.data.data.item_list
 					// 刊物
 					this.periodicalList = list.filter((item) => {
@@ -460,7 +460,7 @@
 			},
 			// 改变数量
 			changeNum (type, index, num) {
-				console.log(index)
+				// console.log(index)
 				// 如果数量为 0
 				if (this['' + type + ''][index].number <= 1 && num < 0) {
 					if (type === 'periodicalList') {
@@ -659,7 +659,7 @@
 				})
 				// 请求服务器
 				this.$ajax.shopcatDel(id).then(res => {
-					console.log(res)
+					// console.log(res)
 				}, err => {
 					console.log(err)
 				})
@@ -681,7 +681,7 @@
 				})
 				// 请求服务器
 				this.$ajax.shopcatDel(id).then(res => {
-					console.log(res)
+					// console.log(res)
 				}, err => {
 					console.log(err)
 				})

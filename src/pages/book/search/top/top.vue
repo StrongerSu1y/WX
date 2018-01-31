@@ -134,7 +134,7 @@
 				let priceSre = '价格'
 				if (this.maxPrice && this.minPrice && parseInt(this.maxPrice) && parseInt(this.minPrice) >= parseInt(this.minPrice)) {
 					priceSre = `${this.minPrice}~${this.maxPrice}元`
-					console.log(priceSre)
+					// console.log(priceSre)
 				}
 				list.push(priceSre)
 				return list
@@ -320,7 +320,7 @@
 					this.shopcatList.forEach(item => {
 						this.shopNum  += Number(item.quantity)
 					})
-					console.log(this.shopNum)
+					// console.log(this.shopNum)
 				}, err => {
 					console.log(err)
 				})

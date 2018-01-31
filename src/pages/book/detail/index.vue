@@ -169,7 +169,6 @@
 				this.$ajax.bookDetail(this.$route.query.id,params).then(res => {
 					this.item = res.data.book
 					// console.log(this.item)
-					console.log(res)
 					if(this.item.is_fav === '1') {
 						this.isActive = true 
 					} else {
