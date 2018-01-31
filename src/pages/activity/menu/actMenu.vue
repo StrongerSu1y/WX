@@ -11,25 +11,25 @@
 
 <script>
 	let menuList = [{
-		src: require('./periodical_logo.png'),
-		title: '刊物',
-		path: '/book'
+		src: require('./typerow-1.png'),
+		title: '亲子活动',
+		path: '../../activity/search'
 	}, {
-		src: require('./bookmall_logo.png'),
-		title: '微书城',
-		path: '/book'
+		src: require('./typerow-2.png'),
+		title: '校园活动',
+		path: '../../activity/search'
 	}, {
-		src: require('./shopmall_logo.png'),
-		title: '微商城',
-		path: '/book'
+		src: require('./typerow-3.png'),
+		title: '节目剧场',
+		path: '../../activity/search'
 	}, {
-		src: require('./activity_logo.png'),
-		title: '活动',
-		path: '/activity'
+		src: require('./typerow-4.png'),
+		title: '游玩乐园',
+		path: '../../activity/search'
 	}, {
-		src: require('./train_logo.png'),
-		title: '培训',
-		path: '/book'
+		src: require('./typerow-5.png'),
+		title: '其他',
+		path: '../../activity/search'
 	}]
 	export default {
 		name: 'index-menu',
@@ -61,5 +61,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-	@import './menu.styl'
+	@import './actMenu.styl'
 </style>
