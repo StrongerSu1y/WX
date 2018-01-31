@@ -106,10 +106,7 @@
 	import split from '../../common/split/split.vue'
 	import title from '../../common/split/title.vue'
 	import deadline from './deadline'
-	// import banner from './banner'
-	import Swiper from 'swiper'
-	// import 'swiper/dist/css/swiper.min.css'
-
+	import banner from './banner'
 	export default {
 		name: 'content',
 		props: ['sales', 'activity', 'info', 'type'],
@@ -160,22 +157,4 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
 	@import 'content.styl'
-	.swiper-container 
-		width: 100%
-		height: 100%
-		.swiper-wrapper 
-			width: 100%
-			height: 100%
-			.swiper-slide
-				background-position: center
-				width: 100%
-				height: 100%
-				background-size contain
-				// background-attachment: fixed
-				background-repeat no-repeat
-		.swiper-pagination-bullet 
-			width: 0.12rem
-			height: 0.12rem
-			display: inline-block
-			background: #7c5e53
 </style>
