@@ -476,13 +476,14 @@ export default {
 	*/
 	mineCouponOrder (params) {
 		return fetch('/user/coupon/order', params, 'post', 'json')
-	}
+	},
 	/*
 		活动页面首页
 	*/
-	// activityHomepage () {
-	// 	return fatch('', {} ,'')
-	// }
+	activityHomepage (params) {
+		let query = qs.stringify(params)
+		return fetch(`/activity/activityHome?${query}`, {} ,'get')
+	}
 	/*
 		活动页二级搜索页
 	*/

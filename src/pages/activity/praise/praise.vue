@@ -27,7 +27,6 @@
 	let praiselist = [{
 
 	}]
-	console.log(praiselist)
 	export default {
 		name: 'praise',
 		data () {

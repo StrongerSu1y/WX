@@ -6,7 +6,7 @@
 			<!-- 内容 -->
 			<section ref="content" class="content">
 				<!-- banner 轮播 -->
-				<v-banner :style="{ height: bannerHeight, 'margin-top': '0.55rem'}" :listImg="listImg" class="banner" @chooseItem="chooseItem">
+				<v-banner :style="{ height: bannerHeight, 'margin-top': '0.9rem'}" :listImg="listImg" class="banner" @chooseItem="chooseItem">
 				</v-banner>
 				<!-- 活动分类 -->
 				<v-menu class="menu-list"></v-menu>
@@ -36,28 +36,16 @@
 				winHeight: window.innerHeight - 52 + 'px',
 				scroller: '',
 				scrollTop: 0,
-				adverts: [],
+				itemList: [],
+				starList: [],
 				data: {}
 			}
 		},
 		computed: {
-			// 活动imglist
-			// listImg () {
-			// 	let list = []
-			// 	if (this.adverts.length) {
-			// 		this.adverts.forEach(item => {
-			// 			list.push({
-			// 				// url: item.logo
-			// 			})
-			// 		})
-			// 	}
-			// 	return list
-			// }
-			// 测试imglist
 			listImg () {
 				let list = []
-				if (this.data.hasOwnProperty('adverts') && this.data.adverts.length) {
-					this.data.adverts.forEach(item => {
+				if (this.itemList.hasOwnProperty('starList') && this.itemList.starList.length) {
+					this.itemList.starList.forEach(item => {
 						list.push({
 							url: item.logo
 						})
@@ -74,14 +62,14 @@
 			'v-hotAct': hotAct
 		},
 
-		// beforeRouteEnter (to, from, next) {
-		// //判断上一页是否为搜索列表页
-		// if (from.path === './activity/') {
-		// 	to.meta.isBack = true
-		// 	from.meta.keepAlive = false
-		// }
-		// next()
-		// },
+		beforeRouteEnter (to, from, next) {
+		//判断上一页是否为搜索列表页
+		if (from.path === './activity/') {
+			to.meta.isBack = true
+			from.meta.keepAlive = false
+		}
+		next()
+		},
 		created () {
 			// 加载数据
 			this.loadData()
@@ -89,28 +77,31 @@
 		mounted () {
 
 		},
-
 		methods: {
 			// 加载数据
 			loadData () {
-				// 测试
-				this.$ajax.getHomePage().then(res => {
-					this.data = res.data
-				}, err => {
-					console.log(err)
-				})
-
-				// 活动首页
-				this.$ajax.activityHomepage().then(res => {
+				let params = {
+					lat: '39',
+					lng: '116',
+					city_id: '3501',
+					cls: '14'
+				}
+				// 活动首页数据
+				this.$ajax.activityHomepage(params).then(res => {
+					this.itemList = res.data.data
+					this.starList = this.itemList.starList
 					console.log(res)
+					console.log(this.starList)
+					this.$nextTick(() => {
+						// 初始化 better-scroll
+						this.initBetterScroll()
+					})
 				}, err => {
 					console.log(err)
 				})
-				// 活动分类列表
 			},
 			// 初始化滚动条
-			initBetterScroll () {
-				console.log(this.$ref.content.offsetHeight)
+			freshScroll () {
 				if (!this.scroller) {
 					this.scroller = new BScroll(this.$refs.warpper, {
 						probeType: 3,
@@ -121,6 +112,10 @@
 				} else {
 					this.scroller.refresh()
 				}
+			},
+			// 滚动到顶部
+			scrollToTop () {
+				this.scroller.scrollTo()
 			},
 			// 监听滚动
 			listenScroll () {
