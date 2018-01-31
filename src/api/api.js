@@ -386,10 +386,10 @@ export default {
 	/*
 		获取收藏列表
 	*/
-	// gtCollect () {
-	// 	let query = qs.stringify(params)
-	// 	return fetch(`/fav/list?${query}`, {} , 'get')
-	// },
+	getCollect (params) {
+		let query = qs.stringify(params)
+		return fetch(`/fav/list?${query}`, {} , 'get')
+	},
 	/*
 		我的首页
 	*/

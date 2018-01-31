@@ -130,7 +130,7 @@
 				this.$ajax.bookList(this.params).then(res => {
 					// 返回的数据
 					let list = res.data.pageInfo.list
-					console.log(list)
+					// console.log(list)
 					// 总页数
 					this.pages = res.data.pageInfo.pages
 					// 加载不重复的数据

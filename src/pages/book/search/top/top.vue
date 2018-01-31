@@ -21,7 +21,7 @@
 				</div>
 			</div>
 			<div class="search_top_shopcat" @click="goShopcat()">
-				<span v-if="shopcatList.length" class="dot">{{ shopcatList.length }}</span>
+				<span class="dot" v-if="shopNum>0">{{ shopNum }}</span>
 				<img ref="messageIcon" src="./shopcat_icon.png">
 			</div>
 		</header>
@@ -114,7 +114,8 @@
 				// 收起
 				fold: true,
 				// 购物车
-				shopcatList: []
+				shopcatList: [],
+				shopNum: 0
 			}
 		},
 		computed: {
@@ -315,6 +316,11 @@
 			getShopcat () {
 				this.$ajax.shopcatList().then(res => {
 					this.shopcatList = res.data.data.item_list
+					let shopNum = 0
+					this.shopcatList.forEach(item => {
+						this.shopNum  += Number(item.quantity)
+					})
+					console.log(this.shopNum)
 				}, err => {
 					console.log(err)
 				})

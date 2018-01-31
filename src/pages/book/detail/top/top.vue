@@ -9,7 +9,7 @@
 			</ul>
 		</div>
 		<!-- 分享 -->
-		<div class="share" @click="shareChange()">
+		<div class="share" @click="shareChange()" >
 			<img src="./share_icon.png">
 			<span style="width: 0.4rem;"></span>
 		</div>
@@ -63,6 +63,7 @@
 			return {
 				// 收起
 				fold: true,
+				fold1: true
 			}
 		},
 		computed: {
@@ -110,6 +111,11 @@
 				this.fold = false
 			},
 			shareChange () {
+				if (this.fold === true) {
+					this.fold = false
+				}
+				this.fold = true
+
 				this.$parent.change()
 			}
 		}

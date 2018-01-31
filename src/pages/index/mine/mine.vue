@@ -179,7 +179,7 @@
 			// 加载数据
 			loadData () {
 				this.$ajax.userHomePage().then(res => {
-					console.log(res)
+					// console.log(res)
 					this.info = res.data.data
 				}, err => {
 					console.error(err)
@@ -259,7 +259,7 @@
 			// 获取孩子列表
 			getChildrenList () {
 				this.$ajax.childList().then(res => {
-					console.log(res)
+					// console.log(res)
 					this.childrenList = res.data.data
 					this.$nextTick(() => {
 						this.updateSwiper()

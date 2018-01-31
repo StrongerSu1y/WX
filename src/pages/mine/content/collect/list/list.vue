@@ -1,6 +1,6 @@
 <template>
 	<ul ref="list" class="mine-collect-list">
-		<li v-if="listData && listData.length" ref="listItem" v-for="(item, index) in listData" :class="{ deleteShow: deleteIndex === index}" class="list-item" @click.prevent.stop="openDetail()">
+		<li v-if="listData && listData.length" ref="listItem" v-for="(item, index) in listData" :class="{ deleteShow: deleteIndex === index}" class="list-item" @click.prevent.stop="getCollect()">
 			<div class="content">
 				<div class="list-body">
 					<!-- 左侧图片 -->
@@ -45,15 +45,16 @@
 	import recommond from '@/pages/book/recommend/recommend'
 	export default {
 		name: 'mine-collect-list',
-		props: {
-			listData: {
-				type: Array
-			}
-		},
+		// props: {
+		// 	listData: {
+		// 		type: Array
+		// 	}
+		// },
 		data () {
 			return {
 				startX: 0,
-				deleteIndex: -1
+				deleteIndex: -1,
+				listData: []
 			}
 		},
 		mounted () {
@@ -98,7 +99,22 @@
 						cls: this.$route.query.cls
 					}
 				})
+			},
+			// 获取数据
+			getCollect () {
+				console.log(1111111)
+				let params = {
+					_uid: localStorage.getItem('userId'),
+					cls: '2'
+				}
+				this.$ajax.getCollect(params).then(res => {
+					this.listData = res.data.data.list
+					console.log(this.listData)
+				}, err => {
+					console.log(err)
+				})
 			}
+
 		},
 		components: {
 			'v-recommond': recommond

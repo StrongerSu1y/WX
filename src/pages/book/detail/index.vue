@@ -27,7 +27,7 @@
 			</div>
 		</footer>
 		<!-- 分享模块 -->
-		<div class="share-box" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown"  v-show="!fold" @shareChange="change">
+		<div class="share-box" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown"  v-show="!fold1" @shareChange="change">
 			<h3>分享到</h3>
 			<div class="share-type">
 				<ul>
@@ -97,7 +97,7 @@
 		</div>
 		<!-- 遮罩层 -->
 		<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-			<section v-show="!fold" @click="hideSelector()" class="mask">
+			<section v-show="!fold1" @click="hideSelector()" class="mask">
 			</section>
 		</transition>
 		<transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
@@ -130,6 +130,7 @@
 				shopNum: 0,
 				isActive: false,
 				fold: true,
+				fold1: true,
 				flag: true,
 				reduceIconSrc: require('@/common/icons/reduce_icon.png'),
 				addIconSrc: require('@/common/icons/add_icon.png'),
@@ -284,11 +285,12 @@
 			},
 			// 控制参数
 			change () {
-				if (this.fold === false) {
-					this.fold = true
+				// this.fold = !this.fold
+				if (this.fold1 === false) {
+					this.fold1 = true
 					return
 				}
-				this.fold = false
+				this.fold1 = false
 			},
 			NumShow () {
 				if (this.flag === false) {
@@ -302,7 +304,7 @@
 				this.flag = true
 			},
 			hideSelector () {
-				this.fold = true
+				this.fold1 = true
 			},
 			// 选择数量
 			changeNum (num) {

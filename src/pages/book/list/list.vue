@@ -43,7 +43,7 @@
 	    		</p>
 	    		<p v-if="item.author" class="author other">
 	    			<span class="text-name">作者</span>
-	    			<span class="text">{{ item.author }}</span>
+	    			<span class="text aut">{{ item.author }}</span>
 	    		</p>
 	    		<p class="hardcover other">
 	    			<span class="text-name">包装</span>
