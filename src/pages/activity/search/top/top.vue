@@ -377,7 +377,7 @@
 				if (!this.actTypeList.length) {
 					return false
 				}
-				console.log(this.actTypeList)
+				// console.log(this.actTypeList)
 				this.actTypeList.forEach((item, index) => {
 					if (item.id === this.id) {
 						this.actTypeList[index].active = true

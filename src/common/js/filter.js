@@ -45,6 +45,22 @@ let getUpdateDay = (time) => {
 	return _year + '年' + _month + '月' + _date + '日'
 }
 
+// 月日+时间
+// let getDayTime = (time) => {
+// 	if (!time) {
+// 		return
+// 	}
+// 	time = time.replace(/-/g, '/')
+// 	let _month, _date, _hour, _min
+// 	if (time instanceof Date) {
+// 		let newDate = new Date(time)
+// 		_month = newDate.getMonth() + 1
+// 		_date = newDate.getDate()
+// 	} else {
+		
+// 	}
+//  }
+
 let getPastTimeText = (time) => {
 	if (!time) {
 		return ''
@@ -123,6 +139,11 @@ let isEmojiCharacter = (substring) => {
 	}
 }
 
+// 距离
+let getDistance = (value) => {
+	return parseFloat(value / 1000).toFixed(1)
+}
+
 export {
 	getInteger,
 	getFixed1,
@@ -132,5 +153,6 @@ export {
 	getUpdateDay,
 	getPastTimeText,
 	hideMobile,
-	isEmojiCharacter
+	isEmojiCharacter,
+	getDistance
 }

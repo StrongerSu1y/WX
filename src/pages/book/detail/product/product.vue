@@ -17,7 +17,10 @@
 	    			适读年龄({{ item.age_id }})
 	    		</p>
 	    		<p class="price">
-	    			<span class="num">￥<span class="big">{{ item.last_fee | getInteger }}</span>{{ item.last_fee | getDecimal }}</span>
+	    			<span class="num">￥
+	    				<span class="big">{{ item.last_fee | getInteger }}</span>
+	    			{{ item.last_fee | getDecimal }}
+	    		</span>
 	    			<span class="discount">({{ item.discount }}折)</span>
 	    		</p>
 	    		<p class="origin-price">

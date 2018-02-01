@@ -6,14 +6,14 @@
 			<!-- 内容 -->
 			<section ref="content" class="content">
 				<!-- banner 轮播 -->
-				<v-banner :style="{ height: bannerHeight, 'margin-top': '0.9rem'}" :listImg="listImg" class="banner" @chooseItem="chooseItem">
+				<v-banner :style="{ height: bannerHeight, 'margin-top': '0.9rem'}" :listImg="listImg" class="banner" @click="openDetail">
 				</v-banner>
 				<!-- 活动分类 -->
 				<v-menu class="menu-list"></v-menu>
 				<!-- 推荐 口碑榜 -->
-				<v-praise></v-praise>
+				<v-praise :starList="starList"></v-praise>
 				<!-- 热门活动 -->
-				<v-hotAct></v-hotAct>
+				<v-hotAct :itemList="itemList"></v-hotAct>
 			</section>
 		</div>
 	</div>
@@ -36,6 +36,7 @@
 				winHeight: window.innerHeight - 52 + 'px',
 				scroller: '',
 				scrollTop: 0,
+				data: [],
 				itemList: [],
 				starList: [],
 				data: {}
@@ -44,8 +45,8 @@
 		computed: {
 			listImg () {
 				let list = []
-				if (this.itemList.hasOwnProperty('starList') && this.itemList.starList.length) {
-					this.itemList.starList.forEach(item => {
+				if (this.data.hasOwnProperty('starList') && this.data.starList.length) {
+					this.data.starList.forEach(item => {
 						list.push({
 							url: item.logo
 						})
@@ -88,13 +89,16 @@
 				}
 				// 活动首页数据
 				this.$ajax.activityHomepage(params).then(res => {
-					this.itemList = res.data.data
-					this.starList = this.itemList.starList
 					console.log(res)
-					console.log(this.starList)
+					this.data = res.data.data
+					this.itemList = this.data.list
+					this.starList = this.data.starList
+					console.log(this.itemList)
 					this.$nextTick(() => {
 						// 初始化 better-scroll
-						this.initBetterScroll()
+						this.freshScroll()
+						// 监听滚动条
+						this.listenScroll()
 					})
 				}, err => {
 					console.log(err)
@@ -115,13 +119,26 @@
 			},
 			// 滚动到顶部
 			scrollToTop () {
-				this.scroller.scrollTo()
+				this.scroller.scrollTo(0, 0, 500)
+			},
+			scrollRefresh () {
+				this.scroller.refresh()
 			},
 			// 监听滚动
 			listenScroll () {
 				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y
 				})
+				this.scroller.on('touchend', (pos) => {
+					if(pos.y > 50) {
+						// 刷新
+						this.loadData()
+					}
+				})
+			},
+			// 加载更多
+			canLoadMore (flag) {
+				this.loadMore =  flag
 			},
 			// 打开单项列表
 			openSingle (type, id, title) {
@@ -136,25 +153,16 @@
 					}
 				})
 			},
-			// 选择banner  跳转活动详情页
-			chooseItem (index) {
-				let id = this.adverts[index].srcid
+			// 跳转活动详情页
+			openDetail (index) {
+				let id = this.data[index].srcid
 				this.$router.push({
-					path: '',
+					path: '/activity/detail',
 					query: {
 						id: id
 					}
 				})
 			},
-			// 详情页
-			openDetail (id) {
-				this.$router.push({
-					path: '',
-					query: {
-						// id: id
-					}
-				})
-			}
 		}
 	}
 </script>

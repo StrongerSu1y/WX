@@ -7,14 +7,8 @@
 		<!-- 列表 -->
 		<div>
 			<ul class="media-list">
-				<li class="img-item">
-					<img src="./pra1.png">
-				</li>
-				<li class="img-item">
-					<img src="./pra2.png">
-				</li>
-				<li class="img-item">
-					<img src="./pra3.png">
+				<li class="img-item" v-for="star in starList" @click="openDatail(star.id)">
+					<img :src="star.logo">
 				</li>
 			</ul>
 		</div>
@@ -22,50 +16,35 @@
 </template>
 
 <script>
-	// import listView from '@/components/circle/list/list'
-
-	let praiselist = [{
-
-	}]
 	export default {
 		name: 'praise',
-		data () {
-			return {
-				praiselist,
-				// listData: [],
-				pageNo: 1
+		props: {
+			starList: {
+				type: Array
+			},
+			id: {
+				type: String
 			}
+		},
+		data () {
+			return {}
 		},
 		computed: {
 		},
 		methods: {
-			// 加载数据
-			// getData () {
-			// 	this.$ajax.getCircleList({
-			// 		page_number: this.pageNo
-			// 	}).then(res => {
-			// 		let list = res.data.data.list
-			// 		// 通知父组件可加载更多
-			// 		if (list.length >= 20) {
-			// 			this.$emit('canLoadMore', true)
-			// 		}
-			// 		this.listData = this.listData.concat(list)
-			// 		// 通知父组件更新
-			// 		this.$nextTick(() => {
-			// 			this.$emit('scrollRefresh')
-			// 		})
-			// 	}, err => {
-			// 		console.log(err)
-			// 	})
-			// },
-			// 加载更多
-			loadMore () {
-				this.pageNo += 1
-				this.getData()
+			data () {
+				
+			},
+			openDatail (id) {
+				this.$router.push({
+					path: './datail/actdetail',
+					query: {
+						id: id
+					}
+				})
 			}
 		},
 		components: {
-			// 'v-praiselist': praiselist
 		}
 	}
 </script>

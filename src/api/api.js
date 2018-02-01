@@ -482,9 +482,13 @@ export default {
 	*/
 	activityHomepage (params) {
 		let query = qs.stringify(params)
-		return fetch(`/activity/activityHome?${query}`, {} ,'get')
-	}
+		return fetch(`/activity/activityHome?${query}`, {},'get')
+	},
 	/*
 		活动页二级搜索页
 	*/
+	activityList (params) {
+		let query = qs.stringify(params)
+		return fetch(`/activity/listActivity?${query}`, {},'get')
+	}
 }
