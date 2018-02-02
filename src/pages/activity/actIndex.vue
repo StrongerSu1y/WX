@@ -6,7 +6,7 @@
 			<!-- 内容 -->
 			<section ref="content" class="content">
 				<!-- banner 轮播 -->
-				<v-banner :style="{ height: bannerHeight, 'margin-top': '0.9rem'}" :listImg="listImg" class="banner" @click="openDetail">
+				<v-banner :style="{ height: bannerHeight, 'margin-top': '0.9rem'}" :listImg="listImg" class="banner" @chooseItem="chooseItem">
 				</v-banner>
 				<!-- 活动分类 -->
 				<v-menu class="menu-list"></v-menu>
@@ -39,7 +39,7 @@
 				data: [],
 				itemList: [],
 				starList: [],
-				data: {}
+				// data: {}
 			}
 		},
 		computed: {
@@ -65,7 +65,7 @@
 
 		beforeRouteEnter (to, from, next) {
 		//判断上一页是否为搜索列表页
-		if (from.path === './activity/') {
+		if (from.path === './activity/search') {
 			to.meta.isBack = true
 			from.meta.keepAlive = false
 		}
@@ -74,6 +74,12 @@
 		created () {
 			// 加载数据
 			this.loadData()
+		},
+		watch: {
+			// 监听滚动条高度
+			scrollTop (newVal, oldVal) {
+
+			}
 		},
 		mounted () {
 
@@ -93,7 +99,7 @@
 					this.data = res.data.data
 					this.itemList = this.data.list
 					this.starList = this.data.starList
-					console.log(this.itemList)
+					// console.log(this.itemList)
 					this.$nextTick(() => {
 						// 初始化 better-scroll
 						this.freshScroll()
@@ -140,29 +146,25 @@
 			canLoadMore (flag) {
 				this.loadMore =  flag
 			},
-			// 打开单项列表
-			openSingle (type, id, title) {
-
-			},
 			// 跳转搜索列表页
 			openSearch (id) {
 				this.$router.push({
 					path: 'search',
 					query: {
-						// id: id || ''
+						id: id || ''
 					}
 				})
 			},
 			// 跳转活动详情页
-			openDetail (index) {
-				let id = this.data[index].srcid
+			chooseItem (index) {
+				let id = this.itemList[index].id
 				this.$router.push({
 					path: '/activity/detail',
 					query: {
 						id: id
 					}
 				})
-			},
+			}
 		}
 	}
 </script>

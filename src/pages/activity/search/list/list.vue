@@ -28,19 +28,19 @@
 <script>
 	export default {
 		name: 'searchList',
-		// props: {
-		// 	listData: {
-		// 		type: Array
-		// 	}
-		// },
 		data () {
 			return {
 				itemList: []
 			}
 		},
+
+		created () {
+			// 加载数据
+			this.loadData()
+		},
 		methods: {
 			// 获取活动列表
-			getActList () {
+			loadData () {
 				let params = {
 					lat: '39',
 					lng: '116',
@@ -48,7 +48,8 @@
 					cls: '14'
 				}
 				this.$ajax.activityList(params).then(res => {
-					console.log(res)
+					this.itemList = res.data.data.list
+					console.log(this.itemList)
 				}, err => {
 					console.log(err)
 				})

@@ -85,6 +85,7 @@
 					// 获取圈子数据
 					this.$refs.circle.getData()
 					this.data = res.data
+					// console.log(this.data)
 					this.$nextTick(() => {
 						// 初始化 better-scroll
 						this.freshScroll()
