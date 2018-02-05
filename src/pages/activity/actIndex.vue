@@ -95,7 +95,7 @@
 				}
 				// 活动首页数据
 				this.$ajax.activityHomepage(params).then(res => {
-					console.log(res)
+					// console.log(res)
 					this.data = res.data.data
 					this.itemList = this.data.list
 					this.starList = this.data.starList

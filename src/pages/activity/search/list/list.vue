@@ -1,7 +1,7 @@
 <template>
 		<!-- 活动列表 -->
 		<ul class="activity-list">
-			<li class="list-item activity-item clearFix" @click.prevent.stop="openDetail(item.id)" v-for="(item, index) in itemList">
+			<li class="list-item activity-item clearFix" @click.prevent.stop="openDetail(item.id)" v-for="(item, index) in activityLists">
 				<div class="itemContain">
 					<div class="activity-media">
 						<img v-lazy="item.logo">
@@ -28,12 +28,19 @@
 <script>
 	export default {
 		name: 'searchList',
-		data () {
-			return {
-				itemList: []
+		props: {
+			activityLists: {
+				type: Array
+			},
+			type: {
+				type: String
 			}
 		},
-
+		data () {
+			return {
+				// itemList: []
+			}
+		},
 		created () {
 			// 加载数据
 			this.loadData()
@@ -41,18 +48,21 @@
 		methods: {
 			// 获取活动列表
 			loadData () {
-				let params = {
-					lat: '39',
-					lng: '116',
-					city_id: '3501',
-					cls: '14'
-				}
-				this.$ajax.activityList(params).then(res => {
-					this.itemList = res.data.data.list
-					console.log(this.itemList)
-				}, err => {
-					console.log(err)
-				})
+				console.log(1111111111111111111111111111)
+				console.log(this.activityList)
+
+				// let params = {
+				// 	lat: '39',
+				// 	lng: '116',
+				// 	city_id: '3501',
+				// 	cls: '14'
+				// }
+				// this.$ajax.activityList(params).then(res => {
+				// 	this.itemList = res.data.data.list
+				// 	// console.log(this.itemList)
+				// }, err => {
+				// 	console.log(err)
+				// })
 			},
 			openDetail (id) {
 				this.$router.push({

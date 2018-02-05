@@ -1,13 +1,13 @@
 <template>
 	<!-- 二级页面 搜索页 -->
 	<div class="activity-search-page">
-		<v-top :scrollTop="scrollTop"></v-top>
+		<v-top :scrollTop="scrollTop" @refreshData="refreshData" @reset="reset"></v-top>
 		<!-- srcoll 外层容器 -->
 		<div ref="wrapper" class="wrapper" :style="{ height: winHeight }">
 			<!-- 列表 内容 -->
 			<section ref="content" class="content">
-				<v-list v-if="activityList.length" ref="list" :activityList="activityList"></v-list>
-				<empty v-if="!activityList.length"></empty>
+				<v-list v-if="activityLists.length" ref="list" :activityLists="activityLists"></v-list>
+				<empty v-if="!activityLists.length"></empty>
 			</section>
 		</div>
 	</div>
@@ -31,40 +31,41 @@
 				// 可加载
 				loadMore: false,
 				// 活动列表
-				activityList: ["1","2"],
+				activityLists: [],
 				// 页码
 				pageNum: 1,
 				// 总页数
 				pages: 0,
 				// 选择的类型
-				actTypeIds: null,
+				actTypeIds: this.$route.query.type || '',
 				// 查询参数
 				id: this.$route.query.id,
 				// 上一页传入的查询参数
 				itemTypeId: this.$route.query.itemTypeId || '',
 				itemIds: this.$route.query.itemIds || '',
 				// 是否第一次进入
-				isFirstEnter: false
+				isFirstEnter: false,
+				params: { pageNum: 1 }
 			}
 		},
 		computed: {
 			// 参数
-			params () {
-				let params = {}
-				// 类型id
-				if (this.actTypeIds) {
-					params.actTypeIds = this.actTypeIds
-				} else {
-					if (this.itemTypeId) {
-						params.itemTypeId = [this.itemTypeId]
-					}
-					if (this.itemIds) {
-						params.itemIds = this.itemIds
-					}
-				}
-				params.pageNum = this.pageNum
-				return params
-			}
+			// params () {
+			// 	let params = {}
+			// 	// 类型id
+			// 	if (this.actTypeIds) {
+			// 		params.actTypeIds = this.actTypeIds
+			// 	} else {
+			// 		if (this.itemTypeId) {
+			// 			params.itemTypeId = [this.itemTypeId]
+			// 		}
+			// 		if (this.itemIds) {
+			// 			params.itemIds = this.itemIds
+			// 		}
+			// 	}
+			// 	params.pageNum = this.pageNum
+			// 	return params
+			// }
 		},
 		watch: {
 			// 监听滚动
@@ -85,6 +86,7 @@
 		created () {
 			// 判断浏览器，当入口为活动页时，自动登录
 			if (this.isWeixin) {
+				// 判断微信登陆返回 status
 				if (this.$route.query.hasOwnProperty('status')) {
 					if (parseInt(this.$route.query.status) === 0) {
 						localStroage.setItem('userId', this.$route.query.uid)
@@ -123,13 +125,20 @@
 				this.Toast.loading({
 					title: '加载中...'
 				})
-				this.$ajax.bookList(this.params).then(res => {
+				let params = {
+					lat: '39',
+					lng: '116',
+					city_id: '3501',
+					cls: '14'
+				}
+				this.$ajax.activityList(params).then(res => {
 					// 返回的数据
-					let list = res.data.pageInfo.list
+					let activityLists = res.data.data.list
+					console.log(activityLists.length)
+					// console.log(this.actTypeIds)
 					// 总页数
-					this.pages = res.data.pageInfo.pages
 					// 加载不重复的数据
-					this.bookList = getDistinctArray(list, this.activityList, 'id')
+					// this.activityLists = getDistinctArray(list, this.activityLists, 'id')
 					// 更新scroll
 					this.$nextTick(() => {
 						this.initBetterScroll()
@@ -140,10 +149,10 @@
 			},
 
 			// 更新数据
-			refreshData (params) {
-				this.activityList = []
+			refreshData () {
+				this.activityLists = []
 				this.pageNum = 1
-				this.actTypeIds = params.actTypeIds
+				this.actTypeIds = this.$route.query.type || ''
 				this.loadData()
 			},
 			// 初始化滚动条
@@ -164,7 +173,7 @@
 			},
 			// 监听滚动条
 			listenScroll () {
-				this.scroller.on('scroll', (res) => {
+				this.scroller.on('scroll', (pos) => {
 					this.scrollTop = -pos.y
 				})
 			},

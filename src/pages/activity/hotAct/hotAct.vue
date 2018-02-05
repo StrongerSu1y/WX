@@ -4,7 +4,7 @@
 			<img src="./hot_icon.png">
 			<span class="text">热门活动</span>
 		</p>
-		<!-- 活动列表 -->
+		<!-- 热门活动列表 -->
 		<ul class="activity-list">
 			<li class="list-item activity-item clearFix" @click.prevent.stop="openDetail(item.id)" v-for="(item, index) in itemList">
 				<div class="itemContain">
@@ -17,11 +17,11 @@
 						<span class="activity-time">{{ item.begin_time | getUpdateDay }} 开始</span>
 						<p v-if="item.min_fee == '0.0'" class="free">免费</p>
 						<p v-else class="price">
-	    			<span class="num">￥
-	    				<span class="big">{{ item.min_fee | getInteger }}</span>
-	    			{{ item.min_fee | getDecimal }} 起
-	    			</span>
-	    		</p>
+		    			<span class="num">￥
+		    				<span class="big">{{ item.min_fee | getInteger }}</span>
+		    			{{ item.min_fee | getDecimal }} 起
+		    			</span>
+	    			</p>
 					</div>
 <!-- 					<div class="distance">
 						<span>{{ item.distance | getDistance }}千米</span>
@@ -53,10 +53,10 @@
 		methods: {
 			// 加载数据
 			getData () {
-				console.log(this.itemList)
+				// console.log(this.itemList)
 			},
 			// 打开详情
-			openDatail () {
+			openDatail (id) {
 				this.$router.push({
 					path: './datail/actdetail',
 					query: {
