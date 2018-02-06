@@ -338,9 +338,9 @@
 
 			// 确定选中
 			doConfirm (type) {
-				if (type === 'act') {
-					this.params.actTypeIds = getWithCommaString(this.selectedActType, 'id')
-				}
+				// if (type === 'act') {
+				// 	this.params.actTypeIds = getWithCommaString(this.selectedActType, 'id')
+				// }
 				if (type === 'age') {
 					this.params.itemAgeIds = getWithCommaString(this.selectedAge, 'id')
 				}

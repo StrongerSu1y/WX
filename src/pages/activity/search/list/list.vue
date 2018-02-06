@@ -1,4 +1,5 @@
 <template>
+	<section class="actList">
 		<!-- 活动列表 -->
 		<ul class="activity-list">
 			<li class="list-item activity-item clearFix" @click.prevent.stop="openDetail(item.id)" v-for="(item, index) in activityLists">
@@ -23,6 +24,7 @@
 				</div>
 			</li>
 		</ul>
+	</section>
 </template>
 
 <script>
@@ -48,9 +50,7 @@
 		methods: {
 			// 获取活动列表
 			loadData () {
-				console.log(1111111111111111111111111111)
-				console.log(this.activityList)
-
+				console.log(this.activityLists)
 				// let params = {
 				// 	lat: '39',
 				// 	lng: '116',

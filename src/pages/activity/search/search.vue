@@ -6,8 +6,8 @@
 		<div ref="wrapper" class="wrapper" :style="{ height: winHeight }">
 			<!-- 列表 内容 -->
 			<section ref="content" class="content">
-				<v-list v-if="activityLists.length" ref="list" :activityLists="activityLists"></v-list>
-				<empty v-if="!activityLists.length"></empty>
+				<v-list :activityLists="activityList" v-if="activityList.length"></v-list>
+				<empty v-else></empty>
 			</section>
 		</div>
 	</div>
@@ -31,7 +31,8 @@
 				// 可加载
 				loadMore: false,
 				// 活动列表
-				activityLists: [],
+				activityList: [],
+				// activityLists: [],
 				// 页码
 				pageNum: 1,
 				// 总页数
@@ -133,12 +134,10 @@
 				}
 				this.$ajax.activityList(params).then(res => {
 					// 返回的数据
-					let activityLists = res.data.data.list
-					console.log(activityLists.length)
-					// console.log(this.actTypeIds)
+					this.activityList = res.data.data.list
 					// 总页数
 					// 加载不重复的数据
-					// this.activityLists = getDistinctArray(list, this.activityLists, 'id')
+					this.activityList = getDistinctArray(list, this.activityList, 'id')
 					// 更新scroll
 					this.$nextTick(() => {
 						this.initBetterScroll()
