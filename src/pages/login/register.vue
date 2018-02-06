@@ -44,6 +44,9 @@
 <script>
 	import header from '@/components/header/header'
 	import { checkMobile, getMd5 } from '@/common/js/common.js'
+<<<<<<< HEAD
+=======
+>>>>>>> test
 	export default {
 		name: 'register',
 		data () {
@@ -55,7 +58,7 @@
 				btnText: '点击获取验证码', // 按钮内容
 				seconds: 60, // 计时
 				passwordShow: false, // 密码显示
-				hasRead: true // 已读
+				hasRead: true, // 已读
 			}
 		},
 		computed: {
@@ -87,6 +90,10 @@
 			}
 		},
 		mounted () {
+
+		},
+		created () {
+
 		},
 		methods: {
 			// 获取验证码
@@ -98,11 +105,15 @@
 					title: '正在获取验证码...'
 				})
 				let _data = {
-					mobile: this.mobile
+					mobile: this.mobile,
+					sign: getMd5(this.mobile)
 				}
+				console.log(_data)
+
 				// 发送请求
 				this.$ajax.sendVerifyCode(_data)
 					.then((res) => {
+						console.log(_data)
 						this.Toast.success({
 							title: res.data.data.tip
 						})
@@ -160,7 +171,8 @@
 				// 验证验证码
 				this.$ajax.validateVerifyCode({
 					mobile: this.mobile,
-					code: this.code
+					code: this.code,
+					sign: getMd5(this.mobile)
 				})
 					.then((res) => {
 						this.$ajax.register({
