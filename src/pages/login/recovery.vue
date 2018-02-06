@@ -27,7 +27,7 @@
 
 <script>
 	import header from '@/components/header/header'
-	import { checkMobile } from '@/common/js/common.js'
+	import { checkMobile, getMd5 } from '@/common/js/common.js'
 	export default {
 		name: 'recovery',
 		data () {
@@ -38,7 +38,7 @@
 				seconds: 60,
 				code: '',
 				codeCanInput: false,
-				uid: ''
+				uid: '',
 			}
 		},
 		computed: {
@@ -76,8 +76,10 @@
 					title: '正在获取验证码...'
 				})
 				let _data = {
-					mobile: this.mobile
+					mobile: this.mobile,
+					sign: getMd5(this.mobile)
 				}
+				console.log(_data)
 				// 发送请求
 				this.$ajax.userGetPass(_data)
 					.then((res) => {
@@ -113,7 +115,8 @@
 			doSubmit () {
 				let _data = {
 					mobile: this.mobile,
-					code: this.code
+					code: this.code,
+					sign: getMd5(this.mobile+this.salt)
 				}
 				// 验证验证码
 				this.$ajax.validateVerifyCode(_data)
