@@ -43,7 +43,7 @@
 
 <script>
 	import header from '@/components/header/header'
-	import { checkMobile } from '@/common/js/common.js'
+	import { checkMobile, getMd5 } from '@/common/js/common.js'
 	export default {
 		name: 'register',
 		data () {
