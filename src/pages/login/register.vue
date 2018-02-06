@@ -44,9 +44,6 @@
 <script>
 	import header from '@/components/header/header'
 	import { checkMobile, getMd5 } from '@/common/js/common.js'
-<<<<<<< HEAD
-=======
->>>>>>> test
 	export default {
 		name: 'register',
 		data () {
