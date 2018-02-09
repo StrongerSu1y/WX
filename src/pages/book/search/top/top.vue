@@ -189,6 +189,7 @@
 				this.$ajax.bookConstant().then(res => {
 					// console.log('typelist loadData')
 					let bookTypeList = res.data.bookTypeList
+					// console.log(res)
 					bookTypeList.forEach(item => {
 						item.active = false
 					})
@@ -283,7 +284,7 @@
 				this.$emit('refreshData', this.params)
 				// 隐藏选择器
 				this.hideSelector()
-				// console.log(this.params)
+				console.log(this.params)
 			},
 			// 跳转到搜索页面
 			openSearch () {

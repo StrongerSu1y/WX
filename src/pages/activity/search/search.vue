@@ -1,7 +1,7 @@
 <template>
 	<!-- 二级页面 搜索页 -->
 	<div class="activity-search-page">
-		<v-top :scrollTop="scrollTop" @refreshData="refreshData" @reset="reset"></v-top>
+		<v-top :scrollTop="scrollTop" :params="params" @refreshData="refreshData" @reset="reset"></v-top>
 		<!-- srcoll 外层容器 -->
 		<div ref="wrapper" class="wrapper" :style="{ height: winHeight }">
 			<!-- 列表 内容 -->
@@ -29,16 +29,11 @@
 				scroller: '',
 				scrollTop: 0,
 				// 可加载
-				loadMore: false,
+				// loadMore: false,
 				// 活动列表
 				activityList: [],
-				// activityLists: [],
-				// 页码
-				pageNum: 1,
-				// 总页数
-				pages: 0,
 				// 选择的类型
-				actTypeIds: this.$route.query.type || '',
+				actTypeIds: null,
 				// 查询参数
 				id: this.$route.query.id,
 				// 上一页传入的查询参数
@@ -69,20 +64,6 @@
 			// }
 		},
 		watch: {
-			// 监听滚动
-			scrollTop (newVal, oldVal) {
-				let loadTop = this.$ref.content.offsetHeight - window.innerHeight - 50
-				// 关闭loadMore
-				if (newVal > loadTop && this.loadMore) {
-					this.loadMore = false
-					// 如果没到最大一页，继续加载数据
-					if (this.pageNum < this.pages) {
-						this.pageNum += 1
-						this.loadData()
-					}
- 				}
-			}
-
 		},
 		created () {
 			// 判断浏览器，当入口为活动页时，自动登录
@@ -134,24 +115,32 @@
 				}
 				this.$ajax.activityList(params).then(res => {
 					// 返回的数据
+					// console.log(res)
 					this.activityList = res.data.data.list
 					// 总页数
+					this.pages = res.data
 					// 加载不重复的数据
 					this.activityList = getDistinctArray(list, this.activityList, 'id')
 					// 更新scroll
 					this.$nextTick(() => {
+						// 初始化滚动条
 						this.initBetterScroll()
+						// 监听滚动条
+						this.listenScroll()
 					})
 				}, err => {
 					console.log(err)
 				})
 			},
 
-			// 更新数据
+			// // 更新数据
 			refreshData () {
 				this.activityLists = []
-				this.pageNum = 1
-				this.actTypeIds = this.$route.query.type || ''
+				// this.actTypeIds = params.actTypeIds
+				if(this.actTypeIds) {
+					this.actTypeIds = params.actTypeIds
+				}
+				console.log(this.actTypeIds)
 				this.loadData()
 			},
 			// 初始化滚动条
@@ -168,7 +157,7 @@
 					this.scroller.refresh()
 				}
 				// 加载更多
-				this.loadMore = true
+				// this.loadMore = true
 			},
 			// 监听滚动条
 			listenScroll () {
