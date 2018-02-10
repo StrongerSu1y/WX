@@ -29,7 +29,7 @@
 	}, {
 		src: require('./typerow-5.png'),
 		title: '其他',
-		
+		id: null
 	}]
 	export default {
 		name: 'index-menu',

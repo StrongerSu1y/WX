@@ -33,9 +33,9 @@
 				// 活动列表
 				activityList: [],
 				// 选择的类型
-				actTypeIds: null,
+				actTypeIds: this.$route.query.type ||  '',
 				// 查询参数
-				id: this.$route.query.id,
+				// id: this.$route.query.id || '',
 				// 上一页传入的查询参数
 				itemTypeId: this.$route.query.itemTypeId || '',
 				itemIds: this.$route.query.itemIds || '',
@@ -136,11 +136,11 @@
 			// // 更新数据
 			refreshData () {
 				this.activityLists = []
-				// this.actTypeIds = params.actTypeIds
 				if(this.actTypeIds) {
-					this.actTypeIds = params.actTypeIds
+					// this.actTypeIds = params.actTypeIds
+					this.actTypeIds = this.$route.query.type
 				}
-				console.log(this.actTypeIds)
+				// console.log(this.actTypeIds)
 				this.loadData()
 			},
 			// 初始化滚动条

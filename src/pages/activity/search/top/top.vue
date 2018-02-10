@@ -88,7 +88,7 @@
 			params: {
 				type: Object
 			},
-			id: {
+			actTypeIds: {
 				type: String
 			}
 		},
@@ -195,11 +195,15 @@
 			 	if (!this.actTypeList) {
 			 		return []
 			 	}
-			 	this.actTypeList.forEach(item => {
-			 		if (item.active) {
-			 			return item.name
+			 	this.actTypeList.forEach((item,index) => {
+			 		if (item.id == this.actTypeIds) {
+			 			this.actTypeList[index].active = true
+			 			this.selectItem(item, index, 'act')
 			 		}
+			 		console.log(item.name)
+			 		return item.name
 			 	})
+				
 			 },
 			 // 选中的活动地区
 			 // selectedActCity () {
@@ -248,7 +252,6 @@
 			// 获取被选中的种类
 			this.getSelectedType()
 			this.typeDatas()
-			console.log(this.list)
 		},
 		methods: {
 			// tab栏数据
@@ -275,6 +278,7 @@
 				if (type === 'act') {
 					this.actTypeList[index].active = !this.actTypeList[index].active
 					this.params.actTypeIds = item.id
+					console.log(this.actTypeList[index].active)
 				} else if (type === 'age') {
 					this.itemAgeList[index].active = !this.itemAgeList[index].active
 					this.params.itemAgeIds = item.id
@@ -294,7 +298,7 @@
 			// 跳转搜索页面
 			openSearch () {
 				this.$router.push({
-					path: './search'
+					path: '/search'
 				})
 			},
 
@@ -307,17 +311,18 @@
 			goBack () {
 				this.$router.goBack()
 			},
+			// 获取选中字符
+
 
 			// 获得选中的种类
 			getSelectedType () {
 				if (!this.actTypeList.length) {
 					return false
 				}
-				// console.log(this.actTypeList)
 				this.actTypeList.forEach((item, index) => {
-					if (item.id === this.id) {
+					if (item.id === this.actTypeIds) {
 						this.actTypeList[index].active = true
-						this.doConfirm('act')
+						this.selectItem(item, index, 'act')
 					}
 				})
 			}

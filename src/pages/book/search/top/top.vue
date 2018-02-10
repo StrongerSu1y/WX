@@ -238,6 +238,31 @@
 				} else {
 					this.itemAgeList[index].active = !this.itemAgeList[index].active
 				}
+			},			
+			// 确定
+			doConfirm (type) {
+				if (type === 'book') {
+					this.params.bookTypeIds = getWithCommaString(this.selectedBookType, 'id')
+				}
+				if (type === 'age') {
+					this.params.itemAgeIds = getWithCommaString(this.selectedAge, 'id')
+					// console.log(this.params.itemAgeIds)
+				}
+				if (type === 'price') {
+					this.params.minPrice = this.minPrice
+					// console.log(this.params)
+					this.params.maxPrice = this.maxPrice
+					if (this.maxPrice && this.minPrice > this.maxPrice) {
+						this.Toast.warning({
+							title: '<p>最低价</p>不得高于最高价'
+					})
+						return
+					}
+				}
+				// 通知父组件刷新
+				this.$emit('refreshData', this.params)
+				// 隐藏选择器
+				this.hideSelector()
 			},
 			// 重置
 			doReset (type) {
@@ -260,32 +285,7 @@
 				// 同是执行确定搜索操作
 				this.doConfirm(type)
 			},
-			// 确定
-			doConfirm (type) {
-				if (type === 'book') {
-					this.params.bookTypeIds = getWithCommaString(this.selectedBookType, 'id')
-				}
-				if (type === 'age') {
-					this.params.itemAgeIds = getWithCommaString(this.selectedAge, 'id')
-					// console.log(this.params.itemAgeIds)
-				}
-				if (type === 'price') {
-					this.params.minPrice = this.minPrice
-					// console.log(this.params)
-					this.params.maxPrice = this.maxPrice
-					if (this.maxPrice && this.minPrice > this.maxPrice) {
-						this.Toast.warning({
-							title: '<p>最低价</p>不得高于最高价'
-						})
-						return
-					}
-				}
-				// 通知父组件刷新
-				this.$emit('refreshData', this.params)
-				// 隐藏选择器
-				this.hideSelector()
-				console.log(this.params)
-			},
+
 			// 跳转到搜索页面
 			openSearch () {
 				this.$router.push({
