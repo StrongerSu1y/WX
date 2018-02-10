@@ -199,6 +199,10 @@
 			 		if (item.id == this.actTypeIds) {
 			 			this.actTypeList[index].active = true
 			 			this.selectItem(item, index, 'act')
+			 			if(item.active == true) {
+			 				item.name = item
+			 				console.log(item)
+			 			}
 			 		}
 			 		console.log(item.name)
 			 		return item.name
@@ -274,11 +278,11 @@
 				this.fold = true
 			},
 			// 选中当前项
-			selectItem (item, index, type) {
+			selectItem (item, index, type) {	
 				if (type === 'act') {
 					this.actTypeList[index].active = !this.actTypeList[index].active
 					this.params.actTypeIds = item.id
-					console.log(this.actTypeList[index].active)
+					// console.log(this.actTypeList[index].active)
 				} else if (type === 'age') {
 					this.itemAgeList[index].active = !this.itemAgeList[index].active
 					this.params.itemAgeIds = item.id
@@ -293,7 +297,7 @@
 				this.$emit('refreshData', this.params)
 				// 隐藏选择器
 				this.hideSelector()
-				console.log(this.params)
+				// console.log(this.params)
 			},
 			// 跳转搜索页面
 			openSearch () {
