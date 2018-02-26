@@ -238,7 +238,7 @@
 				} else {
 					this.itemAgeList[index].active = !this.itemAgeList[index].active
 				}
-			},			
+			},
 			// 确定
 			doConfirm (type) {
 				if (type === 'book') {

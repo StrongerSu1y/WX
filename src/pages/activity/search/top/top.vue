@@ -20,7 +20,7 @@
 			</div>
 		</header>
 		<section class="search-tab">
-			<div v-for="(type, index) in list" class="tab-item" @click="changeType(index)">
+			<div v-for="(type, index) in typeDatas" class="tab-item" @click="changeType(index)">
 				<div class="box">
 					<span class="text">{{ type }}</span>
 					<span class="arrow" :class="{ up: !fold && typeIndex === index }"></span> 
@@ -149,36 +149,49 @@
 				// 地区数据
 				actCityList: [
 					{
+						active: false,
 						name : "上城区"
 					},{
+						active: false,
 						name : "下城区"
 					},{
+						active: false,
 						name : "拱墅区"
 					}
 				],
 				// 年龄数据
 				itemAgeList: [
 					{
+						id: 1,
+						active: false,
 						name : "0~3岁"
 					},{
+						id: 2,
+						active: false,
 						name : "3~6岁"
 					},{
+						id: 3,
+						active: false,
 						name : "6~12岁"
 					},{
+						id: 0,
+						active: false,
 						name : "全年龄段"
-					},{
-						name : "成人"
 					}
 				],
 				// 排序方式
 				itemSortList: [
 					{
+						active: false,
 						name : "距离"
 					},{
+						active: false,
 						name : "热度"
 					},{
+						active: false,
 						name : "发布时间"
 					},{
+						active: false,
 						name : "价格"
 					}
 				],
@@ -186,85 +199,79 @@
 				fold: true,
 				// 消息
 				messageList: [],
-				list: []
 			}
 		},
 		computed: {
-			 // 选中的活动种类
-			 selectedActType () {
-			 	if (!this.actTypeList) {
-			 		return []
-			 	}
-			 	this.actTypeList.forEach((item,index) => {
-			 		if (item.id == this.actTypeIds) {
-			 			this.actTypeList[index].active = true
-			 			this.selectItem(item, index, 'act')
-			 			if(item.active == true) {
-			 				item.name = item
-			 				console.log(item)
-			 			}
-			 		}
-			 		console.log(item.name)
-			 		return item.name
-			 	})
-				
-			 },
-			 // 选中的活动地区
-			 // selectedActCity () {
-			 // 	if (!this.actCityList) {
-			 // 		return []
-			 // 	}
-			 // 	let arr = []
-			 // 	this.actCityList.forEach(item => {
-			 // 		if(item.active) {
-			 // 			arr.push(item)
-			 // 		}
-			 // 	})
-			 // 	return arr
-			 // },
-			 // 选中的年龄段
-			 // selectedAge () {
-			 // 	if (!this.itemAgeList) {
-			 // 		return []
-			 // 	}
-			 // 	let arr = []
-			 // 	this.itemAgeList.forEach(item => {
-			 // 		if (item.active) {
-			 // 			arr.push(item)
-			 // 		}
-			 // 	})
-			 // 	return arr
-			 // },
-			 // 选中的排序方式
-			 // selectedSort () {
-			 // 	if (!this.itemSortList) {
-			 // 		return []
-			 // 	}
-			 // 	let arr = []
-			 // 	this.itemSortList.forEach(item => {
-			 // 		if (item.active) {
-			 // 			arr.push(item)
-			 // 		}
-			 // 	})
-			 // 	return arr
-			 // }
-		},
-		created () {
-			
+			// tab栏数据
+			typeDatas () {
+				let list = []
+			 	list.push(this.selectedActType() || '活动类别')
+			 	list.push(this.selectedActCity() || '地区')
+			 	list.push(this.selectedAge() || '年龄')
+			 	list.push(this.selectedSort() || '排序')
+			 	return list
+			}
 		},
 		mounted () {
 			// 获取被选中的种类
 			this.getSelectedType()
-			this.typeDatas()
 		},
 		methods: {
-			// tab栏数据
-			typeDatas () {
-			 	this.list.push(this.selectedActType || '活动类别')
-			 	this.list.push(this.selectedActCity || '地区')
-			 	this.list.push(this.selectedAge || '年龄')
-			 	this.list.push(this.selectedSort || '排序')
+			// 选中的活动种类
+			selectedActType () {
+				if (!this.actTypeList) {
+					return []
+				}
+				let sel = ''
+				this.actTypeList.forEach((item) => {
+					if (item.active) {
+						sel = item.name
+						console.log(item)
+					}
+			 	})
+			 	return sel
 			},
+			// 选中的活动地区
+			selectedActCity () {
+				if (!this.actCityList) {
+					return []
+				}
+				let sel = ''
+				this.actCityList.forEach((item) => {
+					if (item.active) {
+						sel = item.name
+					}
+			 	})
+			 	return sel
+			},
+			// 选中的年龄段
+			selectedAge () {
+				if (!this.itemAgeList) {
+					return []
+				}
+				let sel = ''
+				this.itemAgeList.forEach((item) => {
+					if (item.active) {
+						sel = item.name
+						console.log(item)
+					}
+			 	})
+			 	return sel
+			},
+			// 选中的排序方式
+			selectedSort () {
+				if (!this.itemSortList) {
+					return []
+				}
+				let sel = ''
+				this.itemSortList.forEach((item) => {
+					if (item.active) {
+						sel = item.name
+					}
+			 	})
+			 	return sel
+			},
+
 			changeType (index) {
 				if (this.typeIndex === index && this.fold === false) {
 					this.fold = true
@@ -282,16 +289,15 @@
 				if (type === 'act') {
 					this.actTypeList[index].active = !this.actTypeList[index].active
 					this.params.actTypeIds = item.id
-					// console.log(this.actTypeList[index].active)
 				} else if (type === 'age') {
 					this.itemAgeList[index].active = !this.itemAgeList[index].active
-					this.params.itemAgeIds = item.id
+					// this.params.itemAgeIds = item.id
 				} else if (type === 'city') {
 					this.actCityList[index].active = !this.actCityList[index].active
-					this.params.itemCityIds = item.id
+					// this.params.itemCityIds = item.id
 				} else if (type === 'sort') {
 					this.itemSortList[index].active = !this.itemSortList[index].active
-					this.params.itemSortIds = item.id
+					// this.params.itemSortIds = item.id
 				}
 				// 刷新
 				this.$emit('refreshData', this.params)
@@ -306,6 +312,7 @@
 				})
 			},
 
+			// 跳转消息页面
 			// goMessage() {
 			// 	this.$router.push({
 			// 		path: '../../../../mine/message'
@@ -315,14 +322,12 @@
 			goBack () {
 				this.$router.goBack()
 			},
-			// 获取选中字符
-
-
 			// 获得选中的种类
 			getSelectedType () {
 				if (!this.actTypeList.length) {
 					return false
 				}
+				console.log(this.actTypeList)
 				this.actTypeList.forEach((item, index) => {
 					if (item.id === this.actTypeIds) {
 						this.actTypeList[index].active = true
