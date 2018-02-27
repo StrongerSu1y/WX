@@ -2,7 +2,7 @@
 	<div class="activity-index-page">
 		<!-- scroll 外层容器 -->
 		<v-top :scrollTop="scrollTop"></v-top>
-		<div ref="warpper" class="warpper" :style="{ height: winHeight}">
+		<div ref="wrapper" class="wrapper" :style="{ height: winHeight}">
 			<!-- 内容 -->
 			<section ref="content" class="content">
 				<!-- banner 轮播 -->
@@ -15,6 +15,7 @@
 				<!-- 热门活动 -->
 				<v-hotAct :itemList="itemList"></v-hotAct>
 			</section>
+			<img v-show="showToTopBtn" @click="scrollToTop()" class="to-top-icon" src="./to_top_icon.png">
 		</div>
 	</div>
 </template>
@@ -43,6 +44,11 @@
 			}
 		},
 		computed: {
+			// 切换回滚顶部按钮显示隐藏
+			showToTopBtn () {
+				return this.scrollTop > window.innerHeight
+			},
+			// 图片数据
 			listImg () {
 				let list = []
 				if (this.data.hasOwnProperty('starList') && this.data.starList.length) {
@@ -113,7 +119,7 @@
 			// 初始化滚动条
 			freshScroll () {
 				if (!this.scroller) {
-					this.scroller = new BScroll(this.$refs.warpper, {
+					this.scroller = new BScroll(this.$refs.wrapper, {
 						probeType: 3,
 						click: true
 					})
@@ -127,6 +133,7 @@
 			scrollToTop () {
 				this.scroller.scrollTo(0, 0, 500)
 			},
+			// 刷新 scroll
 			scrollRefresh () {
 				this.scroller.refresh()
 			},

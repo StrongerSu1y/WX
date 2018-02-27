@@ -134,11 +134,13 @@
 			},
 
 			// // 更新数据
-			refreshData () {
+			refreshData (params) {
+				// this.params = params
 				this.activityLists = []
 				if(this.actTypeIds) {
-					// this.actTypeIds = params.actTypeIds
-					this.actTypeIds = this.$route.query.type
+					this.actTypeIds = params.actTypeIds
+					// this.actTypeIds = this.$route.query.type
+					console.log(this.actTypeIds)
 				}
 				// console.log(this.actTypeIds)
 				this.loadData()

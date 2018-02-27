@@ -116,7 +116,7 @@
 				// 活动类别数据
 				actTypeList: [
 					{
-						id: null,
+						id: '',
 						active: false,
 						name: "全部"
 					},
@@ -141,7 +141,7 @@
 						name : "游玩乐园"
 					},
 					{
-						id: null,
+						id: '',
 						active: false,
 						name : "其他"
 					}
@@ -212,11 +212,23 @@
 			 	return list
 			}
 		},
+		created () {
+			this.loadData()
+			// 获取消息信息
+			// this.getMessage()
+		},
 		mounted () {
 			// 获取被选中的种类
 			this.getSelectedType()
 		},
 		methods: {
+			loadData () {
+				// this.actTypeList.forEach((item) => {
+				// 	item.active = false
+				// })
+				// this.getSelectedType()
+			},
+
 			// 选中的活动种类
 			selectedActType () {
 				if (!this.actTypeList) {
@@ -226,7 +238,8 @@
 				this.actTypeList.forEach((item) => {
 					if (item.active) {
 						sel = item.name
-						console.log(item)
+						// sel.push(item.name)
+						// console.log(sel)
 					}
 			 	})
 			 	return sel
@@ -240,6 +253,7 @@
 				this.actCityList.forEach((item) => {
 					if (item.active) {
 						sel = item.name
+						// item.active = !item.active
 					}
 			 	})
 			 	return sel
@@ -253,6 +267,7 @@
 				this.itemAgeList.forEach((item) => {
 					if (item.active) {
 						sel = item.name
+						item.active = !item.active
 						console.log(item)
 					}
 			 	})
@@ -272,6 +287,24 @@
 			 	return sel
 			},
 
+			// 处理选择的字段
+			// getSelectedStr (sel) {
+			// 	console.log(sel)
+			// 	let str = ''
+			// 	if (!sel.length) {
+			// 		return ''
+			// 	}
+			// 	sel.forEach(item => {
+			// 		if (item.active) {
+			// 			str += item.name + ','
+			// 		}
+			// 	})
+			// 	let str1 = str ? str.substr(0, str.length - 1) : ''
+			// 	console.log(str1)
+			// 	return str1
+			// },
+
+			// 控制菜单
 			changeType (index) {
 				if (this.typeIndex === index && this.fold === false) {
 					this.fold = true
@@ -287,7 +320,12 @@
 			// 选中当前项
 			selectItem (item, index, type) {	
 				if (type === 'act') {
-					this.actTypeList[index].active = !this.actTypeList[index].active
+					this.actTypeList[index].active = true
+					// this.actTypeList.forEach((el) => {
+						// el.active = false
+						// console.log(el)
+					// })
+
 					this.params.actTypeIds = item.id
 				} else if (type === 'age') {
 					this.itemAgeList[index].active = !this.itemAgeList[index].active
@@ -327,7 +365,7 @@
 				if (!this.actTypeList.length) {
 					return false
 				}
-				console.log(this.actTypeList)
+				// console.log(this.actTypeList)
 				this.actTypeList.forEach((item, index) => {
 					if (item.id === this.actTypeIds) {
 						this.actTypeList[index].active = true

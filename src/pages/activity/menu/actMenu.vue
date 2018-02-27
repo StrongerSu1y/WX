@@ -7,7 +7,7 @@
 			</li>
 		</ul>
 	</section>
-</template>
+</template> 
 
 <script>
 	let menuList = [{
