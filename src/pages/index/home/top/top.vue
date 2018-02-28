@@ -1,7 +1,7 @@
 <template>
 	<header ref="top" class="home-header" :style="headerStyle">
 		<div class="position">
-			<span ref="cityText" class="text">杭州</span>
+			<span ref="cityText" class="text" @click="openAreaList()">{{ '地区' }}</span>
 			<img ref="cityIcon" src="./down_arrow.png">
 		</div>
 		<div ref="searchArea" class="search-area" :style="searchStyle" @click="openSearch()">
@@ -104,7 +104,12 @@
 				this.$router.push({
 					path: '/mine/message/index'
 				})
-			} 
+			},
+			openAreaList () {
+				this.$router.push({
+					path: '/areaList'
+				})
+			}
 		}
 	}
 </script>

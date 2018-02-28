@@ -6,6 +6,8 @@ import router from './router'
 import Vuex from 'vuex'
 import store from './vuex/store'
 import VueLazyload from 'vue-lazyload'
+import Mint from 'mint-ui'
+import 'mint-ui/lib/style.css'
 
 // 引入动画库
 require('animate.css/animate.min.css')
@@ -24,6 +26,7 @@ Vue.use(VueLazyload, {
 })
 
 Vue.use(Vuex)
+Vue.use(Mint)
 
 let u = navigator.userAgent
 Vue.prototype.Toast = new window.AuiToast() // 提示组件

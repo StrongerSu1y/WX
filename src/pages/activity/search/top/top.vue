@@ -321,10 +321,10 @@
 			selectItem (item, index, type) {	
 				if (type === 'act') {
 					this.actTypeList[index].active = true
-					// this.actTypeList.forEach((el) => {
-						// el.active = false
-						// console.log(el)
-					// })
+					this.actTypeList.forEach((el) => {
+						el.active = false
+						
+					})
 
 					this.params.actTypeIds = item.id
 				} else if (type === 'age') {

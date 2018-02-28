@@ -72,6 +72,7 @@ const mineMessage = resolve => require(['@/pages/mine/message/index.vue'], resol
 const mineMessageSystem = resolve => require(['@/pages/mine/message/system/system.vue'], resolve) // 我的页面-消息中心
 const mineMessageOrder = resolve => require(['@/pages/mine/message/order/order.vue'], resolve) // 我的页面-订单中心
 const mineMessageFunction = resolve => require(['@/pages/mine/message/function/function.vue'], resolve) // 我的页面-功能中心
+const areaList = resolve => require(['@/pages/index/home/areaList.vue'], resolve) // 地区选择列表
 
 // 活动页面
 const doubleTwelve = resolve => require(['@/components/periodical-ording/double-twelve/index.vue'], resolve) // 双十二
@@ -143,8 +144,10 @@ export default new Router({
 				meta: {
 					before: true
 				}
-			}, 
-			{
+			}, { // 地区列表
+				path: 'areaList',
+				component: areaList
+			}, {
 				path: '/mine',
 				component: mineIndex
 			},
