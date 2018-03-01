@@ -17,7 +17,7 @@
       width 0.54rem
       height 0.54rem
       vertical-align middle
-  .search-area
+  .search-city
     line-height inherit
     padding 0 0.2rem 0 0
     flex 1
@@ -46,3 +46,62 @@
     line-height 0.58rem
     font-size 0.32rem
     color #523f1a
+.letter-item
+  .letter
+    font-size 0.16rem
+    line-height 2em
+    background #eee
+    margin-bottom 0.02rem
+  .tit 
+    padding-right 10%
+    padding-left 10%
+    border-bottom 0.01rem solid #f2f2f2
+.letter-aside
+  position fixed
+  right: 0.1rem
+  top: 2.3rem
+  > ul
+    line-height 1.4em
+    font-size 0.14rem
+    color #aaa
+#tip
+  position fixed
+  left 0
+  right 0
+  top 0
+  bottom 0
+  margin auto
+  border 0.01rem solid #333333
+  width 1rem
+  height 1rem
+  z-index 10
+  text-align center
+  line-height 1rem
+  font-size 0.5rem
+  opacity 0
+.tipAppear 
+  animation: appearTip 1 linear 0.5s
+@keyframes appearTip {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+// .search-city
+//   text-align center
+//   padding 0.05rem 0
+//   input 
+//     line-height 0.24rem
+//     border-radius 0.05rem
+//     outline none
+.tipShow 
+  text-align center
+  line-height 0.6rem
+  font-size 0.16rem
+  color #bbb
+  
