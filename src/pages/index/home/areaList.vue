@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="activity-header">
+    <header class="city-header">
       <div class="back-icon" @click="goBack()">
         <img ref="homeIcon" src="./back_icon.png">
       </div>
@@ -14,18 +14,14 @@
         <span>取消</span>
       </div>
     </header>
-<!--     <div class="page-indexlist-wrapper" style="margin-top: 1.1rem">
-      <mt-index-list>
-        <mt-index-section v-for="item in alphabet" :index="item.initial">
-          <mt-cell v-for="cell in item.cells" :title="cell"></mt-cell>
-        </mt-index-section>
-      </mt-index-list>
-    </div> -->
-    <div>
-      <div v-for="item in showCity" class="letter-item">
-        <div class="letter"><a :id="item.letter">{{item.letter}}</a></div>
-        <div class="tit" v-for="i in item.citylist">{{i}} </div>
-      </div>
+    <!-- 列表部分 -->
+    <div ref="wrapper" class="wrapper" :style="{ height: winHeight }">
+      <section ref="content" class="content">
+        <div v-for="item in showCity" class="letter-item">
+          <div class="letter"><a :id="item.letter">{{item.letter}}</a></div>
+          <div class="tit" v-for="i in item.citylist">{{i}} </div>
+        </div>
+      </section>
     </div>
     <aside class="letter-aside">
       <ul>
@@ -40,8 +36,9 @@
 
 <script type="text/babel">
   import area from '../../../../static/data/area.json'
-  import pinyin from '../../../common/js/web-pinyin/bundle.js'
-  // const pinyin = require('pinyin')
+  import pinyin from '../../../../static/js/web-pinyin/bundle.js'
+  import BScroll from 'better-scroll'
+  
 
   var cityLists = []
   var cityNames = []
@@ -56,42 +53,35 @@
 
   export default {
     name: 'areaList',
-    data() {
-      return {
-        // alphabet: [], // 字母表
-        data: [], // 地区数据
-        cityNames: cityNamesFilter,
-        showCity: showCity,
-        letter: letter,
-        tipString: tipLetter,
-        citySearch: citySearch
-      };
-    },
-
     created () {
       // 加载数据
       this.loadData()
-
-      // 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach((initial, index) => {
-      //   let cells = this.data.filter(name => name[0] === initial)
-      //   // let cells = this.data.filter(function (item) {
-      //   //   let aaa = pinyin(item, {
-      //   //     style: pinyin.STYLE_FIRST_LETTER,
-      //   //   })
-      //   // })
-      //   // console.log(cells)
-      //   this.alphabet.push({
-      //     initial,
-      //     cells 
-      //   });
-      // });
-
-      this.buildItem()
     },
     mounted () {
       window.scrollTo(0, 500)
     },
     methods:{
+      // 初始化滚动
+      initBetterScroll () {
+        // console.log(this.$refs.content.offsetHeight)
+        if (!this.scroller) {
+          this.scroller = new BScroll(this.$refs.wrapper, {
+            probeType: 3,
+            click: true
+          })
+          // 监听滚动条
+          this.listenScroll()
+        } else {
+          this.scroller.refresh()
+        }
+      },
+      // 监听滚动
+      listenScroll () {
+        this.scroller.on('scroll', (pos) => {
+          this.scrollTop = -pos.y
+        })
+      },
+
       // 获取城市列表
       loadData() {
         area.result.forEach((item) => {
@@ -100,24 +90,11 @@
           })
         })
         cityNamesFilter = this.data
-        console.log(cityNamesFilter)
-
-
-        // let pin = []
-        // let letter = []
-        // this.data.forEach((item, index) => {
-        //   pin.push(pinyin(item[0],{
-        //     style: pinyin.STYLE_FIRST_LETTER, // 设置拼音风格
-        //   }))
-        // })
-        // pin.forEach((item,index) => {
-        //   letter = item[0][0].toString().toUpperCase()
-        // })
-        // console.log(letter)
+        this.cityFilter(this.citySearch)
       }, 
       // 构建字母项
       buildLetter () {  
-        let letter = []
+        letter = []
         for (let i = 0; i < 26; i++) {
           let obj = {}
           obj.letter = String.fromCharCode((65 + i))
@@ -127,9 +104,6 @@
       },
       // 得到城市第一个字首字母
       getFirstLetter (str) {
-        // return pinyin(str[0][0], {
-        //   style: pinyin.STYLE_FIRST_LETTER, // 设置拼音风格
-        // })
         return pinyin.pinyin(str)[0][0].charAt(0).toUpperCase()
       },
       // 构建城市
@@ -141,6 +115,7 @@
         }
         for (let i = 0; i < cityNamesFilter.length; i++) {
           let _index = Number(_this.getFirstLetter(cityNamesFilter[i]).charCodeAt() - 65)
+          console.log(_index)
           if (_index >= 0 && _index <26) {
             letter[_index].citylist.push(cityNamesFilter[i])
           }
@@ -150,7 +125,6 @@
           let len = value.citylist.length
           return len > 0
         })
-        console.log(showCity)
       },
       // 点击右边字母滚动
       naver (id) {
@@ -162,7 +136,7 @@
           tip.removeAttribute('class')
         }, 500)
         let oPos = obj.offsetTop
-        return window.scrollTo(0, oPos - 36)
+        return window.scrollTo(0, oPos - 60)
       },
       // 搜索
       cityFilter (city) {  // 城市搜索筛选
@@ -183,12 +157,23 @@
           _showCityContent.innerText = '查询不到结果'
           _showCityContent.setAttribute('class', 'tipShow')
         } else {
-          document.getElementById('showCityContent').innerText = ''
+          // document.getElementById('showCityContent').innerHTML = ''
         }
       },
       goBack () {
         this.$router.goBack()
       },
+    },
+    data() {
+      return {
+        data: [], // 地区数据
+        cityNames: cityNamesFilter,
+        showCity: showCity,
+        letter: letter,
+        tipString: tipLetter,
+        citySearch: citySearch,
+        winHeight: window.innerHeight - 50 + 'px'
+      }
     },
     watch: {
       citySearch (newCitySearch) {

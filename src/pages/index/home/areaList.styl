@@ -1,4 +1,4 @@
-.activity-header
+.city-header
   position fixed
   width 100%
   left 0
@@ -9,6 +9,7 @@
   z-index 2
   background #fff
   margin-bottom 0.2rem
+  overflow hidden
   .back-icon
     font-size 0
     margin-right 0.3rem
@@ -27,6 +28,7 @@
     font-size 0.26rem
     color #c6c6c6
     .left-part
+      border-radius 0.1rem
       background #f8f7f6
       width 2.4rem
       line-height inherit
@@ -46,24 +48,33 @@
     line-height 0.58rem
     font-size 0.32rem
     color #523f1a
-.letter-item
-  .letter
-    font-size 0.16rem
-    line-height 2em
-    background #eee
-    margin-bottom 0.02rem
-  .tit 
-    padding-right 10%
-    padding-left 10%
-    border-bottom 0.01rem solid #f2f2f2
+.wrapper
+  margin-top 1rem 
+  margin-right 0.5rem
+  .letter-item
+    .letter
+      padding 0.1rem 0.2rem
+      font-size 0.3rem
+      line-height 2em
+      background #eee
+      margin-bottom 0.02rem
+    .tit 
+      padding 0.1rem 0.2rem
+      border-bottom 0.01rem solid #f2f2f2
+      font-size 0.3rem
 .letter-aside
   position fixed
-  right: 0.1rem
-  top: 2.3rem
+  right: 0.08rem
+  top 54%
+  transform: translateY(-50%)
+  background-color #fff
+  text-align center
+  justify-content center
   > ul
-    line-height 1.4em
-    font-size 0.14rem
+    font-size 0.26rem
     color #aaa
+    li 
+      padding 0.06rem 0.06rem
 #tip
   position fixed
   left 0
