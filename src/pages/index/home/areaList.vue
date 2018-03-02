@@ -139,7 +139,7 @@
         return window.scrollTo(0, oPos - 60)
       },
       // 搜索
-      cityFilter (city) {  // 城市搜索筛选
+      cityFilter (city) {
         let showCityListTemp
         this.buildItem(cityNamesFilter)
         showCity = showCityTemp
