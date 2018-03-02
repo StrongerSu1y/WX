@@ -37,7 +37,7 @@
 <script type="text/babel">
   import area from '../../../../static/data/area.json'
   import pinyin from '../../../../static/js/web-pinyin/bundle.js'
-  import BScroll from 'better-scroll'
+  // import BScroll from 'better-scroll'
   
 
   var cityLists = []
@@ -61,27 +61,6 @@
       window.scrollTo(0, 500)
     },
     methods:{
-      // 初始化滚动
-      initBetterScroll () {
-        // console.log(this.$refs.content.offsetHeight)
-        if (!this.scroller) {
-          this.scroller = new BScroll(this.$refs.wrapper, {
-            probeType: 3,
-            click: true
-          })
-          // 监听滚动条
-          this.listenScroll()
-        } else {
-          this.scroller.refresh()
-        }
-      },
-      // 监听滚动
-      listenScroll () {
-        this.scroller.on('scroll', (pos) => {
-          this.scrollTop = -pos.y
-        })
-      },
-
       // 获取城市列表
       loadData() {
         area.result.forEach((item) => {
@@ -115,7 +94,7 @@
         }
         for (let i = 0; i < cityNamesFilter.length; i++) {
           let _index = Number(_this.getFirstLetter(cityNamesFilter[i]).charCodeAt() - 65)
-          console.log(_index)
+          // console.log(_index)
           if (_index >= 0 && _index <26) {
             letter[_index].citylist.push(cityNamesFilter[i])
           }
@@ -138,7 +117,7 @@
         let oPos = obj.offsetTop
         return window.scrollTo(0, oPos - 60)
       },
-      // 搜索
+      // 查找
       cityFilter (city) {
         let showCityListTemp
         this.buildItem(cityNamesFilter)
@@ -161,7 +140,9 @@
         }
       },
       goBack () {
-        this.$router.goBack()
+        this.$router.push({
+          path: '/'
+        })
       },
     },
     data() {
