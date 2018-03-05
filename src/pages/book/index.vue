@@ -186,7 +186,10 @@
 					this.adverts = res.data.adverts
 					this.$nextTick(() => {
 						// 初始化 better-scroll
-						this.initBetterScroll()
+						// this.initBetterScroll()
+						setTimeout(()=> {
+							this.initBetterScroll()
+						},10)
 					})
 				}, err => {
 					console.log(err)
