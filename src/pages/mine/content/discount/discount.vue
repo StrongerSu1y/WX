@@ -21,49 +21,40 @@
 				<div class="item-body">
 					<div class="left-part">
 						<p class="price">
-							<span class="big">{{ item.price }}</span>
+							<span class="big">{{ item.amount || 0 }}</span>
 							<span class="desc">元</span>
 						</p>
-						<p class="condition">满{{ item.condition }}元可用</p>
+						<p class="condition">满{{ item.reachamount || 0 }}元可用</p>
 					</div>
 					<div class="center-part">
-						<p class="type">{{ item.type }}</p>
-						<p class="deadline">有效期 {{ item.deadline }}</p>
+						<p class="type">{{ item.name }}</p>
+						<p class="deadline">有效期至 {{ item.validtime || getUpdateDay }}</p>
 					</div>
 				</div>
-				<div class="item-footer">{{ item.content }}</div>
+				<div class="item-footer">{{ item.description }}</div>
 			</li>
 		</ul>
 	</div>
 </template>
 
 <script>
-	let listData = [{
-		type: '通用券',
-		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
-		price: '100',
-		condition: '1000',
-		remain: 20,
-		deadline: '2017年10月12日',
-		loadingShow: false
-	}, {
-		type: '通用券',
-		content: '私信内容私信内容私信内容私信内容私信内容内私信内容私信内容私信内容私信内容',
-		price: '100',
-		condition: '1000',
-		remain: 20,
-		deadline: '2017年10月12日',
-		loadingShow: false
-	}]
+	// 我的页面进入 所有的优惠券
 	import loading from '@/components/common/loading/loading'
 	export default {
 		data () {
 			return {
 				backIconSrc: require('@/common/icons/back_icon.png'),
-				listData: listData
+				listData: [],
+				// 页码
+				pageNum: 1,
+				pageSize: 20
 			}
 		},
+		created () {
+			this.getdiscountItem()
+		},
 		computed: {
+
 		},
 		mounted () {
 			this.$nextTick(() => {
@@ -74,19 +65,26 @@
 			goBack () {
 				this.$router.goBack()
 			},
-			// 点击领取
+			// 获取我的可用优惠券
 			getdiscountItem (index) {
-				this.listData = this.listData.map((item, index2) => {
-					if (index === index2) {
-						item.loadingShow = true
-					}
-					return item
+				this.$ajax.mineCoupon().then(res => {
+					this.listData = res.data.pageInfo.list
+					// console.log(res)
+					this.listData = this.listData.map((item, index) => {
+						// if (index === index2) {
+						// 	item.loadingShow = true
+						// }
+						return item
+					})
+				}, err => {
+					console.log(err)
 				})
-				this.$nextTick(() => {
-					setTimeout(() => {
-						this.listData[index].loadingShow = false
-					}, 1000)
-				})
+
+				// this.$nextTick(() => {
+				// 	setTimeout(() => {
+				// 		this.listData[index].loadingShow = false
+				// 	}, 1000)
+				// })
 			},
 			// 打开页面
 			openItem (path) {

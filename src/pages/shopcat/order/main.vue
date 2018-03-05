@@ -163,7 +163,7 @@
 				// 积分暂时没有
 				hasIntegral: false,
 				// 优惠券暂时不用
-				hasDiscount: false,
+				hasDiscount: true,
 				// 优惠券
 				couponList: []
 			}
@@ -265,6 +265,8 @@
 				}, err => {
 					console.log(err)
 				})
+
+				console.log(this.couponParams)
 			},
 			// 打开页面
 			openItem (path) {

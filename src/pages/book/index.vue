@@ -189,7 +189,7 @@
 						// this.initBetterScroll()
 						setTimeout(()=> {
 							this.initBetterScroll()
-						},10)
+						},20)
 					})
 				}, err => {
 					console.log(err)

@@ -195,15 +195,14 @@
 			getShopcat () {
 				this.$ajax.shopcatList().then(res => {
 					this.shopcatList = res.data.data.item_list
-					// console.log(this.shopcatList)
 					let shopNum = 0
 					this.shopcatList.forEach(item => {
 						this.shopNum += Number(item.quantity)
 					})
 					// console.log(shopNum)
-					if(this.item.is_fav == true) {
-							console.log(111)
-					}
+					// if(this.item.is_fav == true) {
+					// 		console.log(111)
+					// }
 				}, err => {
 					console.log(err)
 				})
@@ -232,8 +231,8 @@
 				})
 				// 请求服务器
 				this.$ajax.shopcatSave(params).then(res => {
-					console.log(params)
-					console.log(res)
+					// console.log(params)
+					// console.log(res)
 					// 更新购物车
 					// this.getShopcat()
 					this.shopNum++

@@ -36,6 +36,7 @@
 </template>
 
 <script>
+	// 从订单结算页面进入
 	import loading from '@/components/common/loading/loading'
 	import empty from '@/components/common/empty/empty'
 	export default {
@@ -73,7 +74,7 @@
 					title: '加载中...'
 				})
 				this.$ajax.couponList(this.params).then(res => {
-					console.log(res)
+					// console.log(res)
 					let list = res.data.pageInfo.list
 					list.forEach(item => {
 						item.loadingShow = false
@@ -97,7 +98,7 @@
 				})
 				// 提交
 				this.$ajax.couponReceive(id).then(res => {
-					console.log(res)
+					// console.log(res)
 					if (res.data.result.status === '0') {
 						setTimeout(() => {
 							this.Toast.success({

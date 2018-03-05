@@ -8,6 +8,7 @@
 		</div>
 		<div class="message" @click="openShopcat()">
 			<img ref="messageIcon" src="./shopcat_icon.png">
+			<span class="dot" v-if="shopNum>0">{{ shopNum }}</span>
 		</div>
 	</header>
 </template>
@@ -24,13 +25,28 @@
 			}
 		},
 		data () {
-			return {}
+			return {
+				shopcatList: [],
+				shopNum: 0
+			}
 		},
 		computed: {
 		},
 		created () {
+			this.getShopcat()
 		},
 		methods: {
+			// 获取购物车
+			getShopcat () {
+				this.$ajax.shopcatList().then(res => {
+					this.shopcatList = res.data.data.item_list
+					this.shopcatList.forEach(item => {
+						this.shopNum += Number(item.quantity)
+					})
+				}, err => {
+					console.log(err)
+				})
+			},
 			// 打开搜索页
 			goBack () {
 				this.$router.goBack()

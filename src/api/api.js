@@ -5,8 +5,8 @@ import Vue from 'vue'
 let Obj = new Vue()
 
 // 判断全局变量 NODE_ENV
-// let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
-let environment = 'product'
+let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
+// let environment = 'product'
 let productHost = location.protocol + '//app.51weixiao.com'
 let devHost = location.protocol + '//192.168.0.231:8080'
 
@@ -472,18 +472,17 @@ export default {
 		return fetch(`/coupon/${id}/receive?_uid=${userId}`, {}, 'get', 'json')
 	},
 	/*
-		我的可用优惠券
+		我的优惠券, 用于查看我的全部优惠券
+	*/
+	mineCoupon () {
+		let userId = localStorage.getItem('userId')
+		return fetch(`/user/coupon?_uid=${userId}`,{},'get','json')
+	},
+	/*
+		我的可用优惠券, 用于订单页面
 	*/
 	mineCouponOrder (params) {
 		return fetch('/user/coupon/order', params, 'post', 'json')
 	}
-	/*
-		活动页面首页
-	*/
-	// activityHomepage () {
-	// 	return fatch('', {} ,'')
-	// }
-	/*
-		活动页二级搜索页
-	*/
+
 }
