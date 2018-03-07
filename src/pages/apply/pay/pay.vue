@@ -128,7 +128,7 @@
 			// 支付宝支付
 			aliPay () {
 				let href = this.$route.query.href
-				let protocol = window.location.protocol
+				let protocol = window.location.protocol // 协议
 				let host = window.location.host
 				let returnUrl = `${protocol}//${host}/result?href=${href}&success=true`
 				this.Toast.loading({

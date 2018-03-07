@@ -33,10 +33,10 @@
 					</div>
 					<div class="left-part">
 						<p class="price">
-							<span class="big">{{ item.amount }}</span>
+							<span class="big">{{ item.amount || 0}}</span>
 							<span class="desc">元</span>
 						</p>
-						<p class="condition">满{{ item.reachamount }}元可用</p>
+						<p class="condition">满{{ item.reachamount || 0}}元可用</p>
 					</div>
 					<div class="center-part">
 						<div class="box">
@@ -97,7 +97,7 @@
 			// 加载数据
 			loadData () {
 				this.$ajax.mineCouponOrder(this.params).then(res => {
-					console.log(res)
+					// console.log(res)
 					let list = res.data.list
 					this.listData = this.listData.concat(list)
 				}, err => {

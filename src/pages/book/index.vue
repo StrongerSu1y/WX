@@ -9,7 +9,7 @@
 				<!-- 图书种类 -->
 				<ul class="type-row">
 					<li v-for="(item, index) in bookTypeList" @click="openSearch(item.id)" class="type-col">{{ item.name }}</li>
-					<li @click="openSearch()" class="type-col">更多...</li>
+					<li @click="goSearch()" class="type-col">更多...</li>
 				</ul>
 				<!-- 推荐列表 -->
 				<ul class="recommend-list">
@@ -226,13 +226,19 @@
 					}
 				})
 			},
-			// 到搜索列表页
+			// 到搜索列表页 有指定种类id
 			openSearch (id) {
 				this.$router.push({
 					path: 'book/search',
-						query: {
-							id: id || '32'
-						}
+					query: {
+						id: id || ''
+					}
+				})
+			},
+			// 点击更多
+			goSearch () {
+				this.$router.push({
+					path: 'book/search',
 				})
 			},
 			// 选择 banner

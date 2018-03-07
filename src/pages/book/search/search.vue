@@ -45,7 +45,6 @@
 				// 是否为第一次进入
 				isFirstEnter: false,
 				params: { pageNum : 1}
-				// params: {}
 			}
 		},
 		computed: {
@@ -78,7 +77,7 @@
 					// 如果没到最大一页，继续加载数据
 					if (this.pageNum < this.pages) {
 						this.pageNum += 1
-						this.loadData()
+						// this.loadData()
 					}
 				}
 			}
@@ -100,6 +99,7 @@
 			}, 200)
 			// 第一次进入
 			this.isFirstEnter = true
+			this.loadData()
 		},
 		mounted () {
 		},

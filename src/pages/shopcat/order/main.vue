@@ -65,7 +65,7 @@
 					<span v-if="couponPrice" class="desc">已使用优惠券</span>
 					<span v-if="!couponList.length" class="desc">暂无可使用优惠券</span>
 					<span v-if="!couponPrice" class="select-text">未选中</span>
-					<span v-if="couponPrice" class="select-text">{{ couponPrice }}</span>
+					<span v-if="couponPrice" class="select-text select-true">-￥<span class="big">{{ couponPrice | getInteger }}</span>{{ couponPrice | getFixed1 }}</span>
 					<div class="img">
 						<img :src="rightArrowSrc">
 					</div>
@@ -108,13 +108,13 @@
 				<span class="title">运费</span>
 				<span class="num">+<span class="big">{{ carriage | getInteger }}</span>{{ carriage | getFixed1 }}</span>
 			</p>
-			<!-- <p class="price">
+			<!-- <p class="price" v->
 				<span class="title">积分</span>
 				<span class="num">-<span class="big">{{ discount | getInteger }}</span>{{ discount | getFixed1 }}</span>
 			</p> -->
-			<p class="price">
+			<p class="price" v-if="couponPrice">
 				<span class="title">满减券</span>
-				<span class="num">-<span class="big">{{ discount | getInteger }}</span>{{ discount | getFixed1 }}</span>
+				<span class="num">-<span class="big">{{ couponPrice | getInteger }}</span>{{ couponPrice | getFixed1 }}</span>
 			</p>
 			<!-- <p class="price">
 				<span class="title">折扣券</span>
@@ -163,7 +163,7 @@
 				// 积分暂时没有
 				hasIntegral: false,
 				// 优惠券暂时不用
-				hasDiscount: true,
+				hasDiscount: false,
 				// 优惠券
 				couponList: []
 			}
@@ -172,13 +172,17 @@
 			// 优惠金额
 			discount () {
 				// 双十二活动用
-				let start = new Date('2017-12-21 00:00:00.000').getTime()
-				let end = new Date('2018-01-02 00:00:00.000').getTime()
-				let nowTime = new Date().getTime()
-				if (nowTime >= end || nowTime < start) {
-					return 0
+				// let start = new Date('2017-12-21 00:00:00.000').getTime()
+				// let end = new Date('2018-01-02 00:00:00.000').getTime()
+				// let nowTime = new Date().getTime()
+				// if (nowTime >= end || nowTime < start) {
+				// 	return 0
+				// }
+				// return parseFloat(this.nowSum) > 200 ? 50 : 0
+				if (this.couponPrice) {
+					return this.couponPrice
 				}
-				return parseFloat(this.nowSum) > 200 ? 50 : 0
+				return 0
 			},
 			// 运费
 			carriage () {
@@ -218,13 +222,13 @@
 			document.title = '订单结算'
 			// 优惠券
 			this.$root.Bus.$on('getCoupon', (obj, event) => {
-				console.log(obj)
+				// console.log(obj)
 				this.couponPrice = obj.couponPrice
 				this.couponId = obj.couponId
 			})
 			// 地址
 			this.$root.Bus.$on('chooseAddress', (value, event) => {
-				console.log(value)
+				// console.log(value)
 				this.address = value
 			})
 			// 留言
@@ -262,11 +266,12 @@
 					// console.log(res)
 					let list = res.data.list
 					this.couponList = list
+					if (this.couponList.length) {
+						this.hasDiscount =  true
+					}
 				}, err => {
 					console.log(err)
 				})
-
-				console.log(this.couponParams)
 			},
 			// 打开页面
 			openItem (path) {
@@ -395,8 +400,26 @@
 				}, 300)
 			},
 			// 不是双十一活动的话，通过购物车提交
+
+			// 订单提交
+			submitOrder () {
+				let params = {}
+				params.uid = localStorage.getItem('userId')
+				params.items = this.items
+				params.addressId = this.address.id
+				params.remark = this.leaveText
+				setTimeout(() => {
+					this.$ajax.tradeConfirmBook(params).then(res => {
+						let data = res.data
+					})
+				}, err => {
+					console.log(err)
+				},300)
+			},
+
 			submitByShopcat () {
-				// 暂不用
+				
+				// tradeConfirmBook
 				let firstPromiseArr = []
 				let numbers = 20
 				for (let i = 0; i < numbers; i++) {
