@@ -35,6 +35,7 @@
 			// 切换导航
 			changeNavIndex (index) {
 				this.$emit('changeNavIndex', index)
+				console.log(index)
 			}
 		}
 	}

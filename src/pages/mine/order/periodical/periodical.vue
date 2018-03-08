@@ -20,7 +20,7 @@
 				navIndex: 0,
 				// 视图数组
 				contentList: ['v-list', 'v-list', 'v-list', 'v-list', 'v-list'],
-				// 种类
+				// 种类 路由传参
 				cls: this.$route.query.cls || '2',
 				// 订单状态
 				tradeStatus: ''

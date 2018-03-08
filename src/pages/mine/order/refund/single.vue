@@ -55,22 +55,22 @@
 	// 退款原因
 	let data1 = [{
 		text: '未收到货',
-		value: 1
+		value: 0
 	}, {
 		text: '收到商品与描述不符',
-		value: 2
+		value: 1
 	}, {
 		text: '少件/漏发',
-		value: 3
+		value: 2
 	}, {
 		text: '收到商品破损',
-		value: 4
+		value: 3
 	}, {
 		text: '商品需要维修',
-		value: 5
+		value: 4
 	}, {
 		text: '商品质量问题',
-		value: 6
+		value: 5
 	}]
 	import Picker from 'better-picker'
 	export default {
@@ -93,7 +93,7 @@
 				// 选择器
 				picker: new Picker({
 					data: [data1],
-					selectedIndex: [0, 0, 0],
+					selectedIndex: [0, 1, 2],
 					title: '退款原因'
 				})
 			}

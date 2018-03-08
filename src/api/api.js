@@ -293,6 +293,12 @@ export default {
 		return fetch(`${serverHost}/api/trade/confirm`, params)
 	},
 	/*
+		取消订单
+	*/
+	tradeCancel (params) {
+		return fetch(`${serverHost}/api/trade/del`,params)
+	},
+	/*
 		获取首页数据
 	*/
 	getHomePage () {

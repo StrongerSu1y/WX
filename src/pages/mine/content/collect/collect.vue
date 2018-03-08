@@ -69,6 +69,9 @@
 				return this.contentList[this.navIndex]
 			}
 		},
+		created () {
+			this.getCollect()
+		},
 		methods: {
 			changeNavIndex (index) {
 				this.navIndex = index

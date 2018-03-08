@@ -34,7 +34,7 @@
 				<span class="text">¥{{ info.total_fee }}</span>
 			</p>
 			<div class="bottom-btns">
-				<span class="button cancel">取消订单</span>
+				<span class="button cancel" >取消订单</span>
 				<span class="button add-evaluate">追加评价</span>
 				<span class="button pay" @click="goEvaluate()">去评价</span>
 			</div>
@@ -87,16 +87,19 @@
 			</p>
 			<!-- 待付款 -->
 			<div v-if="info.trade_status === '1'" class="bottom-btns">
-				<span class="button cancel">取消订单</span>
+				<span class="button cancel" @click="cancelOrder()">取消订单</span>
 				<span class="button pay" @click="goPay()">去付款</span>
 			</div>
 			<!-- 已付款 -->
 			<div v-if="info.trade_status === '2'" class="bottom-btns">
-				<span class="button refund" @click.prevent.stop="goRefund()">申请退款</span>
+				<!-- <span class="button refund" @click.prevent.stop="goRefund()">申请退款</span> -->
+				<span class="button refund" @click.prevent.stop="goSingle()">申请退款</span>
 			</div>
 			<!-- 已发货 -->
 			<div v-if="info.trade_status === '3'" class="bottom-btns">
-				<span class="button refund" @click.prevent.stop="goRefund()">确认收货</span>
+				<!-- <span class="button refund" @click.prevent.stop="goRefund()">确认收货</span> -->
+				<!-- 确认收货去评价 -->
+				<span class="button refund" @click.prevent.stop="goEvaluate()">确认收货</span>    
 			</div>
 		</section>
 		<!-- 活动 -->
@@ -260,9 +263,14 @@
 				})
 			},
 			// 申请退款
-			goRefund () {
+			// goRefund () {
+			// 	this.$router.push({
+			// 		path: 'refund'
+			// 	})
+			// },
+			goSingle () {
 				this.$router.push({
-					path: 'refund'
+					path: 'refund/single'
 				})
 			},
 			// 联系客服
@@ -301,6 +309,17 @@
 						fee: this.info.total_fee,
 						cls: this.info.cls
 					}
+				})
+			},
+			// 取消订单
+			cancelOrder () {
+				this.$ajax.tradeCancel(this.params).then(res => {
+					this.Toast.success({
+						title: '取消成功'
+					})
+					this.$router.goBack()
+				}, err => {
+					console.log(err)
 				})
 			}
 		},

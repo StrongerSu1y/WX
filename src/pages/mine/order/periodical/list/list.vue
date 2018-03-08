@@ -146,9 +146,11 @@
 					title: '加载中...'
 				})
 				this.$ajax.tradeList(this.params).then(res => {
+					console.log(res)
 					let list = res.data.pageView.list
 					this.pages = res.data.pageView.pages
 					this.listData = this.listData.concat(list)
+
 					// 刷新 scroll
 					this.$nextTick(() => {
 						if (this.listData.length) {

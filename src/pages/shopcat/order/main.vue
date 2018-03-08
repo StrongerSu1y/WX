@@ -256,7 +256,8 @@
 				}).then(res => {
 					if (res.data.data && res.data.data.length) {
 						// this.address = res.data.data[0]
-						console.log(this.address)
+						// console.log(this.address)
+						// console.log(this.$route.query.cls)
 					}
 				}, err => {
 					console.log(err)
@@ -372,6 +373,9 @@
 			submitTrade () {
 				// 双十二
 				this.submitTwelve()
+
+				// 订单提交
+				// this.summitOrder()
 			},
 			// 双十二提交
 			submitTwelve () {
@@ -384,6 +388,7 @@
 				setTimeout(() => {
 					// 调用提交订单接口
 					this.$ajax.doubleEleven(params).then(res => {
+						console.log(res)
 						let data = res.data
 						// 下一个页面需要的数据
 						let fee = parseFloat(data.total_fee).toFixed(2)
@@ -394,13 +399,13 @@
 						let host = window.location.host
 						let href = `${protocol}//${host}/double-twelve`
 						window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+						console.log(window.location.href)
 					}, err => {
 						console.log(err)
 					})
 				}, 300)
 			},
-			// 不是双十一活动的话，通过购物车提交
-
+			// 否则通过购物车提交
 			// 订单提交
 			submitOrder () {
 				let params = {}
@@ -411,9 +416,18 @@
 				setTimeout(() => {
 					this.$ajax.tradeConfirmBook(params).then(res => {
 						let data = res.data
+						// 下一页面
+						let fee = parseFloat(data.total_fee).toFixed(2)
+						let outtradeno = data.no // 订单号？
+						// 选择分类
+						let cls = this.$route.query.cls
+						// let protocol = window.location.protocol
+						// let host = window.location.host
+						// let href = `${protocol}//${host}/`
+						// window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+					}, err => {
+						console.log(err)
 					})
-				}, err => {
-					console.log(err)
 				},300)
 			},
 
