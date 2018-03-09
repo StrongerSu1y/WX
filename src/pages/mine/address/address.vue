@@ -114,9 +114,9 @@
 			})
 			// 选中
 			this.picker.on('picker.select', (selectedVal, selectedIndex) => {
-				this.address.province_id = selectedVal[0]
-				this.address.city_id = selectedVal[1]
-				this.address.region_id = selectedVal[2]
+				this.address.provinceId = selectedVal[0]
+				this.address.cityId = selectedVal[1]
+				this.address.regionId = selectedVal[2]
 				this.address.province_name = this.linkageData[0][selectedIndex[0]].text
 				this.address.city_name = this.linkageData[1][selectedIndex[1]].text
 				this.address.region_name = this.linkageData[2][selectedIndex[2]].text
@@ -150,10 +150,11 @@
 				// 测试
 				params = this.address
 				params._uid = localStorage.getItem('userId')
+
 				this.$ajax.addressUpdate(params).then(res => {
 					if (res.status === 200) {
 						this.$ajax.addressList({
-							_uid: localStorage.getItem('userId')
+							// _uid: localStorage.getItem('userId')
 						}).then(res => {
 							// 广播更新地址事件
 							this.$root.Bus.$emit('updateAddress', JSON.stringify(this.address))

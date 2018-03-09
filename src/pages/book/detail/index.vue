@@ -194,7 +194,7 @@
 			// 获取购物车
 			getShopcat () {
 				this.$ajax.shopcatList().then(res => {
-					this.shopcatList = res.data.data.item_list
+					this.shopcatList = res.data.list
 					let shopNum = 0
 					this.shopcatList.forEach(item => {
 						this.shopNum += Number(item.quantity)
@@ -221,17 +221,24 @@
 				}
 				// 修改购物车
 				let params = {
-					_uid: localStorage.getItem('userId'),
-					id: this.$route.query.id,
-					cls: '2'
+					// _uid: localStorage.getItem('userId'),
+					// id: this.$route.query.id,
+					// cls: '2'
+
+					// 新
+					// force杂志用
+					force: '0',
+					item_id: this.$route.query.id,
+					region_id: '3501',
+					uid: localStorage.getItem('userId')
 				}
 				// 提示
 				this.Toast.loading({
 					title: '提交中...'
 				})
 				// 请求服务器
-				this.$ajax.shopcatSave(params).then(res => {
-					// console.log(params)
+				this.$ajax.saveShopcat(params).then(res => {
+					console.log(params)
 					// console.log(res)
 					// 更新购物车
 					// this.getShopcat()
@@ -263,10 +270,11 @@
 			doCollect () {
 				let isActive = this.isActive
 				let params = {
-					_uid: localStorage.getItem('userId'),
-					id: this.$route.query.id,
+					uid: localStorage.getItem('userId'),
+					sid: this.$route.query.id,
 					cls: '2'
 				}
+				// 收藏标志为true，点击取消收藏
 				if(isActive == true) {
 					this.$ajax.delCollect(params).then(res => {
 						this.isActive = !isActive
@@ -274,6 +282,7 @@
 						console.log(err)
 					})
 				} else {
+					// 否则 加入收藏
 					this.$ajax.addCollect(params).then(res => {
 						this.isActive = !isActive
 					}, err => {

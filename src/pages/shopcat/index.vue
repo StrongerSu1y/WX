@@ -1,12 +1,12 @@
 <template>
 	<section class="shopcat-main" :style="{ minHeight: windowHeight }">
 		<empty v-if="!userId" :text="'您暂时还未登录哦！'"></empty>
-		<div v-if="!userId" class="login-box">
-			<button @click.prevent.stop="goLogin()">去登录</button>
-		</div>
 		<section v-if="goHomePageShow" class="no-data-box">
 			<img src="./shopcat_empty.png">
 		</section>
+		<div v-if="!userId" class="login-box">
+			<button @click.prevent.stop="goLogin()">去登录</button>
+		</div>
 		<div v-if="goHomePageShow" class="login-box">
 			<button @click.prevent.stop="goHomePage()">去逛逛</button>
 		</div>
@@ -429,8 +429,7 @@
 				})
 				// 购物车
 				this.$ajax.shopcatList().then(res => {
-					// console.log(res)
-					let list = res.data.data.item_list
+					let list = res.data.list
 					// 刊物
 					this.periodicalList = list.filter((item) => {
 						item.number = parseInt(item.quantity, 10)

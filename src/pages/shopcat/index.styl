@@ -1,9 +1,12 @@
 // 内容部分
 .shopcat-main
 	// padding-bottom 3rem
+	position relative
 	.login-box
-		margin-top 0.8rem
-		text-align center
+		position absolute
+		margin-top 75%
+		margin-left 50%
+		transform translateX(-50%)
 		> button
 			display inline-block
 			padding 0 0.5rem
@@ -18,9 +21,11 @@
 			-webkit-appearance button
 			border none
 	.no-data-box
+		position absolute
 		width 100%
 		margin-top 50%
 		text-align center
+		transform translateY(-50%)
 		> img
 			display inline-block
 			width 2rem

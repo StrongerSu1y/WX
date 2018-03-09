@@ -62,6 +62,7 @@ axios.interceptors.response.use((res) => {
 	return Promise.reject(error)
 })
 
+// 配置请求方式
 export function fetch (url, params, type, dataType) {
 	return new Promise((resolve, reject) => {
 		if (dataType) {
@@ -84,6 +85,20 @@ export function fetch (url, params, type, dataType) {
 		} else if (type) {
 			if (type === 'get') {
 				axios.get(url).then(response => {
+					resolve(response)
+				}, err => {
+					reject(err)
+				})
+				.catch((error) => {
+					reject(error)
+				})
+			} else if (type === 'delete') {
+				axios({
+					method: 'delete',
+					data: params,
+					url: url
+				})
+				.then(response => {
 					resolve(response)
 				}, err => {
 					reject(err)
@@ -264,18 +279,24 @@ export default {
 		购物车列表
 	*/
 	shopcatList () {
-		return fetch(`${serverHost}/api/shop_cart/list`, {
-			_uid: localStorage.getItem('userId')
-		})
+		// return fetch(`/shop_cart/list`, {
+		// 	_uid: localStorage.getItem('userId')
+		// })
+		let user_id = localStorage.getItem('userId')
+		return fetch(`/shop_cart/uid/${user_id}`, {}, 'get')
 	},
+
 	/*
 		设置收货地址
 	*/
 	addressUpdate (params) {
-		return fetch(`${serverHost}/api/address/update`, params)
+		// let query = qs.stringify(params)
+		// return fetch(`${serverHost}/api/address/update`, params)
+		let user_id = localStorage.getItem('userId')
+		return fetch(`/address/${user_id}/update`, params)
 	},
 	/*
-		设置收货地址
+		删除收货地址
 	*/
 	addressDelete (params) {
 		return fetch(`${serverHost}/api/address/del`, params)
@@ -283,8 +304,9 @@ export default {
 	/*
 		地址列表
 	*/
-	addressList (params) {
-		return fetch(`${serverHost}/api/address/list`, params)
+	addressList () {
+		let user_id = localStorage.getItem('userId')
+		return fetch(`/address/${user_id}`, {}, 'get')
 	},
 	/*
 		订单提交
@@ -379,15 +401,16 @@ export default {
 		加入收藏
 	*/
 	addCollect (params) {
-		let query = qs.stringify(params)
-		return fetch(`//app.51weixiao.com/api/fav/save?${query}`, {} ,'get')
+		return fetch('/fav/save', params, 'post', 'json')
 	},
 	/*
 		取消收藏
 	*/
 	delCollect (params) {
 		let query = qs.stringify(params)
-		return fetch(`//app.51weixiao.com/api/fav/del?${query}`, {} , 'get')
+		// return fetch(`${serverHost}/api/fav/del?${query}`, {} , 'get')
+		return fetch(`/fav/del?${query}`, {} , 'get')
+		// return fetch('/fav/del', params, 'post', 'json')
 	},
 	/*
 		获取收藏列表
