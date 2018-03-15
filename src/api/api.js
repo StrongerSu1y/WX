@@ -5,8 +5,8 @@ import Vue from 'vue'
 let Obj = new Vue()
 
 // 判断全局变量 NODE_ENV
-let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
-// let environment = 'product'
+// let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
+let environment = 'product'
 let productHost = location.protocol + '//app.51weixiao.com'
 let devHost = location.protocol + '//192.168.0.231:8080'
 
@@ -291,9 +291,9 @@ export default {
 	*/
 	addressUpdate (params) {
 		// let query = qs.stringify(params)
-		// return fetch(`${serverHost}/api/address/update`, params)
-		let user_id = localStorage.getItem('userId')
-		return fetch(`/address/${user_id}/update`, params)
+		return fetch(`${serverHost}/api/address/update`, params)
+		// let user_id = localStorage.getItem('userId')
+		// return fetch(`/address/${user_id}/update`, params)
 	},
 	/*
 		删除收货地址

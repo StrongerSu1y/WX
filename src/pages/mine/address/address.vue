@@ -114,9 +114,16 @@
 			})
 			// 选中
 			this.picker.on('picker.select', (selectedVal, selectedIndex) => {
-				this.address.provinceId = selectedVal[0]
-				this.address.cityId = selectedVal[1]
-				this.address.regionId = selectedVal[2]
+				// this.address.provinceId = selectedVal[0]
+				// this.address.cityId = selectedVal[1]
+				// this.address.regionId = selectedVal[2]
+				// this.address.province_name = this.linkageData[0][selectedIndex[0]].text
+				// this.address.city_name = this.linkageData[1][selectedIndex[1]].text
+				// this.address.region_name = this.linkageData[2][selectedIndex[2]].text
+
+				this.address.province_id = selectedVal[0]
+				this.address.city_id = selectedVal[1]
+				this.address.region_id = selectedVal[2]
 				this.address.province_name = this.linkageData[0][selectedIndex[0]].text
 				this.address.city_name = this.linkageData[1][selectedIndex[1]].text
 				this.address.region_name = this.linkageData[2][selectedIndex[2]].text

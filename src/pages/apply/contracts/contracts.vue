@@ -52,7 +52,8 @@
 					active_id: this.$route.query.id,
 					pay_channel: '', // 报名
 					_uid: localStorage.getItem('userId'),
-					cls: this.$route.query.cls
+					cls: this.$route.query.cls,
+					src: "10086"
 				}
 				// 讲id 取出
 				JSON.parse(this.$route.query.comboList).forEach((item, index) => {

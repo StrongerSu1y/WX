@@ -62,7 +62,8 @@
 		computed: {
 			// 标题
 			title () {
-				return this.type + '详情'
+				// return this.type + '详情'
+				return '详情'
 			},
 			publish () {
 				return getUpdateDay(this.info.updated_at)
@@ -94,7 +95,7 @@
 				})
 				.then((res) => {
 					let data = res.data.data
-					console.log(data)
+					// console.log(data)
 					data.begin_time = getUpdateDay(data.begin_time)
 					data.end_time = getUpdateDay(data.end_time)
 					data.business_list = JSON.parse(data.business_list)
@@ -123,7 +124,7 @@
 						id: this.id,
 						is_realname: this.info.is_realname,
 						href: location.href,
-						cls: this.cls
+						cls: this.cls,
 					}
 				})
 			},
