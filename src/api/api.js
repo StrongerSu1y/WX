@@ -290,10 +290,9 @@ export default {
 		设置收货地址
 	*/
 	addressUpdate (params) {
-		// let query = qs.stringify(params)
-		return fetch(`${serverHost}/api/address/update`, params)
-		// let user_id = localStorage.getItem('userId')
-		// return fetch(`/address/${user_id}/update`, params)
+		// return fetch(`${serverHost}/api/address/update`, params)
+		let user_id = localStorage.getItem('userId')
+		return fetch(`/address/${user_id}/update`, params)
 	},
 	/*
 		删除收货地址

@@ -63,6 +63,7 @@
 					if (res.data.pageInfo.list && res.data.pageInfo.list.length) {
 						this.addressList = res.data.pageInfo.list
 					}
+					console.log(this.addressList)
 				}, err => {
 					console.log(err)
 				})

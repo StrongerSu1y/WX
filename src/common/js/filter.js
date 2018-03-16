@@ -20,10 +20,10 @@ let getFullAddress = obj => {
 
 // 新
 let getFullAddressName = obj => {
-	if (!obj.hasOwnProperty('province_name')) {
+	if (!obj.hasOwnProperty('provinceName')) {
 		return '未设置地址'
 	}
-	return obj.province_name + obj.city_name + obj.region_name + obj.address
+	return obj.provinceName + obj.cityName + obj.regionName + obj.address
 }
 
 let getUpdateDay = (time) => {

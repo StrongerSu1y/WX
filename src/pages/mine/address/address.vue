@@ -49,7 +49,9 @@
 				// 选中序号
 				tempIndex: [0, 0, 0],
 				// 地址
-				address: {}
+				address: {},
+				ts: this.$route.query.address,
+				newAddress: []
 			}
 		},
 		computed: {
@@ -80,10 +82,10 @@
 			},
 			// 省市区
 			cityArea () {
-				if (!this.address.province_name) {
+				if (!this.address.provinceName) {
 					return ''
 				}
-				return this.address.province_name + ',' + this.address.city_name + ',' + this.address.region_name
+				return this.address.provinceName + ',' + this.address.cityName + ',' + this.address.regionName
 			}
 		},
 		watch: {
@@ -94,18 +96,34 @@
 		},
 		mounted () {
 			// 创建地址
+			// this.address = this.$route.query.address ? JSON.parse(this.$route.query.address) : {
+			// 	_uid: localStorage.getItem('userId'),
+			// 	name: '',
+			// 	mobile: '',
+			// 	address: '',
+			// 	province_id: '',
+			// 	province_name: '',
+			// 	city_id: '',
+			// 	city_name: '',
+			// 	region_id: '',
+			// 	region_name: '',
+			// }
+
 			this.address = this.$route.query.address ? JSON.parse(this.$route.query.address) : {
-				_uid: localStorage.getItem('userId'),
-				name: '',
-				mobile: '',
 				address: '',
-				province_id: '',
-				province_name: '',
-				city_id: '',
-				city_name: '',
-				region_id: '',
-				region_name: ''
+				cityId: '',
+				id: JSON.parse(this.ts).id,
+				mobile: '',
+				name: '',
+				provinceId: '',
+				regionId: '',
+				uid: localStorage.getItem('userId'),
+
+				provinceName: '',
+				cityName: '',
+				regionId: ''
 			}
+
 			// 初始化选择器
 			this.picker = new Picker({
 				data: this.linkageData,
@@ -114,23 +132,26 @@
 			})
 			// 选中
 			this.picker.on('picker.select', (selectedVal, selectedIndex) => {
-				// this.address.provinceId = selectedVal[0]
-				// this.address.cityId = selectedVal[1]
-				// this.address.regionId = selectedVal[2]
+				
+				this.address.cityId = selectedVal[1]
+				this.address.provinceId = selectedVal[0]
+				this.address.regionId = selectedVal[2]
+
+				this.address.provinceName = this.linkageData[0][selectedIndex[0]].text
+				this.address.cityName = this.linkageData[1][selectedIndex[1]].text
+				this.address.regionName = this.linkageData[2][selectedIndex[2]].text
+
+				// this.address.province_id = selectedVal[0]
+				// this.address.city_id = selectedVal[1]
+				// this.address.region_id = selectedVal[2]
 				// this.address.province_name = this.linkageData[0][selectedIndex[0]].text
 				// this.address.city_name = this.linkageData[1][selectedIndex[1]].text
 				// this.address.region_name = this.linkageData[2][selectedIndex[2]].text
-
-				this.address.province_id = selectedVal[0]
-				this.address.city_id = selectedVal[1]
-				this.address.region_id = selectedVal[2]
-				this.address.province_name = this.linkageData[0][selectedIndex[0]].text
-				this.address.city_name = this.linkageData[1][selectedIndex[1]].text
-				this.address.region_name = this.linkageData[2][selectedIndex[2]].text
 			})
 			// 改变
 			this.picker.on('picker.change', (index, selectedIndex) => {
 				this.tempIndex[index] = selectedIndex
+				console.log(selectedIndex)
 				if (index > 1) {
 					return
 				}
@@ -147,6 +168,22 @@
 				this.picker.data = this.linkageData
 				this.picker.show()
 			},
+
+			// 新地址传参方法
+			newAddressFill () {
+				this.newAddress = {
+					address: String(this.address.address),
+					cityId: this.address.cityId,
+					id: JSON.parse(this.ts).id,
+					mobile: String(this.address.mobile),
+					name: String(this.address.name),
+					provinceId: this.address.provinceId,
+					regionId: this.address.regionId,
+					uid: localStorage.getItem('userId'),
+				}
+				return this.newAddress
+			},
+
 			// 保存
 			doSave () {
 				// 表单验证
@@ -155,8 +192,9 @@
 				}
 				let params = {}
 				// 测试
-				params = this.address
-				params._uid = localStorage.getItem('userId')
+				// params = this.address
+				params = this.newAddressFill()
+				// params._uid = localStorage.getItem('userId')
 
 				this.$ajax.addressUpdate(params).then(res => {
 					if (res.status === 200) {
