@@ -254,34 +254,37 @@ export default {
 	/*
 		添加购物车 -- 旧
 	*/
-	shopcatSave (params) {
-		return fetch(`${serverHost}/api/shop_cart/save`, params)
-	},
+	// shopcatSave (params) {
+	// 	return fetch(`${serverHost}/api/shop_cart/save`, params)
+	// },
 	saveShopcat (params) {
 		return fetch('/shop_cart/save', params, 'post', 'json')
 	},
 	/*
 		修改购物车
 	*/
-	updateShopcat (params) {
-		return fetch(`${serverHost}/api/shop_cart/update`, params)
+	// ShopcatUpdate (params) {
+	// 	return fetch(`${serverHost}/api/shop_cart/update`, params)
+	// },
+	updateShopcat(params) {
+		return fetch('/shop_cart/update', params, 'post', 'json')
 	},
 	/*
 		清空购物车
 	*/
-	shopcatDel (id) {
-		return fetch(`${serverHost}/api/shop_cart/del`, {
-			_uid: localStorage.getItem('userId'),
-			id: id
-		})
+	// shopcatDel (id) {
+	// 	return fetch(`${serverHost}/api/shop_cart/del`, {
+	// 		_uid: localStorage.getItem('userId'),
+	// 		id: id
+	// 	})
+	// },
+	shopcatDel(params) {
+		return fetch('shop_cart/del', params, 'post', 'json')
 	},
 	/*
 		购物车列表
 	*/
 	shopcatList () {
-		// return fetch(`/shop_cart/list`, {
-		// 	_uid: localStorage.getItem('userId')
-		// })
 		let user_id = localStorage.getItem('userId')
 		return fetch(`/shop_cart/uid/${user_id}`, {}, 'get')
 	},
@@ -292,13 +295,15 @@ export default {
 	addressUpdate (params) {
 		// return fetch(`${serverHost}/api/address/update`, params)
 		let user_id = localStorage.getItem('userId')
-		return fetch(`/address/${user_id}/update`, params)
+		return fetch(`/address/${user_id}/update`, params, 'post', 'json')
 	},
 	/*
 		删除收货地址
 	*/
-	addressDelete (params) {
-		return fetch(`${serverHost}/api/address/del`, params)
+	addressDelete (id) {
+		// return fetch(`${serverHost}/api/address/del`, params)
+		let user_id = localStorage.getItem('userId')
+		return fetch(`/address/${user_id}/del/${id}`, {}, 'delete')
 	},
 	/*
 		地址列表
@@ -406,10 +411,9 @@ export default {
 		取消收藏
 	*/
 	delCollect (params) {
-		let query = qs.stringify(params)
-		// return fetch(`${serverHost}/api/fav/del?${query}`, {} , 'get')
-		return fetch(`/fav/del?${query}`, {} , 'get')
-		// return fetch('/fav/del', params, 'post', 'json')
+		// let query = qs.stringify(params)
+		// return fetch(`/fav/del?${query}`, {} , 'get')
+		return fetch('/fav/del', params, 'post', 'json')
 	},
 	/*
 		获取收藏列表

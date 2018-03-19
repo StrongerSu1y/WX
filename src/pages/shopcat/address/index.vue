@@ -57,10 +57,10 @@
 			// 加载数据
 			loadData () {
 				this.$ajax.addressList({
-					_uid: localStorage.getItem('userId')
+					// _uid: localStorage.getItem('userId')
 				}).then(res => {
-					if (res.data.data && res.data.data.length) {
-						this.addressList = res.data.data
+					if (res.data.pageInfo.list && res.data.pageInfo.list.length) {
+						this.addressList = res.data.pageInfo.list
 					}
 				}, err => {
 					console.log(err)

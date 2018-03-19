@@ -112,7 +112,7 @@
 			this.address = this.$route.query.address ? JSON.parse(this.$route.query.address) : {
 				address: '',
 				cityId: '',
-				id: JSON.parse(this.ts).id,
+				// id: JSON.parse(this.ts).id,
 				mobile: '',
 				name: '',
 				provinceId: '',
@@ -121,9 +121,8 @@
 
 				provinceName: '',
 				cityName: '',
-				regionId: ''
+				regionName: ''
 			}
-
 			// 初始化选择器
 			this.picker = new Picker({
 				data: this.linkageData,
@@ -171,17 +170,32 @@
 
 			// 新地址传参方法
 			newAddressFill () {
-				this.newAddress = {
-					address: String(this.address.address),
-					cityId: this.address.cityId,
-					id: JSON.parse(this.ts).id,
-					mobile: String(this.address.mobile),
-					name: String(this.address.name),
-					provinceId: this.address.provinceId,
-					regionId: this.address.regionId,
-					uid: localStorage.getItem('userId'),
+				// 判断
+				if(this.ts) {
+					this.newAddress = {
+						address: this.address.address,
+						cityId: this.address.cityId,
+						id: JSON.parse(this.ts).id,
+						mobile: this.address.mobile,
+						name: this.address.name,
+						provinceId: this.address.provinceId,
+						regionId: this.address.regionId,
+						uid: localStorage.getItem('userId'),
+					}
+					return JSON.stringify(this.newAddress)
+				} else {
+					this.newAddress = {
+						address: this.address.address,
+						cityId: this.address.cityId,
+						mobile: this.address.mobile,
+						name: this.address.name,
+						provinceId: this.address.provinceId,
+						regionId: this.address.regionId,
+						uid: localStorage.getItem('userId')
+					}
+					return JSON.stringify(this.newAddress)
 				}
-				return this.newAddress
+
 			},
 
 			// 保存
@@ -194,13 +208,9 @@
 				// 测试
 				// params = this.address
 				params = this.newAddressFill()
-				// params._uid = localStorage.getItem('userId')
-
 				this.$ajax.addressUpdate(params).then(res => {
 					if (res.status === 200) {
-						this.$ajax.addressList({
-							// _uid: localStorage.getItem('userId')
-						}).then(res => {
+						this.$ajax.addressList().then(res => {
 							// 广播更新地址事件
 							this.$root.Bus.$emit('updateAddress', JSON.stringify(this.address))
 							// 返回上一页

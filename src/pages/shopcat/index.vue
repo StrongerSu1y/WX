@@ -475,14 +475,13 @@
 				this['' + type + ''][index].number += num
 				// 修改购物车
 				let params = {
-					_uid: localStorage.getItem('userId'),
-					id: this['' + type + ''][index].sid,
-					cls: '2',
+					// _uid: localStorage.getItem('userId'),
+					id: this['' + type + ''][index].id,
+					// cls: '2',
 					quantity: this['' + type + ''][index].number
 				}
 				// 请求服务器
 				this.$ajax.updateShopcat(params).then(res => {
-					// console.log(res)
 				}, err => {
 					console.log(err)
 				})
@@ -596,9 +595,12 @@
 				})
 				// 杂志
 				this.periodicalList.forEach((item, index) => {
+					let params = {
+						ids: [item.id]
+					}
 					if (item.active) {
 						// 请求服务器
-						this.$ajax.shopcatDel(item.id).then(res => {
+						this.$ajax.shopcatDel(params).then(res => {
 							this.Toast.success({
 								title: '移除成功！'
 							})
@@ -611,13 +613,17 @@
 				})
 				// 图书
 				this.goodsList.forEach((item, index) => {
+					let params = {
+						ids: [item.id]
+					}
 					if (item.active) {
 						// 请求服务器
-						this.$ajax.shopcatDel(item.id).then(res => {
+						this.$ajax.shopcatDel(params).then(res => {
 							this.Toast.success({
 								title: '移除成功！'
 							})
-							this.deleteOnePeriodical(item.id)
+							// this.deleteOnePeriodical(item.id)
+							this.deleteOneGood(item.id)
 							this.loadData()
 						}, err => {
 							console.log(err)
@@ -641,8 +647,11 @@
 					}
 				})
 			},
-			// 移除单条杂志
+			// 移除单条杂志 数量小1时使用
 			deleteperiodicalItem (id) {
+				let params = {
+					ids: [id]
+				}
 				// 筛选出需要删除的项目
 				this.periodicalList.forEach((item, index) => {
 					if (id === item.id) {
@@ -657,14 +666,16 @@
 					}
 				})
 				// 请求服务器
-				this.$ajax.shopcatDel(id).then(res => {
-					// console.log(res)
+				this.$ajax.shopcatDel(params).then(res => {
 				}, err => {
 					console.log(err)
 				})
 			},
-			// 移除单条商品
+			// 移除单条商品  数量小1时使用
 			deleteGoodsItem (id) {
+				let params = {
+					ids: [id]
+				}
 				// 筛选出需要删除的项目
 				this.goodsList.forEach((item, index) => {
 					if (id === item.id) {
@@ -679,8 +690,7 @@
 					}
 				})
 				// 请求服务器
-				this.$ajax.shopcatDel(id).then(res => {
-					// console.log(res)
+				this.$ajax.shopcatDel(params).then(res => {
 				}, err => {
 					console.log(err)
 				})

@@ -12,7 +12,7 @@
 		</section>
 		<empty v-if="!addressList.length"></empty>
 		<ul v-if="addressList.length" class="input-list">
-			<li v-for="(address, index) in addressList" class="input-item" @click="openAddressItem(address)">
+			<li v-for="(address, index) in addressList" class="input-item" @click="openAddressItem(address)"  @touchstart="showDeleteButton(address.id)" @touchend="clearLoop(address.id)">
 				<section class="header">
 					<div class="main">
 						<div class="left-part">
@@ -63,7 +63,6 @@
 					if (res.data.pageInfo.list && res.data.pageInfo.list.length) {
 						this.addressList = res.data.pageInfo.list
 					}
-					console.log(this.addressList)
 				}, err => {
 					console.log(err)
 				})
@@ -90,6 +89,29 @@
 						address: JSON.stringify(address)
 					}
 				})
+			},
+			showDeleteButton (id) {
+				clearInterval(this.Loop)
+				var _this = this
+				this.Loop = setTimeout(function() {
+					this.Dialog.alert({
+						title: '温馨提示',
+						msg: '确定删除此地址？',
+						buttons: ['取消', '确定']
+					}, (res) => {
+						if (res.buttonIndex === 2) {
+							this.$ajax.addressDelete(id).then(res => {
+								this.loadData()
+							}, err => {
+								console.log(err)
+							})
+							return
+						}
+					})
+				}.bind(this), 600)
+			},
+			clearLoop (e) {
+				clearInterval(this.Loop)
 			}
 		},
 		components: {
