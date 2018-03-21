@@ -348,7 +348,7 @@
 				this.scroller.on('touchend', (pos) => {
 					if (pos.y > 50) {
 						// 刷新
-						// this.loadData()
+						this.loadData()
 					}
 				})
 			},
@@ -435,6 +435,7 @@
 						item.number = parseInt(item.quantity, 10)
 						return item.cls === '1'
 					})
+					console.log(this.periodicalList)
 					// 商品
 					this.goodsList = list.filter((item) => {
 						item.number = parseInt(item.quantity, 10)

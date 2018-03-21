@@ -2,7 +2,7 @@
 	<section class="order_list_component">
 		<section class="wrapper" ref="wrapper" :style="{ height: scrollWrapHeight }">
 			<ul ref="list" class="mine-order-list">
-				<li ref="listItem" v-for="(item, index) in listData" :class="{ deleteShow: deleteIndex === index}" class="list-item" @click.prevent.stop="openDetail(item.id)">
+				<li ref="listItem" v-for="(item, index) in listData" :class="{ deleteShow: deleteIndex === index}" class="list-item" @click.prevent.stop="openDetail(item.id, item.no)">
 					<div class="list_item_content">
 						<div class="list-body">
 							<!-- 左侧图片 -->
@@ -119,6 +119,7 @@
 				params.pageSize = this.pageSize
 				params.cls = this.cls
 				params.tradeStatus = this.tradeStatus
+				// params.isAllowPostPay = '0'
 				return params
 			}
 		},
@@ -140,7 +141,7 @@
 		mounted () {
 		},
 		methods: {
-			// 加载数据
+			// 加载数据	
 			loadData () {
 				this.Toast.loading({
 					title: '加载中...'
@@ -149,7 +150,7 @@
 					let list = res.data.pageView.list
 					this.pages = res.data.pageView.pages
 					this.listData = this.listData.concat(list)
-
+					console.log(this.listData)
 					// 刷新 scroll
 					this.$nextTick(() => {
 						if (this.listData.length) {
@@ -220,12 +221,13 @@
 				})
 			},
 			// 打开详情页
-			openDetail (id) {
+			openDetail (id,no) {
 				this.$router.push({
 					path: '/mine/order/detail',
 					query: {
 						cls: this.$route.query.cls,
-						id: id
+						id: id,
+						no: no
 					}
 				})
 			},

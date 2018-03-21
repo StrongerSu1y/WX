@@ -72,8 +72,7 @@
 			// 加载数据
 			loadData () {
 				this.$ajax.childList().then(res => {
-					console.log(res)
-					this.listData = res.data.data
+					this.listData = res.data.pageInfo.list
 				}, err => {
 					console.log(err)
 				})

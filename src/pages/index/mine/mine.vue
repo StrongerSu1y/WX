@@ -260,7 +260,7 @@
 			getChildrenList () {
 				this.$ajax.childList().then(res => {
 					// console.log(res)
-					this.childrenList = res.data.data
+					this.childrenList = res.data.pageInfo.list
 					this.$nextTick(() => {
 						this.updateSwiper()
 						setTimeout(() => {

@@ -80,7 +80,7 @@
 					<span class="text">学校</span>
 				</div>
 				<div class="center-part">
-					<input type="text" v-model="item.school_name" placeholder="请选择学校" readonly>
+					<input type="text" v-model="item.schoolName" placeholder="请选择学校" readonly>
 				</div>
 				<div class="right-part">
 					<img src="../right_arrow.png">
@@ -91,7 +91,7 @@
 					<span class="text">年级</span>
 				</div>
 				<div class="center-part">
-					<input class="yellow" v-model="item.grade_name" type="text" placeholder="请选择孩子当前就读年级" readonly>
+					<input class="yellow" v-model="item.gradeName" type="text" placeholder="请选择孩子当前就读年级" readonly>
 				</div>
 				<div class="right-part">
 					<img src="../right_arrow.png">
@@ -102,7 +102,7 @@
 					<span class="text">班级</span>
 				</div>
 				<div class="center-part">
-					<input type="text" v-model="item.class_name" placeholder="请选择班级" readonly>
+					<input type="text" v-model="item.className" placeholder="请选择班级" readonly>
 				</div>
 				<div class="right-part">
 					<img src="../right_arrow.png">
@@ -164,6 +164,50 @@
 			value: i
 		})
 	}
+	// 年级
+	let gradeList = [{
+		text: '一年级',
+		value: 1
+	}, {
+		text: '二年级',
+		value: 2
+	}, {
+		text: '三年级',
+		value: 3
+	}, {
+		text: '四年级',
+		value: 4
+	}, {
+		text: '五年级',
+		value: 5
+	}, {
+		text: '六年级',
+		value: 6
+	}, {
+		text: '七年级',
+		value: 7
+	}, {
+		text: '八年级',
+		value: 8
+	}, {
+		text: '九年级',
+		value: 9
+	}, {
+		text: '小班',
+		value: 10
+	}, {
+		text: '中班',
+		value: 11
+	}, {
+		text: '大班',
+		value: 12
+	}]
+
+	// 班级
+	let classList = [{
+
+	}]
+
 	// 关系
 	let relationList = [{
 		text: '爸爸',
@@ -245,10 +289,10 @@
 			},
 			// 地区
 			areaName () {
-				if (!this.item.hasOwnProperty('city_name')) {
+				if (!this.item.hasOwnProperty('cityName')) {
 					return ''
 				}
-				return this.item.province_name + this.item.city_name + this.item.region_name
+				return this.item.provinceName + this.item.cityName + this.item.regionName
 			}
 		},
 		watch: {
@@ -258,11 +302,14 @@
 		},
 		created () {
 			// 判断是编辑还是新增
+			
 			if (this.$route.query.id) {
 				this.loadData()
 			}
+			
 			if (this.$route.query.item && JSON.parse(this.$route.query.item).hasOwnProperty('sex')) {
 				this.item = JSON.parse(this.$route.query.item)
+				console.log(this.item)
 			}
 		},
 		mounted () {
@@ -282,6 +329,7 @@
 		methods: {
 			// 加载数据
 			loadData () {
+				console.log(1111111111111)
 				this.$ajax.childList().then(res => {
 					this.item = res.data.data.filter(item => {
 						return item.id === this.$route.query.id
@@ -309,6 +357,23 @@
 			},
 			// 保存
 			doSave () {
+				let params = {}
+				// params.avatar = 
+				params.city_id = item.cityid
+				params.class_id = item.class_id
+				params.enrollment = 
+				params.grade_id = 
+				params.id = 
+				params.is_default =
+				params.mobile = 
+				params.name = 
+				params.parent = 
+				params.province_id = 
+				params.region_id = 
+				params.relation = 
+				params.school_id = 
+				params.sex = 
+				params.uid = 
 				this.$ajax.childUpdate(this.item).then(res => {
 					if (res.data.status === '0') {
 						this.Toast.success({
@@ -360,6 +425,14 @@
 				// 关系选择
 				this.relationPicker.on('picker.select', (index, selectedIndex) => {
 					this.item.relation = relationList[selectedIndex[0]].text
+				})
+				// 年级选择
+				this.gradePicker.on('picker.select', (index, selectedIndex) => {
+					// this.item.gr
+				})
+				// 班级选择
+				this.classPinker.on('picker.select', (index, selectedIndex) => {
+
 				})
 			}
 		},

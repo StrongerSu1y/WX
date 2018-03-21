@@ -19,6 +19,7 @@
 </template>
 
 <script>
+ 	// 活动/培训报名
 	import header from '@/components/header/header'
 	import { checkInput, checkMobile } from '@/common/js/common.js'
 	export default {

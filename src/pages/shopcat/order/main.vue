@@ -228,7 +228,6 @@
 			})
 			// 地址
 			this.$root.Bus.$on('chooseAddress', (value, event) => {
-				// console.log(value)
 				this.address = value
 			})
 			// 留言
@@ -372,10 +371,10 @@
 			// 提交订单
 			submitTrade () {
 				// 双十二
-				this.submitTwelve()
+				// this.submitTwelve()
 
 				// 订单提交
-				// this.summitOrder()
+				this.submitOrderBook()
 			},
 			// 双十二提交
 			submitTwelve () {
@@ -384,7 +383,7 @@
 				params.items = this.items
 				params.addressId = this.address.id
 				params.remark = this.leaveText
-				console.log(params)
+				// console.log(params)
 				setTimeout(() => {
 					// 调用提交订单接口
 					this.$ajax.doubleEleven(params).then(res => {
@@ -399,7 +398,7 @@
 						let host = window.location.host
 						let href = `${protocol}//${host}/double-twelve`
 						window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
-						console.log(window.location.href)
+						// console.log(window.location.href)
 					}, err => {
 						console.log(err)
 					})
@@ -407,24 +406,60 @@
 			},
 			// 否则通过购物车提交
 			// 订单提交
-			submitOrder () {
+			submitOrderBook () {
 				let params = {}
-				params.uid = localStorage.getItem('userId')
-				params.items = this.items
+
 				params.addressId = this.address.id
+				params.couponUserId = this.couponId
+				params.items = this.items
 				params.remark = this.leaveText
+				params.uid = localStorage.getItem('userId')
+
 				setTimeout(() => {
 					this.$ajax.tradeConfirmBook(params).then(res => {
 						let data = res.data
+
 						// 下一页面
-						let fee = parseFloat(data.total_fee).toFixed(2)
-						let outtradeno = data.no // 订单号？
+						// let fee = parseFloat(data.total_fee).toFixed(2)
+						// let outtradeno = data.no 
 						// 选择分类
-						let cls = this.$route.query.cls
+						// let cls = this.$route.query.cls
 						// let protocol = window.location.protocol
 						// let host = window.location.host
 						// let href = `${protocol}//${host}/`
 						// window.location.href = `${protocol}//${host}/pay?&cls=${cls}&fee=${fee}&outtradeno=${outtradeno}&href=${href}`
+
+					this.$router.push({
+						path: '/pay',
+						query: {
+							// outtradeno: this.info.no,
+							fee: this.totalSum,
+							cls: this.$route.query.cls
+						}
+					})
+					}, err => {
+						console.log(err)
+					})
+				},300)
+			},
+			// 
+			submitOrderMagazine () {
+				let params = {}
+				params.addressId = this.address.id
+				params.couponUserId = this.couponId
+				params.items = this.items
+				params.remark = this.leaveText
+				params.uid = localStorage.getItem('userId')
+				setTimeout(() => {
+					this.$ajax.tradeConfirmMagazine(params).then(res => {
+						this.$router.push({
+							path: '/pay',
+							query: {
+								// outtradeno: this.info.no,
+								fee: this.totalSum,
+								cls: this.$route.query.cls
+							}
+						})
 					}, err => {
 						console.log(err)
 					})
@@ -432,7 +467,6 @@
 			},
 
 			submitByShopcat () {
-				
 				// tradeConfirmBook
 				let firstPromiseArr = []
 				let numbers = 20

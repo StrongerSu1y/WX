@@ -96,7 +96,6 @@
 			}
 		},
 		mounted () {
-			console.log(this.ts)
 			// 当前地址
 			this.address = this.$route.query.address ? JSON.parse(this.$route.query.address) : {
 				// _uid: localStorage.getItem('userId'),

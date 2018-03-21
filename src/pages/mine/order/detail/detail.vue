@@ -229,10 +229,10 @@
 			// 请求参数
 			params () {
 				let params = {}
-				params.id = this.$route.query.id
 				params.cls = this.$route.query.cls
+				params.id = this.$route.query.id
 				return params
-			}
+			},
 		},
 		created () {
 			// 加载数据
@@ -244,7 +244,6 @@
 			// 加载数据
 			loadData () {
 				this.$ajax.tradeDetail(this.params).then(res => {
-					console.log(res)
 					this.info = res.data.bookMagazineView
 					this.recommendList = res.data.recommendList
 				}, err => {
@@ -313,7 +312,15 @@
 			},
 			// 取消订单
 			cancelOrder () {
-				this.$ajax.tradeCancel(this.params).then(res => {
+				let params = {}
+				//  "cls": "string",
+	  		// 	"id": 0,
+	  		// 	"uid": "string"
+				params.cls = this.$route.query.cls
+				params.id = this.$route.query.id
+				params.uid = localStorage.getItem('userId')
+				this.$ajax.tradeCancel(params).then(res => {
+					console.log(res)
 					this.Toast.success({
 						title: '取消成功'
 					})

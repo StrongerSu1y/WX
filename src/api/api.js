@@ -315,14 +315,14 @@ export default {
 	/*
 		订单提交
 	*/
-	tradeConfirm (params) {
-		return fetch(`${serverHost}/api/trade/confirm`, params)
-	},
+	// tradeConfirm (params) {
+	// 	return fetch(`${serverHost}/api/trade/confirm`, params)
+	// },
 	/*
-		取消订单
+		删除订单
 	*/
 	tradeCancel (params) {
-		return fetch(`${serverHost}/api/trade/del`,params)
+		return fetch('/trade/del', params, 'post', 'json')
 	},
 	/*
 		获取首页数据
@@ -460,13 +460,15 @@ export default {
 	*/
 	childList () {
 		let uid = localStorage.getItem('userId') || '100095'
-		return fetch(`${serverHost}/api/child/list?_uid=${uid}`, {}, 'get')
+		return fetch(`/child/${uid}`, {}, 'get')
 	},
 	/*
 		孩子管理编辑
 	*/
 	childUpdate (params) {
-		return fetch(`${serverHost}/api/child/update`, params)
+		// return fetch(`${serverHost}/api/child/update`, params)
+		let uid = localStorage.getItem('userId')
+		return fetch(`/child/${uid}/update`, params , 'post', 'json')
 	},
 	/*
 		我的订单列表
