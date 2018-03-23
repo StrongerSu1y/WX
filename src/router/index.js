@@ -128,7 +128,7 @@ export default new Router({
 				name: 'detail',
 				component: detail
 			}, { // 书刊详情
-				path: '/periodical',
+				path: 'periodicalDetail',
 				component: periodicalDetail
 			}, { // 地址
 				path: '/address',
@@ -142,12 +142,10 @@ export default new Router({
 				meta: {
 					before: true
 				}
-			}, 
-			{
+			}, {
 				path: '/mine',
 				component: mineIndex
-			},
-			{
+			}, {
 				path: '/mine/order',
 				component: mineOrder
 			}, {

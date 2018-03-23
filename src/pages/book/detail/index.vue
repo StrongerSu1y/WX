@@ -221,12 +221,6 @@
 				}
 				// 修改购物车
 				let params = {
-					// _uid: localStorage.getItem('userId'),
-					// id: this.$route.query.id,
-					// cls: '2'
-
-					// 新
-					// force杂志用
 					force: '0',
 					item_id: this.$route.query.id,
 					region_id: '3501',

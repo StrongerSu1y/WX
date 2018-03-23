@@ -138,16 +138,21 @@
 				this.$ajax.configLogin(this)
 				// 修改购物车
 				let params = {
-					_uid: localStorage.getItem('userId'),
-					id: id,
-					cls: '2'
+					force: '0',
+					item_id: id,
+					region_id: '3501',
+					uid: localStorage.getItem('userId')
 				}
-				// 提示
+				// 提示	
 				this.Toast.loading({
 					title: '提交中...'
 				})
+				setTimeout(() => {
+					this.Toast.hide()
+				}, 200)
+
 				// 请求服务器
-				this.$ajax.shopcatSave(params).then(res => {
+				this.$ajax.saveShopcat(params).then(res => {
 					console.log(res)
 					this.Toast.success({
 						title: '添加成功！'

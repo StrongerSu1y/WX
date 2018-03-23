@@ -39,7 +39,7 @@
 			// 加载数据
 			loadData () {
 				this.$ajax.tradeDetail(this.params).then(res => {
-					console.log(res)
+					// console.log(res)
 					this.listData = res.data.bookMagazineView.itemList
 				}, err => {
 					console.log(err)

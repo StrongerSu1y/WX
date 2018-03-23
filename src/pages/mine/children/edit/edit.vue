@@ -90,7 +90,7 @@
 				<div class="left-part">
 					<span class="text">年级</span>
 				</div>
-				<div class="center-part">
+				<div class="center-part" @click="showPicker()">
 					<input class="yellow" v-model="item.gradeName" type="text" placeholder="请选择孩子当前就读年级" readonly>
 				</div>
 				<div class="right-part">
@@ -302,11 +302,11 @@
 		},
 		created () {
 			// 判断是编辑还是新增
-			
+			//
 			if (this.$route.query.id) {
 				this.loadData()
 			}
-			
+			// 
 			if (this.$route.query.item && JSON.parse(this.$route.query.item).hasOwnProperty('sex')) {
 				this.item = JSON.parse(this.$route.query.item)
 				console.log(this.item)
@@ -329,7 +329,6 @@
 		methods: {
 			// 加载数据
 			loadData () {
-				console.log(1111111111111)
 				this.$ajax.childList().then(res => {
 					this.item = res.data.data.filter(item => {
 						return item.id === this.$route.query.id
@@ -361,19 +360,20 @@
 				// params.avatar = 
 				params.city_id = item.cityid
 				params.class_id = item.class_id
-				params.enrollment = 
-				params.grade_id = 
-				params.id = 
-				params.is_default =
-				params.mobile = 
-				params.name = 
-				params.parent = 
-				params.province_id = 
-				params.region_id = 
-				params.relation = 
-				params.school_id = 
-				params.sex = 
-				params.uid = 
+				params.enrollment = item.enrollment
+				params.grade_id = item.grade_id
+				params.id = item.id
+				params.is_default =	item.is_default
+				params.mobile = item.mobile
+				params.name = item.name
+				params.parent = item.parent
+				params.province_id = item.provinceId
+				params.region_id = item.regionId
+				params.relation = item.relation
+				params.school_id = item.school_id
+				params.sex = item.sex
+				params.uid = localStorage.getItem('userId')
+				console.log(params)
 				this.$ajax.childUpdate(this.item).then(res => {
 					if (res.data.status === '0') {
 						this.Toast.success({

@@ -5,11 +5,15 @@ import Vue from 'vue'
 let Obj = new Vue()
 
 // 判断全局变量 NODE_ENV
+// 环境切换
 // let environment = process.env.NODE_ENV === 'development' ? 'dev' : 'product'
 let environment = 'product'
-let productHost = location.protocol + '//app.51weixiao.com'
-let devHost = location.protocol + '//192.168.0.231:8080'
 
+// 线上
+let productHost = location.protocol + '//app.51weixiao.com'
+// 测试
+let devHost = location.protocol + '//192.168.0.231:8080'
+// 老接口使用
 let serverHost = environment === 'dev' ? devHost : productHost
 
 // axios 配置
@@ -252,32 +256,20 @@ export default {
 		return fetch('/user/register', params)
 	},
 	/*
-		添加购物车 -- 旧
+		添加购物车
 	*/
-	// shopcatSave (params) {
-	// 	return fetch(`${serverHost}/api/shop_cart/save`, params)
-	// },
 	saveShopcat (params) {
 		return fetch('/shop_cart/save', params, 'post', 'json')
 	},
 	/*
 		修改购物车
 	*/
-	// ShopcatUpdate (params) {
-	// 	return fetch(`${serverHost}/api/shop_cart/update`, params)
-	// },
 	updateShopcat(params) {
 		return fetch('/shop_cart/update', params, 'post', 'json')
 	},
 	/*
 		清空购物车
 	*/
-	// shopcatDel (id) {
-	// 	return fetch(`${serverHost}/api/shop_cart/del`, {
-	// 		_uid: localStorage.getItem('userId'),
-	// 		id: id
-	// 	})
-	// },
 	shopcatDel(params) {
 		return fetch('shop_cart/del', params, 'post', 'json')
 	},
@@ -312,12 +304,6 @@ export default {
 		let user_id = localStorage.getItem('userId')
 		return fetch(`/address/${user_id}`, {}, 'get')
 	},
-	/*
-		订单提交
-	*/
-	// tradeConfirm (params) {
-	// 	return fetch(`${serverHost}/api/trade/confirm`, params)
-	// },
 	/*
 		删除订单
 	*/

@@ -31,7 +31,7 @@
 			nowContent () {
 				return this.contentList[this.navIndex]
 			}
-		},
+		},  
 		methods: {
 			// 切换导航
 			changeNavIndex (index, tradeStatus) {

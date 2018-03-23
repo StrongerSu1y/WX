@@ -1,7 +1,7 @@
 <template>
 	<ul class="circle-list">
 		<transition-group enter-active-class="animated" leave-active-class="animated slideOutRight">
-		<li :key="item.id" v-for="item in listData" class="list-item">
+		<li :key="item.id" v-for="item in listData" class="list-item" @click="openDetail">
 			<!-- 标题 -->
 			<p class="title">
 				<span class="text">{{ item.title }}</span>
@@ -128,7 +128,9 @@
 				let video = el.target.parentNode.parentNode.querySelector('.video-box video')
 				video.setAttribute('controls', true)
 				video.play()
-			}
+			},
+			openDetail () {
+			}		
 		}
 	}
 </script>

@@ -319,8 +319,8 @@
 				params.cls = this.$route.query.cls
 				params.id = this.$route.query.id
 				params.uid = localStorage.getItem('userId')
+
 				this.$ajax.tradeCancel(params).then(res => {
-					console.log(res)
 					this.Toast.success({
 						title: '取消成功'
 					})
