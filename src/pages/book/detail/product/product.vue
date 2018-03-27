@@ -186,7 +186,7 @@
 				this.$nextTick(() => {
 					setTimeout(() => {
 						this.initBetterScroll()
-					}, 20)
+					}, 300)
 				})
 			}
 		},
@@ -201,7 +201,7 @@
 				setTimeout(() => {
 					// 初始化
 					this.initBetterScroll()
-				}, 20)
+				}, 300)
 			})
 		},
 		methods: {
@@ -210,7 +210,7 @@
 				this.commentTruthTotal = total
 				setTimeout(() => {
 					this.initBetterScroll()
-				}, 20)
+				}, 300)
 			},
 			// 查看全部评价
 			changeTopTabIndex (index, secondIndex) {

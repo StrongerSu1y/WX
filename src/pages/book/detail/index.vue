@@ -152,11 +152,11 @@
 		created () {
 			// 加载数据
 			this.loadData()
+
 			// 获取购物车
 			this.getShopcat()
 		},
 		mounted () {
-
 		},
 		methods: {
 			// 获取数据
@@ -338,7 +338,6 @@
 				}, 5000)
 			}
 		},
-
 	}
 </script>
 

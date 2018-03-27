@@ -85,7 +85,6 @@
 			// 加载数据
 			loadData () {
 				this.$ajax.bookComment(this.$route.query.id).then(res => {
-					// console.log(res)
 					this.levels = res.data.levels
 					this.allCommentList = res.data.pageInfo.list
 					this.$emit('totalComment', res.data.pageInfo.total)

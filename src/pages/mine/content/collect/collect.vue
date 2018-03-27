@@ -78,12 +78,13 @@
 			},
 			// 获取数据
 			getCollect () {
-				console.log(1111111)
 				let params = {
-					_uid: localStorage.getItem('userId'),
+					uid: localStorage.getItem('userId'),
+					// sid: this.$route.query.id,
 					cls: '2'
 				}
 				this.$ajax.getCollect(params).then(res => {
+					console.log(res)
 					this.listData = res.data.data.list
 					console.log(this.listData)
 				}, err => {

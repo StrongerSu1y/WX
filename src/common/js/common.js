@@ -1,15 +1,7 @@
-
 import Vue from 'vue'
 import md5 from 'crypto-js/md5'
 
 let Obj = new Vue()
-
-// export function getMd5 (str) {
-// 	let md5 = crypto.createHash("md5")
-// 	md5.update('str')
-// 	let sign = md5.digest('hex')
-// 	return sign
-// }
 
 export function getMd5 (mobile) {
 	let salt = `@te3,d587%fikl;;=23+go666`

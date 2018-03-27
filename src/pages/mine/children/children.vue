@@ -12,7 +12,7 @@
 		</section>
 		<!-- 列表 -->
 		<ul v-if="listData.length" class="children-list">
-			<li ref="listItem" v-for="(item, index) in listData" class="children-item" :class="{ deleteShow: deleteIndex === index }" @click.prevent="goEdit(item.id)">
+			<li v-for="(item, index) in listData" class="children-item" :class="{ deleteShow: deleteIndex === index }" ref="listItem">
 				<div class="content">
 					<div class="left-part" :style="{ backgroundImage: 'url(' + item.avatar + ')' }">
 						<!-- <img :src="item.avatar || defaultAvatar"> -->
@@ -27,7 +27,7 @@
 							<p class="address">{{ item.address }}</p>
 						</div>
 					</div>
-					<div class="right-part">
+					<div class="right-part" @click.prevent="goEdit(item.id)">
 						<img src="./right_arrow.png">
 					</div>
 				</div>
@@ -65,9 +65,11 @@
 		},
 		mounted () {
 			this.$nextTick(() => {
-				this.listenDelete()
+				if(this.listData.length) {
+					this.listenDelete()					
+				}
 			})
-		},
+ 		},
 		methods: {
 			// 加载数据
 			loadData () {

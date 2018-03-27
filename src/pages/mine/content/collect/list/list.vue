@@ -102,7 +102,6 @@
 			},
 			// 获取数据
 			getCollect () {
-				// console.log(1111111)
 				let params = {
 					_uid: localStorage.getItem('userId'),
 					cls: '2'

@@ -43,7 +43,7 @@
 		},
 		computed: {
 			canSubmit () {
-				if (!/^1[3|4|5|7|8][0-9]\d{8}$/.test(this.mobile) || this.code.length !== 4) {
+				if (!/^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(this.mobile) || this.code.length !== 4) {
 					return false
 				}
 				return true
@@ -51,7 +51,7 @@
 		},
 		watch: {
 			mobile (newVal, oldVal) {
-				this.$refs.btn.disabled = !/^1[3|4|5|7|8][0-9]\d{8}$/.test(newVal)
+				this.$refs.btn.disabled = !/^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(newVal)
 			},
 			canSubmit (newVal, oldVal) {
 				this.$refs.submit.disabled = !newVal

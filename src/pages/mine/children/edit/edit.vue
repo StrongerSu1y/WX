@@ -427,13 +427,13 @@
 					this.item.relation = relationList[selectedIndex[0]].text
 				})
 				// 年级选择
-				this.gradePicker.on('picker.select', (index, selectedIndex) => {
-					// this.item.gr
-				})
-				// 班级选择
-				this.classPinker.on('picker.select', (index, selectedIndex) => {
+				// this.gradePicker.on('picker.select', (index, selectedIndex) => {
 
-				})
+				// })
+				// 班级选择
+				// this.classPinker.on('picker.select', (index, selectedIndex) => {
+
+				// })
 			}
 		},
 		components: {

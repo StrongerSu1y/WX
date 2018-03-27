@@ -157,6 +157,7 @@
 					this.Toast.success({
 						title: '添加成功！'
 					})
+					// this.$root.Bus.$emit('getShopcat')
 				}, err => {
 					console.log(err)
 				})

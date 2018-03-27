@@ -60,7 +60,7 @@
 		},
 		computed: {
 			canSubmit () {
-				return !(this.code.length < 4 || !/^1[3|4|5|8][0-9]\d{8}$/.test(this.mobile) || this.password.length < 6 || !this.hasRead)
+				return !(this.code.length < 4 || !/^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(this.mobile) || this.password.length < 6 || !this.hasRead)
 			}
 		},
 		watch: {
@@ -68,7 +68,7 @@
 			code (curVal, oldVal) {
 			},
 			mobile (newVal, oldVal) {
-				this.$refs.btn.disabled = !/^1[3|4|5|8][0-9]\d{8}$/.test(newVal)
+				this.$refs.btn.disabled = !/^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(newVal)
 			},
 			// 是否可提交
 			canSubmit (newVal, oldVal) {
