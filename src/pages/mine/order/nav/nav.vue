@@ -1,4 +1,4 @@
-<template>
+ <template>
 	<ul class="mine-order-nav">
 		<li :class="{ active: index === navIndex }" v-for="(item, index) in navList" class="nav-item" @click="changeNavIndex(index, item.tradeStatus)">
 			{{ item.text }}

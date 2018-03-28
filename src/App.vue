@@ -47,9 +47,6 @@
     color: #2c3e50;
     background: #ffffff;
     height: 100%;
-    // max-width 425px;
-    // margin 0 auto;
-    // position relative;
   }
   #app div {
   	// width: 100%;

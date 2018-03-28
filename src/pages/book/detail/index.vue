@@ -232,10 +232,6 @@
 				})
 				// 请求服务器
 				this.$ajax.saveShopcat(params).then(res => {
-					console.log(params)
-					// console.log(res)
-					// 更新购物车
-					// this.getShopcat()
 					this.shopNum++
 				}, err => {
 					console.log(err)

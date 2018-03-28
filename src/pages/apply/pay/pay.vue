@@ -274,30 +274,26 @@
 				)
 			}
 		},
-		beforeRouteLeave (to, from, next) {
-			let path = to.path
-			if (path === '/pay' || path === '/shopcat/detail') {
-				next(true)
-				return
-			}
-			// 弹窗提示
-			this.Dialog.alert({
-				title: '温馨提示',
-				msg: '您确定退出支付页面？',
-				buttons: ['确定', '再想想']
-			}, (res) => {
-				if (res.buttonIndex === 2) {
-					next(false)
-					return
-				}
-				next(true)
-
-				this.$router.push({
-					path: '../result/failure'
-				})
-				
-			})
-		},
+		// beforeRouteLeave (to, from, next) {
+		// 	let path = to.path
+		// 	if (path === '/pay' || path === '/shopcat/detail') {
+		// 		next(true)
+		// 		return
+		// 	}
+		// 	// 弹窗提示
+		// 	this.Dialog.alert({
+		// 		title: '温馨提示',
+		// 		msg: '您确定退出支付页面？',
+		// 		buttons: ['确定', '再想想']
+		// 	}, (res) => {
+		// 		if (res.buttonIndex === 2) {
+		// 			next(false)
+		// 			return
+		// 		}
+		// 		// next(true)
+		// 		this.$router.goBack()
+		// 	})	
+		// },
 		components: {
 			'v-header': header
 		}

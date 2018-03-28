@@ -34,7 +34,7 @@
 				<span class="text">¥{{ info.total_fee }}</span>
 			</p>
 			<div class="bottom-btns">
-				<span class="button cancel" >取消订单</span>
+				<span class="button cancel" @click="cancelOrder()">取消订单</span>
 				<span class="button add-evaluate">追加评价</span>
 				<span class="button pay" @click="goEvaluate()">去评价</span>
 			</div>
@@ -232,13 +232,14 @@
 				params.cls = this.$route.query.cls
 				params.id = this.$route.query.id
 				return params
-			},
+			}	
 		},
 		created () {
 			// 加载数据
 			this.loadData()
 		},
 		mounted () {
+			console.log(this.$children)
 		},
 		methods: {
 			// 加载数据
@@ -262,11 +263,6 @@
 				})
 			},
 			// 申请退款
-			// goRefund () {
-			// 	this.$router.push({
-			// 		path: 'refund'
-			// 	})
-			// },
 			goSingle () {
 				this.$router.push({
 					path: 'refund/single'

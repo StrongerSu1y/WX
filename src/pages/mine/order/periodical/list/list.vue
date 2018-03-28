@@ -150,7 +150,6 @@
 					let list = res.data.pageView.list
 					this.pages = res.data.pageView.pages
 					this.listData = this.listData.concat(list)
-					console.log(this.listData)
 					// 刷新 scroll
 					this.$nextTick(() => {
 						if (this.listData.length) {
@@ -175,7 +174,6 @@
 							stop: 20
 						}
 					})
-					// this.listenTouchEvent()
 					// 监听滚动条
 					this.listenScroll()
 				} else {
@@ -185,14 +183,14 @@
 			// 监听滚动
 			listenScroll () {
 				this.scroller.on('scroll', pos => {
-					console.log(pos.y)
+					// console.log(pos.y)
 					this.scrollTop = -pos.y
 					if (pos.y > 0) {
-						// this.initBetterScroll()
+						this.initBetterScroll()
 					}
 				})
 				this.scroller.on('pullingDown', () => {
-					alert(2)
+					// alert(2)
 					this.loadData()
 				})
 			},
@@ -225,7 +223,7 @@
 				this.$router.push({
 					path: '/mine/order/detail',
 					query: {
-						cls: this.$route.query.cls,
+						cls: this.cls,
 						id: id,
 						no: no
 					}

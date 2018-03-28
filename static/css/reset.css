@@ -313,6 +313,7 @@ input {
   -webkit-transform: translate3d(0, 0, 0) scale(0.815);
         transform: translate3d(0, 0, 0) scale(0.815);
 }
+
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
     .aui-dialog-footer:after  {
       -webkit-transform: scaleY(1);

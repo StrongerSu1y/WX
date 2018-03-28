@@ -315,7 +315,7 @@
 			// 获取购物车
 			getShopcat () {
 				this.$ajax.shopcatList().then(res => {
-					this.shopcatList = res.data.data.item_list
+					this.shopcatList = res.data.list
 					let shopNum = 0
 					this.shopcatList.forEach(item => {
 						this.shopNum  += Number(item.quantity)

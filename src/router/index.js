@@ -27,7 +27,6 @@ const pay = resolve => require(['@/pages/apply/pay/pay.vue'], resolve) // 支付
 const result = resolve => require(['@/pages/apply/result/result.vue'], resolve) // 支付结果
 // 查看图片
 const view = resolve => require(['@/components/common/view/view.vue'], resolve)
-
 // app 首页
 const index = resolve => require(['@/pages/index/index.vue'], resolve) // 首页
 

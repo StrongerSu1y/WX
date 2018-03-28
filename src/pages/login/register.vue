@@ -87,10 +87,8 @@
 			}
 		},
 		mounted () {
-
 		},
 		created () {
-
 		},
 		methods: {
 			// 获取验证码
@@ -105,8 +103,6 @@
 					mobile: this.mobile,
 					sign: getMd5(this.mobile)
 				}
-				console.log(_data)
-
 				// 发送请求
 				this.$ajax.sendVerifyCode(_data)
 					.then((res) => {

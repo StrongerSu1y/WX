@@ -435,11 +435,9 @@
 						item.number = parseInt(item.quantity, 10)
 						return item.cls === '1'
 					})
-					console.log(this.periodicalList)
 					// 商品
 					this.goodsList = list.filter((item) => {
 						item.number = parseInt(item.quantity, 10)
-						// console.log(item.number)
 						return item.cls === '2'
 					})
 					this.$nextTick(() => {
