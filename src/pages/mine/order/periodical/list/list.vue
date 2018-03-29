@@ -139,6 +139,7 @@
 			this.loadData()
 		},
 		mounted () {
+			
 		},
 		methods: {
 			// 加载数据	
@@ -183,14 +184,12 @@
 			// 监听滚动
 			listenScroll () {
 				this.scroller.on('scroll', pos => {
-					// console.log(pos.y)
 					this.scrollTop = -pos.y
 					if (pos.y > 0) {
 						this.initBetterScroll()
 					}
 				})
 				this.scroller.on('pullingDown', () => {
-					// alert(2)
 					this.loadData()
 				})
 			},

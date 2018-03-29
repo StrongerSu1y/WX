@@ -232,14 +232,15 @@
 				params.cls = this.$route.query.cls
 				params.id = this.$route.query.id
 				return params
-			}	
+			}
 		},
 		created () {
 			// 加载数据
-			this.loadData()
+			this.$nextTick(() => {
+				this.loadData()
+			})
 		},
 		mounted () {
-			console.log(this.$children)
 		},
 		methods: {
 			// 加载数据

@@ -29,9 +29,12 @@
 		computed: {
 			// 当前视图
 			nowContent () {
-				return this.contentList[this.navIndex] 
+				return this.contentList[this.navIndex]
 			}
-		},  
+		},
+		mounted () {
+			console.log()
+		},
 		methods: {
 			// 切换导航
 			changeNavIndex (index, tradeStatus) {
