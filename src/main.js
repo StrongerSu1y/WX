@@ -57,8 +57,9 @@ router.beforeEach((to, from, next) => {
 	next()
 })
 
+
 // 暂时将用户id 设为 100095
-// localStorage.setItem('userId', '100095')
+// localStorage.setItem('usrId', '100095')
 
 /* eslint-disable no-new */
 new Vue({

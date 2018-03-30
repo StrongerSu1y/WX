@@ -139,7 +139,6 @@
 			this.loadData()
 		},
 		mounted () {
-
 		},
 		methods: {
 			// 加载数据	

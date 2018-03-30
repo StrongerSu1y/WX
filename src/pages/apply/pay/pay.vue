@@ -52,10 +52,11 @@
 				payInit: [{
 					cls: 'alipay',
 					text: '支付宝支付'
-				}, {
-					cls: 'scene',
-					text: '现场支付'
 				}]
+				// }], {
+				// 	cls: 'scene',
+				// 	text: '现场支付'
+				// }]
 			}
 		},
 		computed: {
