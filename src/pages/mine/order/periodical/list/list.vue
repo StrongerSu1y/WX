@@ -119,7 +119,7 @@
 				params.pageSize = this.pageSize
 				params.cls = this.cls
 				params.tradeStatus = this.tradeStatus
-				// params.isAllowPostPay = '0'
+				params.isAllowPostPay = '0'
 				return params
 			}
 		},
@@ -139,7 +139,7 @@
 			this.loadData()
 		},
 		mounted () {
-			
+
 		},
 		methods: {
 			// 加载数据	
@@ -149,6 +149,7 @@
 				})
 				this.$ajax.tradeList(this.params).then(res => {
 					let list = res.data.pageView.list
+					console.log(list)
 					this.pages = res.data.pageView.pages
 					this.listData = this.listData.concat(list)
 					// 刷新 scroll

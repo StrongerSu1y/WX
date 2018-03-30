@@ -90,6 +90,10 @@
 				<span class="button cancel" @click="cancelOrder()">取消订单</span>
 				<span class="button pay" @click="goPay()">去付款</span>
 			</div>
+			<!-- 失效订单 -->
+			<div v-if="info.trade_status === '12' " class="bottom-btns">
+				<span class="button cancel" @click="cancelDel()">删除订单</span>
+			</div>
 			<!-- 已付款 -->
 			<div v-if="info.trade_status === '2'" class="bottom-btns">
 				<!-- <span class="button refund" @click.prevent.stop="goRefund()">申请退款</span> -->
@@ -232,6 +236,13 @@
 				params.cls = this.$route.query.cls
 				params.id = this.$route.query.id
 				return params
+			},
+			paramsDel () {
+				let params = {}
+				params.cls = this.$route.query.cls
+				params.id = this.$route.query.id
+				params.uid = localStorage.getItem('userId')
+				return params
 			}
 		},
 		created () {
@@ -248,6 +259,7 @@
 				this.$ajax.tradeDetail(this.params).then(res => {
 					this.info = res.data.bookMagazineView
 					this.recommendList = res.data.recommendList
+					console.log(this.info)
 				}, err => {
 					console.log(err)
 				})
@@ -309,17 +321,20 @@
 			},
 			// 取消订单
 			cancelOrder () {
-				let params = {}
-				//  "cls": "string",
-	  		// 	"id": 0,
-	  		// 	"uid": "string"
-				params.cls = this.$route.query.cls
-				params.id = this.$route.query.id
-				params.uid = localStorage.getItem('userId')
-
-				this.$ajax.tradeCancel(params).then(res => {
+				this.$ajax.tradeCancel(this.paramsDel).then(res => {
 					this.Toast.success({
 						title: '取消成功'
+					})
+					this.$router.goBack()
+				}, err => {
+					console.log(err)
+				})
+			},
+			// 删除订单
+			cancelDel() {
+				this.$ajax.tradeDel(this.paramsDel).then(res => {
+					this.Toast.success({
+						title: '删除成功'
 					})
 					this.$router.goBack()
 				}, err => {

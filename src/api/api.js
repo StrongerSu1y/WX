@@ -305,9 +305,15 @@ export default {
 		return fetch(`/address/${user_id}`, {}, 'get')
 	},
 	/*
-		删除订单
+		取消订单
 	*/
 	tradeCancel (params) {
+		return fetch('/trade/cancel', params, 'post', 'json')
+	},
+	/*
+		删除订单
+	*/
+	tradeDel (params) {
 		return fetch('/trade/del', params, 'post', 'json')
 	},
 	/*
@@ -452,7 +458,6 @@ export default {
 		孩子管理编辑
 	*/
 	childUpdate (params) {
-		// return fetch(`${serverHost}/api/child/update`, params)
 		let uid = localStorage.getItem('userId')
 		return fetch(`/child/${uid}/update`, params , 'post', 'json')
 	},
